@@ -143,6 +143,13 @@
         padding-top: 4px;
       }
 
+      .bank-actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: end;
+      }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -466,6 +473,20 @@
         </section>
 
         <section class="section">
+          <label class="label" for="wordBank">内置词库</label>
+          <div class="bank-actions">
+            <select id="wordBank">
+              <option value="">选择词库</option>
+              <option value="grade4a">四年级上册常用词</option>
+              <option value="grade4b">四年级下册常用词</option>
+              <option value="grade4idioms">四年级常见四字词</option>
+            </select>
+            <button id="loadBankBtn" class="btn secondary" type="button">加载</button>
+          </div>
+          <p id="bankStatus" class="hint">内置词库是可编辑示例，加载后仍可增删字词。</p>
+        </section>
+
+        <section class="section">
           <div class="grid-2">
             <div class="field">
               <label class="label" for="title">标题</label>
@@ -579,6 +600,9 @@
       const els = {
         words: document.querySelector("#words"),
         title: document.querySelector("#title"),
+        wordBank: document.querySelector("#wordBank"),
+        loadBankBtn: document.querySelector("#loadBankBtn"),
+        bankStatus: document.querySelector("#bankStatus"),
         dateText: document.querySelector("#dateText"),
         mode: document.querySelector("#mode"),
         gridType: document.querySelector("#gridType"),
@@ -594,6 +618,215 @@
 
       let items = [];
       let customPinyin = new Map();
+
+      const wordBanks = {
+        grade4a: {
+          name: "四年级上册常用词",
+          words: [
+            "观潮",
+            "据说",
+            "大堤",
+            "宽阔",
+            "笼罩",
+            "薄雾",
+            "屹立",
+            "沸腾",
+            "霎时",
+            "余波",
+            "淘洗",
+            "庄稼",
+            "鹅卵石",
+            "风俗",
+            "跳跃",
+            "葡萄",
+            "成熟",
+            "招待",
+            "研究",
+            "驾驶",
+            "豌豆",
+            "按照",
+            "舒适",
+            "恐怕",
+            "僵硬",
+            "耐心",
+            "探索",
+            "奥秘",
+            "住宅",
+            "临时",
+            "选择",
+            "住址",
+            "洞穴",
+            "大厅",
+            "卧室",
+            "专家",
+            "慎重",
+            "优良",
+            "均匀",
+            "重叠",
+            "空隙",
+            "嫩茎",
+            "叶柄",
+            "牢固",
+            "证明",
+            "操场",
+            "违抗",
+            "悲惨",
+            "敬佩",
+            "归还",
+            "辽阔",
+            "血液",
+            "茂盛",
+            "滋润",
+            "黑暗",
+            "缓缓",
+            "混沌",
+            "严厉",
+            "著名",
+            "纪念",
+            "训斥",
+            "清晰",
+            "胸怀",
+            "赞叹",
+            "表演",
+            "笨拙",
+            "排练",
+            "逃跑",
+            "砸锅",
+            "否则",
+            "旋转",
+            "预料",
+            "溃败",
+            "自豪",
+            "顽强",
+          ],
+        },
+        grade4b: {
+          name: "四年级下册常用词",
+          words: [
+            "乡下",
+            "屋檐",
+            "构成",
+            "装饰",
+            "顺序",
+            "华丽",
+            "独特",
+            "照例",
+            "率领",
+            "倘若",
+            "和谐",
+            "催眠",
+            "甜蜜",
+            "梦乡",
+            "慰藉",
+            "扫荡",
+            "威力",
+            "锐利",
+            "河滩",
+            "帐子",
+            "蝙蝠",
+            "霸气",
+            "猫头鹰",
+            "复杂",
+            "敏捷",
+            "迟钝",
+            "鸽子",
+            "隧道",
+            "形态",
+            "膨大",
+            "前肢",
+            "开辟",
+            "纳米",
+            "拥有",
+            "冰箱",
+            "除臭",
+            "蔬菜",
+            "材料",
+            "隐形",
+            "健康",
+            "细胞",
+            "疾病",
+            "预防",
+            "病灶",
+            "需要",
+            "潇洒",
+            "朦胧",
+            "寂静",
+            "朝霞",
+            "毛茸茸",
+            "藤萝",
+            "波涛",
+            "指挥",
+            "墨绿",
+            "集中",
+            "交叉",
+            "教练",
+            "白桦",
+            "涂抹",
+            "绣花",
+            "花穗",
+            "徜徉",
+            "侍候",
+            "脾气",
+            "警戒",
+            "局促",
+            "姿态",
+            "昂首",
+            "京剧",
+            "供养",
+            "附近",
+            "偶然",
+            "讨厌",
+            "理由",
+            "心事",
+            "反抗",
+            "忠厚",
+            "成绩",
+            "啼叫",
+            "慈爱",
+            "辛苦",
+          ],
+        },
+        grade4idioms: {
+          name: "四年级常见四字词",
+          words: [
+            "人声鼎沸",
+            "风平浪静",
+            "水天相接",
+            "山崩地裂",
+            "若隐若现",
+            "齐头并进",
+            "漫天卷地",
+            "横七竖八",
+            "随遇而安",
+            "精疲力竭",
+            "奔流不息",
+            "气急败坏",
+            "愤愤不平",
+            "腾云驾雾",
+            "神通广大",
+            "未卜先知",
+            "各显神通",
+            "上天入地",
+            "刀枪不入",
+            "三头六臂",
+            "神机妙算",
+            "志存高远",
+            "精忠报国",
+            "大义凛然",
+            "英勇无畏",
+            "视死如归",
+            "铁面无私",
+            "秉公执法",
+            "刚正不阿",
+            "眉清目秀",
+            "亭亭玉立",
+            "膀大腰圆",
+            "白发苍苍",
+            "明眸皓齿",
+            "慈眉善目",
+          ],
+        },
+      };
 
       function splitWords(text) {
         return text
@@ -666,6 +899,27 @@
         }));
         renderPinyinEditor();
         renderSheet();
+      }
+
+      function loadSelectedBank() {
+        const bank = wordBanks[els.wordBank.value];
+        if (!bank) {
+          els.bankStatus.textContent = "请选择一个词库。";
+          return;
+        }
+
+        const currentWords = splitWords(els.words.value);
+        if (currentWords.length) {
+          const shouldReplace = window.confirm(
+            `加载“${bank.name}”会替换当前输入的 ${currentWords.length} 个字词。是否继续？`,
+          );
+          if (!shouldReplace) return;
+        }
+
+        customPinyin = new Map();
+        els.words.value = bank.words.join("\n");
+        els.bankStatus.textContent = `已加载“${bank.name}”，共 ${bank.words.length} 个字词。`;
+        syncItems();
       }
 
       function renderPinyinEditor() {
@@ -885,6 +1139,7 @@
 
       els.printBtn.addEventListener("click", () => window.print());
       els.resetBtn.addEventListener("click", resetExample);
+      els.loadBankBtn.addEventListener("click", loadSelectedBank);
       window.addEventListener("load", syncItems);
       syncItems();
     </script>
