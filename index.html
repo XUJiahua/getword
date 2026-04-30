@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看拼音写汉字练习纸</title>
+    <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
+    <style>
+      :root {
+        --ink: #1f2937;
+        --muted: #6b7280;
+        --line: #d1d5db;
+        --soft: #f4f7f8;
+        --panel: #ffffff;
+        --accent: #0f766e;
+        --accent-dark: #115e59;
+        --paper: #fffdf8;
+        --danger: #b91c1c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: #eef2f3;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Microsoft YaHei", sans-serif;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: minmax(320px, 420px) 1fr;
+        min-height: 100vh;
+      }
+
+      .controls {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        padding: 18px;
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+      }
+
+      .controls h1 {
+        margin: 0 0 14px;
+        font-size: 22px;
+        line-height: 1.25;
+      }
+
+      .section {
+        padding: 14px 0;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .section:first-of-type {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .label {
+        display: block;
+        margin: 0 0 7px;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 650;
+      }
+
+      textarea,
+      input,
+      select {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #fff;
+        color: var(--ink);
+        outline: none;
+      }
+
+      textarea:focus,
+      input:focus,
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
+      }
+
+      textarea {
+        min-height: 160px;
+        resize: vertical;
+        padding: 10px 11px;
+        line-height: 1.7;
+      }
+
+      input,
+      select {
+        height: 38px;
+        padding: 0 10px;
+      }
+
+      .hint,
+      .status {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .status.warn {
+        color: var(--danger);
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+
+      .field {
+        min-width: 0;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        padding-top: 4px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 40px;
+        padding: 0 13px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 650;
+      }
+
+      .btn.primary {
+        color: #fff;
+        background: var(--accent);
+      }
+
+      .btn.primary:hover {
+        background: var(--accent-dark);
+      }
+
+      .btn.secondary {
+        color: #0f172a;
+        background: #f8fafc;
+        border-color: #cbd5e1;
+      }
+
+      .btn.secondary:hover {
+        background: #eef2f7;
+      }
+
+      .pinyin-list {
+        display: grid;
+        gap: 8px;
+        max-height: 260px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .pinyin-row {
+        display: grid;
+        grid-template-columns: minmax(72px, 0.8fr) minmax(120px, 1.4fr);
+        gap: 8px;
+        align-items: center;
+      }
+
+      .word-chip {
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        padding: 0 9px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        background: #f9fafb;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .preview {
+        padding: 22px;
+        overflow: auto;
+      }
+
+      .sheet {
+        display: grid;
+        gap: 18px;
+        justify-content: center;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 14mm 14mm 13mm;
+        background: var(--paper);
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+        color: #111827;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .paper-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: end;
+        padding-bottom: 6mm;
+        border-bottom: 1px solid #9ca3af;
+      }
+
+      .paper-title {
+        min-width: 0;
+        margin: 0;
+        font-size: 21pt;
+        line-height: 1.2;
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+        font-weight: 700;
+      }
+
+      .paper-title:empty {
+        min-height: 0;
+      }
+
+      .paper-meta {
+        display: flex;
+        gap: 10mm;
+        color: #374151;
+        font-size: 10.5pt;
+        white-space: nowrap;
+      }
+
+      .paper-meta span {
+        display: inline-flex;
+        gap: 3mm;
+        align-items: baseline;
+      }
+
+      .meta-line {
+        display: inline-block;
+        width: 25mm;
+        border-bottom: 1px solid #6b7280;
+      }
+
+      .word-list {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 8mm;
+        row-gap: 5.4mm;
+        align-items: flex-start;
+        padding-top: 7mm;
+      }
+
+      .item {
+        display: inline-grid;
+        grid-template-columns: auto auto;
+        gap: 2.2mm;
+        width: max-content;
+        max-width: 100%;
+        break-inside: avoid;
+      }
+
+      .index {
+        padding-top: 6.2mm;
+        color: #374151;
+        font-size: 10pt;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .practice {
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .practice-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.6mm;
+        align-items: flex-start;
+      }
+
+      .char-unit {
+        display: grid;
+        gap: 1.8mm;
+        justify-items: center;
+        break-inside: avoid;
+      }
+
+      .char-pinyin {
+        min-height: 6mm;
+        color: #111827;
+        font-size: 13pt;
+        line-height: 1.2;
+        text-align: center;
+        white-space: nowrap;
+        min-width: 13.2mm;
+      }
+
+      .unit-cells {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.3mm;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .cell {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 13.2mm;
+        height: 13.2mm;
+        border: 1.2px solid #6b7280;
+        background:
+          linear-gradient(to right, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+          linear-gradient(to bottom, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+        color: rgba(17, 24, 39, 0.22);
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+        font-size: 24pt;
+        line-height: 1;
+      }
+
+      .cell.mi {
+        background:
+          linear-gradient(45deg, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+          linear-gradient(-45deg, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+          linear-gradient(to right, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+          linear-gradient(to bottom, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+      }
+
+      .cell.blank,
+      .line-cell.blank {
+        color: transparent;
+      }
+
+      .line-cell {
+        width: 16mm;
+        height: 13.2mm;
+        border-bottom: 1.4px solid #6b7280;
+        display: inline-flex;
+        align-items: flex-end;
+        justify-content: center;
+        color: rgba(17, 24, 39, 0.22);
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+        font-size: 23pt;
+      }
+
+      .copy-source {
+        color: #111827;
+      }
+
+      .empty {
+        padding: 18mm 0;
+        color: #6b7280;
+        text-align: center;
+        font-size: 13pt;
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          position: static;
+          height: auto;
+        }
+
+        .preview {
+          padding: 12px;
+        }
+
+        .page {
+          transform-origin: top center;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        html,
+        body {
+          width: 210mm;
+          background: #fff;
+        }
+
+        body * {
+          visibility: hidden;
+        }
+
+        .sheet,
+        .sheet * {
+          visibility: visible;
+        }
+
+        .controls {
+          display: none;
+        }
+
+        .app,
+        .preview,
+        .sheet {
+          display: block;
+          padding: 0;
+          margin: 0;
+          background: #fff;
+        }
+
+        .page {
+          width: 210mm;
+          min-height: 297mm;
+          margin: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <aside class="controls">
+        <h1>看拼音写汉字练习纸</h1>
+
+        <section class="section">
+          <label class="label" for="words">中文字词列表</label>
+          <textarea id="words" spellcheck="false">春天
+学校
+认真
+一心一意
+长大
+音乐</textarea>
+          <p class="hint">一行一个词。多音字请在下方拼音列表里手动修改。</p>
+          <p id="pinyinStatus" class="status"></p>
+        </section>
+
+        <section class="section">
+          <div class="grid-2">
+            <div class="field">
+              <label class="label" for="title">标题</label>
+              <input id="title" value="看拼音写汉字" />
+            </div>
+            <div class="field">
+              <label class="label" for="dateText">日期</label>
+              <input id="dateText" placeholder="可留空" />
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="grid-2">
+            <div class="field">
+              <label class="label" for="mode">练习模式</label>
+              <select id="mode">
+                <option value="write">看拼音写汉字</option>
+                <option value="trace">描红练习</option>
+                <option value="copy">左范字右抄写</option>
+                <option value="dictation">听写纸</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="gridType">格子样式</label>
+              <select id="gridType">
+                <option value="tian">田字格</option>
+                <option value="mi">米字格</option>
+                <option value="line">横线</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="grid-3">
+            <div class="field">
+              <label class="label" for="copies">每字空格</label>
+              <select id="copies">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="perPage">每页上限</label>
+              <select id="perPage">
+                <option value="16">16</option>
+                <option value="24">24</option>
+                <option value="32" selected>32</option>
+                <option value="40">40</option>
+                <option value="48">48</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="showMeta">姓名栏</label>
+              <select id="showMeta">
+                <option value="no" selected>隐藏</option>
+                <option value="yes">显示</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <label class="label">拼音校对</label>
+          <div id="pinyinList" class="pinyin-list"></div>
+        </section>
+
+        <section class="section">
+          <div class="actions">
+            <button id="printBtn" class="btn primary" type="button">打印 / 保存 PDF</button>
+            <button id="resetBtn" class="btn secondary" type="button">重置示例</button>
+          </div>
+        </section>
+      </aside>
+
+      <section class="preview" aria-label="A4 预览">
+        <div id="sheet" class="sheet"></div>
+      </section>
+    </main>
+
+    <script>
+      const fallbackPinyin = new Map([
+        ["春", "chun1"],
+        ["天", "tian1"],
+        ["学", "xue2"],
+        ["校", "xiao4"],
+        ["认", "ren4"],
+        ["真", "zhen1"],
+        ["一", "yi1"],
+        ["心", "xin1"],
+        ["意", "yi4"],
+        ["长", "zhang3"],
+        ["大", "da4"],
+        ["音", "yin1"],
+        ["乐", "yue4"],
+      ]);
+
+      const toneMarks = {
+        a: "āáǎà",
+        e: "ēéěè",
+        i: "īíǐì",
+        o: "ōóǒò",
+        u: "ūúǔù",
+        v: "ǖǘǚǜ",
+        ü: "ǖǘǚǜ",
+      };
+
+      const els = {
+        words: document.querySelector("#words"),
+        title: document.querySelector("#title"),
+        dateText: document.querySelector("#dateText"),
+        mode: document.querySelector("#mode"),
+        gridType: document.querySelector("#gridType"),
+        copies: document.querySelector("#copies"),
+        perPage: document.querySelector("#perPage"),
+        showMeta: document.querySelector("#showMeta"),
+        pinyinList: document.querySelector("#pinyinList"),
+        sheet: document.querySelector("#sheet"),
+        printBtn: document.querySelector("#printBtn"),
+        resetBtn: document.querySelector("#resetBtn"),
+        pinyinStatus: document.querySelector("#pinyinStatus"),
+      };
+
+      let items = [];
+      let customPinyin = new Map();
+
+      function splitWords(text) {
+        return text
+          .split(/\n+/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+      }
+
+      function chineseChars(word) {
+        return Array.from(word).filter((char) => /\p{Script=Han}/u.test(char));
+      }
+
+      function numberToTone(syllable) {
+        const match = syllable.match(/^([a-züv:]+)([1-5])$/i);
+        if (!match) return syllable.replace("u:", "ü").replace("v", "ü");
+        let base = match[1].toLowerCase().replace("u:", "ü").replace("v", "ü");
+        const tone = Number(match[2]);
+        if (tone === 5) return base;
+
+        let target = -1;
+        if (base.includes("a")) target = base.indexOf("a");
+        else if (base.includes("e")) target = base.indexOf("e");
+        else if (base.includes("ou")) target = base.indexOf("o");
+        else {
+          for (let i = base.length - 1; i >= 0; i -= 1) {
+            if ("aeiouü".includes(base[i])) {
+              target = i;
+              break;
+            }
+          }
+        }
+
+        if (target < 0) return base;
+        const markSet = toneMarks[base[target]];
+        return `${base.slice(0, target)}${markSet[tone - 1]}${base.slice(target + 1)}`;
+      }
+
+      function fallbackWordPinyin(word) {
+        return chineseChars(word)
+          .map((char) => numberToTone(fallbackPinyin.get(char) || char))
+          .join(" ");
+      }
+
+      function autoPinyin(word) {
+        const pinyinFn =
+          window.pinyinPro && typeof window.pinyinPro.pinyin === "function"
+            ? window.pinyinPro.pinyin
+            : null;
+
+        if (!pinyinFn) {
+          return fallbackWordPinyin(word);
+        }
+
+        try {
+          return pinyinFn(word, {
+            toneType: "symbol",
+            type: "array",
+            nonZh: "removed",
+          }).join(" ");
+        } catch (error) {
+          return fallbackWordPinyin(word);
+        }
+      }
+
+      function syncItems() {
+        const words = splitWords(els.words.value);
+        items = words.map((word) => ({
+          word,
+          pinyin: customPinyin.get(word) || autoPinyin(word),
+        }));
+        renderPinyinEditor();
+        renderSheet();
+      }
+
+      function renderPinyinEditor() {
+        els.pinyinList.innerHTML = "";
+        if (!items.length) {
+          els.pinyinList.innerHTML = '<p class="hint">输入词语后可校对拼音。</p>';
+          return;
+        }
+
+        const frag = document.createDocumentFragment();
+        items.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "pinyin-row";
+
+          const word = document.createElement("div");
+          word.className = "word-chip";
+          word.title = item.word;
+          word.textContent = item.word;
+
+          const input = document.createElement("input");
+          input.value = item.pinyin;
+          input.setAttribute("aria-label", `${item.word} 的拼音`);
+          input.addEventListener("input", () => {
+            customPinyin.set(item.word, input.value.trim());
+            item.pinyin = input.value.trim();
+            renderSheet();
+          });
+
+          row.append(word, input);
+          frag.append(row);
+        });
+
+        els.pinyinList.append(frag);
+      }
+
+      function makeCell(char, isSource = false) {
+        const gridType = els.gridType.value;
+        const cell = document.createElement("span");
+        cell.className =
+          gridType === "line"
+            ? "line-cell"
+            : `cell ${gridType === "mi" ? "mi" : ""}`;
+        if (!char) cell.classList.add("blank");
+        if (isSource) cell.classList.add("copy-source");
+        cell.textContent = char || "字";
+        return cell;
+      }
+
+      function splitPinyin(item) {
+        const parts = item.pinyin.split(/\s+/).filter(Boolean);
+        const chars = chineseChars(item.word);
+        if (parts.length === chars.length) return parts;
+        if (chars.length === 1) return [item.pinyin];
+        return chars.map((_, index) => parts[index] || "");
+      }
+
+      function buildPracticeGroups(item) {
+        const mode = els.mode.value;
+        const repeat = Number(els.copies.value);
+        const chars = chineseChars(item.word);
+        const pinyinParts = splitPinyin(item);
+        const grid = document.createElement("div");
+        grid.className = "practice-grid";
+
+        chars.forEach((char, charIndex) => {
+          const unit = document.createElement("div");
+          unit.className = "char-unit";
+
+          const py = document.createElement("div");
+          py.className = "char-pinyin";
+          py.textContent = mode === "dictation" ? "" : pinyinParts[charIndex];
+
+          const cells = document.createElement("div");
+          cells.className = "unit-cells";
+
+          if (mode === "copy") {
+            cells.append(makeCell(char, true));
+            for (let i = 0; i < repeat; i += 1) {
+              cells.append(makeCell(""));
+            }
+          } else {
+            const showChar = mode === "trace" ? char : "";
+            for (let i = 0; i < repeat; i += 1) {
+              cells.append(makeCell(showChar));
+            }
+          }
+
+          unit.append(py, cells);
+          grid.append(unit);
+        });
+
+        return grid;
+      }
+
+      function buildPage(pageItems, startIndex) {
+        const page = document.createElement("article");
+        page.className = "page";
+
+        const head = document.createElement("header");
+        head.className = "paper-head";
+
+        const title = document.createElement("h2");
+        title.className = "paper-title";
+        title.textContent = els.title.value.trim();
+        head.append(title);
+
+        if (els.showMeta.value === "yes") {
+          const meta = document.createElement("div");
+          meta.className = "paper-meta";
+          const dateText = els.dateText.value.trim();
+          meta.innerHTML = `
+            <span>姓名 <i class="meta-line"></i></span>
+            <span>${dateText ? `日期 ${escapeHtml(dateText)}` : '日期 <i class="meta-line"></i>'}</span>
+          `;
+          head.append(meta);
+        }
+
+        page.append(head);
+
+        const list = document.createElement("div");
+        list.className = "word-list";
+
+        pageItems.forEach((item, idx) => {
+          const mode = els.mode.value;
+          const row = document.createElement("section");
+          row.className = "item";
+
+          const index = document.createElement("div");
+          index.className = "index";
+          index.textContent = `${startIndex + idx + 1}.`;
+
+          const practice = document.createElement("div");
+          practice.className = "practice";
+
+          practice.append(buildPracticeGroups(item));
+          row.append(index, practice);
+          list.append(row);
+        });
+
+        if (!pageItems.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "请在左侧输入中文字词。";
+          list.append(empty);
+        }
+
+        page.append(list);
+        return page;
+      }
+
+      function escapeHtml(value) {
+        return value.replace(/[&<>"']/g, (char) => {
+          const map = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;",
+          };
+          return map[char];
+        });
+      }
+
+      function renderSheet() {
+        els.sheet.innerHTML = "";
+        const perPage = Number(els.perPage.value);
+        const pages = [];
+
+        if (!items.length) {
+          pages.push([]);
+        } else {
+          for (let i = 0; i < items.length; i += perPage) {
+            pages.push(items.slice(i, i + perPage));
+          }
+        }
+
+        const frag = document.createDocumentFragment();
+        pages.forEach((pageItems, pageIndex) => {
+          frag.append(buildPage(pageItems, pageIndex * perPage));
+        });
+        els.sheet.append(frag);
+
+        const pinyinLoaded =
+          window.pinyinPro && typeof window.pinyinPro.pinyin === "function";
+        els.pinyinStatus.textContent = pinyinLoaded
+          ? "拼音库已加载。"
+          : "未能加载完整拼音库，当前只使用内置示例字词拼音；联网后刷新页面可自动恢复。";
+        els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
+      }
+
+      function resetExample() {
+        customPinyin = new Map();
+        els.words.value = "春天\n学校\n认真\n一心一意\n长大\n音乐";
+        els.title.value = "看拼音写汉字";
+        els.dateText.value = "";
+        els.mode.value = "write";
+        els.gridType.value = "tian";
+        els.copies.value = "1";
+        els.perPage.value = "32";
+        els.showMeta.value = "no";
+        syncItems();
+      }
+
+      [
+        els.words,
+        els.title,
+        els.dateText,
+        els.mode,
+        els.gridType,
+        els.copies,
+        els.perPage,
+        els.showMeta,
+      ].forEach((el) => {
+        el.addEventListener("input", syncItems);
+        el.addEventListener("change", syncItems);
+      });
+
+      els.printBtn.addEventListener("click", () => window.print());
+      els.resetBtn.addEventListener("click", resetExample);
+      window.addEventListener("load", syncItems);
+      syncItems();
+    </script>
+  </body>
+</html>
