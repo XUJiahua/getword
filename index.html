@@ -3,7 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>看拼音写汉字练习纸</title>
+    <title>看拼音写汉字练习纸 | 一到六年级部编版语文练字打印工具</title>
+    <meta
+      name="description"
+      content="免费在线生成看拼音写汉字、描红、抄写、听写练习纸。覆盖部编版小学语文一到六年级上下册词语，支持田字格、米字格、横线，A4 纸一键打印或保存 PDF。"
+    />
+    <meta
+      name="keywords"
+      content="看拼音写汉字,练字打印,小学语文,部编版,一年级,二年级,三年级,四年级,五年级,六年级,田字格,米字格,描红,听写,练习纸,PDF"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="看拼音写汉字练习纸 | 一到六年级部编版语文练字打印工具" />
+    <meta
+      property="og:description"
+      content="免费在线生成看拼音写汉字、描红、抄写、听写练习纸。覆盖部编版小学语文一到六年级上下册词语，A4 一键打印。"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="看拼音写汉字练习纸 | 部编版练字打印工具" />
+    <meta
+      name="twitter:description"
+      content="部编版一到六年级上下册词语在线生成 A4 练习纸，支持田字格/米字格/描红/听写。"
+    />
+    <link rel="canonical" href="./" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "看拼音写汉字练习纸",
+        "description": "在线生成部编版小学语文一到六年级看拼音写汉字、描红、抄写、听写练习纸。",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "zh-CN",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
     <style>
       :root {
@@ -145,8 +179,14 @@
 
       .bank-actions {
         display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .bank-actions .row {
+        display: grid;
         grid-template-columns: 1fr auto;
-        gap: 10px;
+        gap: 8px;
         align-items: end;
       }
 
@@ -184,13 +224,19 @@
 
       .pinyin-list {
         display: grid;
-        gap: 8px;
-        max-height: 260px;
+        gap: 10px;
+        max-height: 320px;
         overflow: auto;
         padding-right: 4px;
       }
 
       .pinyin-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .pinyin-main {
         display: grid;
         grid-template-columns: minmax(72px, 0.8fr) minmax(120px, 1.4fr);
         gap: 8px;
@@ -201,6 +247,7 @@
         min-height: 38px;
         display: flex;
         align-items: center;
+        gap: 6px;
         padding: 0 9px;
         border: 1px solid #e5e7eb;
         border-radius: 6px;
@@ -208,6 +255,77 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+
+      .word-chip.has-polyphone {
+        border-color: #fcd34d;
+        background: #fffbeb;
+      }
+
+      .polyphone-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 6px;
+        border-radius: 9999px;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fcd34d;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .polyphone-hints {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding-left: 2px;
+        font-size: 12px;
+      }
+
+      .polyphone-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 6px 2px 8px;
+        background: #fffbeb;
+        border: 1px dashed #fcd34d;
+        border-radius: 6px;
+      }
+
+      .polyphone-group .label {
+        color: #92400e;
+        font-size: 11px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .polyphone-chip {
+        border: 1px solid #d4d4d8;
+        background: #fff;
+        border-radius: 4px;
+        padding: 2px 7px;
+        font-size: 11px;
+        cursor: pointer;
+        color: #374151;
+        line-height: 1.3;
+      }
+
+      .polyphone-chip:hover {
+        background: #f1f5f9;
+      }
+
+      .polyphone-chip.active {
+        border-color: var(--accent);
+        background: rgba(15, 118, 110, 0.1);
+        color: var(--accent-dark);
+        font-weight: 650;
+      }
+
+      .polyphone-chip .ex {
+        color: var(--muted);
+        margin-left: 3px;
+        font-weight: 400;
       }
 
       .preview {
@@ -393,6 +511,57 @@
         font-size: 13pt;
       }
 
+      .sitemap {
+        margin: 24px auto 0;
+        max-width: 980px;
+        padding: 18px 22px 24px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: #374151;
+        font-size: 13px;
+      }
+
+      .sitemap h3 {
+        margin: 0 0 12px;
+        font-size: 15px;
+        color: #111827;
+      }
+
+      .sitemap-block {
+        margin: 0 0 14px;
+      }
+
+      .sitemap-block h4 {
+        margin: 0 0 6px;
+        font-size: 13px;
+        color: #1f2937;
+      }
+
+      .sitemap-block h4 a,
+      .sitemap-block li a {
+        color: var(--accent-dark);
+        text-decoration: none;
+      }
+
+      .sitemap-block h4 a:hover,
+      .sitemap-block li a:hover {
+        text-decoration: underline;
+      }
+
+      .sitemap-block ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+      }
+
+      .sitemap-block li {
+        font-size: 12px;
+      }
+
       @media (max-width: 980px) {
         .app {
           grid-template-columns: 1fr;
@@ -433,7 +602,8 @@
           visibility: visible;
         }
 
-        .controls {
+        .controls,
+        .sitemap {
           display: none;
         }
 
@@ -473,17 +643,21 @@
         </section>
 
         <section class="section">
-          <label class="label" for="wordBank">内置词库</label>
+          <label class="label" for="wordBank">内置词库（部编版参考）</label>
           <div class="bank-actions">
-            <select id="wordBank">
-              <option value="">选择词库</option>
-              <option value="grade4a">四年级上册常用词</option>
-              <option value="grade4b">四年级下册常用词</option>
-              <option value="grade4idioms">四年级常见四字词</option>
-            </select>
-            <button id="loadBankBtn" class="btn secondary" type="button">加载</button>
+            <div class="row">
+              <select id="wordBank" aria-label="年级与册次">
+                <option value="">选择年级/册次</option>
+              </select>
+              <select id="wordUnit" aria-label="单元" disabled>
+                <option value="">整册全部</option>
+              </select>
+            </div>
+            <div class="row">
+              <span class="hint" id="bankStatus">内置词库是可编辑参考，加载后仍可增删字词。</span>
+              <button id="loadBankBtn" class="btn secondary" type="button">加载</button>
+            </div>
           </div>
-          <p id="bankStatus" class="hint">内置词库是可编辑示例，加载后仍可增删字词。</p>
         </section>
 
         <section class="section">
@@ -567,6 +741,7 @@
 
       <section class="preview" aria-label="A4 预览">
         <div id="sheet" class="sheet"></div>
+        <nav id="sitemap" class="sitemap" aria-label="按年级单元导航"></nav>
       </section>
     </main>
 
@@ -597,10 +772,107 @@
         ü: "ǖǘǚǜ",
       };
 
+      const polyphones = new Map([
+        ["长", [{ p: "cháng", e: "长短" }, { p: "zhǎng", e: "长大" }]],
+        ["乐", [{ p: "lè", e: "快乐" }, { p: "yuè", e: "音乐" }]],
+        ["重", [{ p: "zhòng", e: "重要" }, { p: "chóng", e: "重新" }]],
+        ["少", [{ p: "shǎo", e: "多少" }, { p: "shào", e: "少年" }]],
+        ["还", [{ p: "hái", e: "还有" }, { p: "huán", e: "归还" }]],
+        ["行", [{ p: "xíng", e: "行走" }, { p: "háng", e: "银行" }]],
+        ["调", [{ p: "diào", e: "调动" }, { p: "tiáo", e: "调整" }]],
+        ["着", [{ p: "zhe", e: "看着" }, { p: "zhuó", e: "穿着" }, { p: "zháo", e: "着火" }, { p: "zhāo", e: "高着" }]],
+        ["得", [{ p: "de", e: "好得很" }, { p: "dé", e: "得到" }, { p: "děi", e: "得去" }]],
+        ["了", [{ p: "le", e: "好了" }, { p: "liǎo", e: "了解" }]],
+        ["地", [{ p: "dì", e: "土地" }, { p: "de", e: "慢慢地" }]],
+        ["的", [{ p: "de", e: "我的" }, { p: "dí", e: "的确" }, { p: "dì", e: "目的" }]],
+        ["干", [{ p: "gān", e: "干净" }, { p: "gàn", e: "干活" }]],
+        ["发", [{ p: "fā", e: "发现" }, { p: "fà", e: "头发" }]],
+        ["看", [{ p: "kàn", e: "看见" }, { p: "kān", e: "看守" }]],
+        ["中", [{ p: "zhōng", e: "中国" }, { p: "zhòng", e: "中奖" }]],
+        ["为", [{ p: "wèi", e: "因为" }, { p: "wéi", e: "成为" }]],
+        ["给", [{ p: "gěi", e: "给你" }, { p: "jǐ", e: "供给" }]],
+        ["倒", [{ p: "dào", e: "倒水" }, { p: "dǎo", e: "摔倒" }]],
+        ["处", [{ p: "chù", e: "到处" }, { p: "chǔ", e: "处理" }]],
+        ["觉", [{ p: "jué", e: "感觉" }, { p: "jiào", e: "睡觉" }]],
+        ["教", [{ p: "jiào", e: "教师" }, { p: "jiāo", e: "教书" }]],
+        ["数", [{ p: "shù", e: "数字" }, { p: "shǔ", e: "数数" }, { p: "shuò", e: "数见不鲜" }]],
+        ["应", [{ p: "yīng", e: "应该" }, { p: "yìng", e: "答应" }]],
+        ["称", [{ p: "chēng", e: "称号" }, { p: "chèn", e: "对称" }]],
+        ["朝", [{ p: "cháo", e: "朝代" }, { p: "zhāo", e: "朝霞" }]],
+        ["卷", [{ p: "juǎn", e: "卷起" }, { p: "juàn", e: "试卷" }]],
+        ["当", [{ p: "dāng", e: "当时" }, { p: "dàng", e: "上当" }]],
+        ["担", [{ p: "dān", e: "担心" }, { p: "dàn", e: "重担" }]],
+        ["占", [{ p: "zhàn", e: "占领" }, { p: "zhān", e: "占卜" }]],
+        ["挑", [{ p: "tiāo", e: "挑选" }, { p: "tiǎo", e: "挑战" }]],
+        ["散", [{ p: "sàn", e: "散步" }, { p: "sǎn", e: "散乱" }]],
+        ["假", [{ p: "jiǎ", e: "假装" }, { p: "jià", e: "放假" }]],
+        ["间", [{ p: "jiān", e: "中间" }, { p: "jiàn", e: "间断" }]],
+        ["便", [{ p: "biàn", e: "方便" }, { p: "pián", e: "便宜" }]],
+        ["难", [{ p: "nán", e: "困难" }, { p: "nàn", e: "灾难" }]],
+        ["兴", [{ p: "xīng", e: "兴起" }, { p: "xìng", e: "高兴" }]],
+        ["强", [{ p: "qiáng", e: "强大" }, { p: "qiǎng", e: "勉强" }, { p: "jiàng", e: "倔强" }]],
+        ["转", [{ p: "zhuǎn", e: "转身" }, { p: "zhuàn", e: "旋转" }]],
+        ["似", [{ p: "sì", e: "相似" }, { p: "shì", e: "似的" }]],
+        ["露", [{ p: "lù", e: "露水" }, { p: "lòu", e: "露馅" }]],
+        ["落", [{ p: "luò", e: "落叶" }, { p: "lào", e: "落枕" }, { p: "là", e: "丢三落四" }]],
+        ["削", [{ p: "xuē", e: "剥削" }, { p: "xiāo", e: "削苹果" }]],
+        ["薄", [{ p: "báo", e: "薄纸" }, { p: "bó", e: "薄弱" }, { p: "bò", e: "薄荷" }]],
+        ["切", [{ p: "qiē", e: "切菜" }, { p: "qiè", e: "亲切" }]],
+        ["参", [{ p: "cān", e: "参加" }, { p: "shēn", e: "人参" }, { p: "cēn", e: "参差" }]],
+        ["差", [{ p: "chà", e: "差不多" }, { p: "chā", e: "差别" }, { p: "chāi", e: "出差" }, { p: "cī", e: "参差" }]],
+        ["撒", [{ p: "sā", e: "撒手" }, { p: "sǎ", e: "撒种" }]],
+        ["校", [{ p: "xiào", e: "学校" }, { p: "jiào", e: "校对" }]],
+        ["模", [{ p: "mó", e: "模仿" }, { p: "mú", e: "模样" }]],
+        ["蒙", [{ p: "méng", e: "蒙蔽" }, { p: "mēng", e: "蒙骗" }, { p: "měng", e: "蒙古" }]],
+        ["划", [{ p: "huá", e: "划船" }, { p: "huà", e: "计划" }]],
+        ["横", [{ p: "héng", e: "横竖" }, { p: "hèng", e: "蛮横" }]],
+        ["哄", [{ p: "hōng", e: "哄堂" }, { p: "hǒng", e: "哄骗" }, { p: "hòng", e: "起哄" }]],
+        ["没", [{ p: "méi", e: "没有" }, { p: "mò", e: "淹没" }]],
+        ["漂", [{ p: "piāo", e: "漂浮" }, { p: "piǎo", e: "漂白" }, { p: "piào", e: "漂亮" }]],
+        ["塞", [{ p: "sāi", e: "塞住" }, { p: "sài", e: "边塞" }, { p: "sè", e: "堵塞" }]],
+        ["扎", [{ p: "zhā", e: "扎根" }, { p: "zhá", e: "挣扎" }, { p: "zā", e: "包扎" }]],
+        ["更", [{ p: "gèng", e: "更加" }, { p: "gēng", e: "更换" }]],
+        ["盛", [{ p: "shèng", e: "茂盛" }, { p: "chéng", e: "盛饭" }]],
+        ["泊", [{ p: "bó", e: "停泊" }, { p: "pō", e: "湖泊" }]],
+        ["泡", [{ p: "pào", e: "泡沫" }, { p: "pāo", e: "眼泡" }]],
+        ["背", [{ p: "bèi", e: "背诵" }, { p: "bēi", e: "背包" }]],
+        ["藏", [{ p: "cáng", e: "躲藏" }, { p: "zàng", e: "宝藏" }]],
+        ["铺", [{ p: "pū", e: "铺路" }, { p: "pù", e: "店铺" }]],
+        ["和", [{ p: "hé", e: "和气" }, { p: "hè", e: "应和" }, { p: "huó", e: "和面" }, { p: "huò", e: "和药" }, { p: "hú", e: "和牌" }]],
+        ["乘", [{ p: "chéng", e: "乘车" }, { p: "shèng", e: "千乘之国" }]],
+        ["传", [{ p: "chuán", e: "传说" }, { p: "zhuàn", e: "传记" }]],
+        ["弹", [{ p: "dàn", e: "炸弹" }, { p: "tán", e: "弹琴" }]],
+        ["吐", [{ p: "tǔ", e: "吐气" }, { p: "tù", e: "呕吐" }]],
+        ["夹", [{ p: "jiā", e: "夹住" }, { p: "jiá", e: "夹袄" }]],
+        ["冠", [{ p: "guān", e: "皇冠" }, { p: "guàn", e: "冠军" }]],
+        ["闷", [{ p: "mèn", e: "苦闷" }, { p: "mēn", e: "闷热" }]],
+        ["燕", [{ p: "yàn", e: "燕子" }, { p: "yān", e: "燕京" }]],
+        ["答", [{ p: "dá", e: "回答" }, { p: "dā", e: "答应" }]],
+        ["种", [{ p: "zhǒng", e: "种子" }, { p: "zhòng", e: "种田" }]],
+        ["扇", [{ p: "shàn", e: "扇子" }, { p: "shān", e: "扇风" }]],
+        ["缝", [{ p: "féng", e: "缝补" }, { p: "fèng", e: "缝隙" }]],
+        ["量", [{ p: "liàng", e: "数量" }, { p: "liáng", e: "丈量" }]],
+        ["磨", [{ p: "mó", e: "磨练" }, { p: "mò", e: "石磨" }]],
+        ["奇", [{ p: "qí", e: "奇怪" }, { p: "jī", e: "奇数" }]],
+        ["率", [{ p: "lǜ", e: "效率" }, { p: "shuài", e: "率领" }]],
+        ["畜", [{ p: "chù", e: "牲畜" }, { p: "xù", e: "畜牧" }]],
+        ["宿", [{ p: "sù", e: "住宿" }, { p: "xiǔ", e: "一宿" }, { p: "xiù", e: "星宿" }]],
+        ["将", [{ p: "jiāng", e: "将来" }, { p: "jiàng", e: "将军" }]],
+        ["了", [{ p: "le", e: "好了" }, { p: "liǎo", e: "了解" }]],
+      ]);
+
+      function getPolyphonesInWord(word) {
+        const chars = chineseChars(word);
+        return chars
+          .map((char, index) => ({ char, index, options: polyphones.get(char) }))
+          .filter((item) => item.options && item.options.length > 1);
+      }
+
       const els = {
         words: document.querySelector("#words"),
         title: document.querySelector("#title"),
         wordBank: document.querySelector("#wordBank"),
+        wordUnit: document.querySelector("#wordUnit"),
         loadBankBtn: document.querySelector("#loadBankBtn"),
         bankStatus: document.querySelector("#bankStatus"),
         dateText: document.querySelector("#dateText"),
@@ -614,219 +886,620 @@
         printBtn: document.querySelector("#printBtn"),
         resetBtn: document.querySelector("#resetBtn"),
         pinyinStatus: document.querySelector("#pinyinStatus"),
+        sitemap: document.querySelector("#sitemap"),
       };
 
       let items = [];
       let customPinyin = new Map();
 
       const wordBanks = {
+        grade1a: {
+          name: "一年级上册",
+          short: "一上",
+          grade: 1,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 识字入门",
+              words: ["天地", "人口", "上下", "大小", "多少", "口耳目", "手足", "日月", "水火", "你我他"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 自然景物",
+              words: ["太阳", "月亮", "白云", "星星", "雨水", "风沙", "山川", "草木", "花朵", "树叶"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 季节天气",
+              words: ["春天", "夏天", "秋天", "冬天", "雪花", "凉风", "暖和", "寒冷", "阴雨", "晴朗"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 家人称呼",
+              words: ["爸爸", "妈妈", "爷爷", "奶奶", "哥哥", "姐姐", "弟弟", "妹妹", "全家", "亲人"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 学校生活",
+              words: ["老师", "同学", "上学", "放学", "读书", "写字", "铅笔", "书本", "教室", "课文"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 课文常用",
+              words: ["影子", "朋友", "画家", "海边", "沙滩", "项链", "小鸟", "青蛙", "雪人", "梅花"],
+            },
+          ],
+        },
+        grade1b: {
+          name: "一年级下册",
+          short: "一下",
+          grade: 1,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 春天里",
+              words: ["春风", "春雨", "桃花", "柳树", "燕子", "布谷", "蜜蜂", "河水", "杨柳", "解冻"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 我和家人",
+              words: ["父母", "兄弟", "姐妹", "家庭", "孝顺", "邻居", "问候", "祝福", "团聚", "亲爱"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 我的同学",
+              words: ["同学", "班级", "伙伴", "互助", "友谊", "文明", "礼貌", "真诚", "团结", "微笑"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 课文人物",
+              words: ["公鸡", "鸭子", "棉花", "姑娘", "大象", "孩子", "聪明", "勇敢", "勤劳", "善良"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 动物世界",
+              words: ["白兔", "松鼠", "猴子", "骆驼", "孔雀", "麻雀", "燕子", "青蛙", "乌龟", "金鱼"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 童话故事",
+              words: ["月亮", "星星", "做梦", "神仙", "王子", "公主", "城堡", "森林", "魔法", "宝藏"],
+            },
+          ],
+        },
+        grade2a: {
+          name: "二年级上册",
+          short: "二上",
+          grade: 2,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 池塘世界",
+              words: ["蝌蚪", "池塘", "脑袋", "灰黑", "捕食", "迎面", "阿姨", "欢迎", "肚皮", "披着", "孩子", "妈妈"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 自然变化",
+              words: ["雪花", "霜冻", "河水", "海洋", "冲毁", "淹没", "灾害", "温和", "暴躁", "机器", "传播", "旅行"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 植物奥秘",
+              words: ["植物", "办法", "降落伞", "铠甲", "纷纷", "苍耳", "蒲公英", "莲蓬", "四海", "种子"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 校园风景",
+              words: ["操场", "教室", "铃声", "欢笑", "读书", "写字", "值日", "整齐", "安静", "热闹"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 寓言故事",
+              words: ["寒号鸟", "喜鹊", "勤劳", "懒惰", "纺织", "唠叨", "叹息", "悔恨", "时光", "教训"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 古代故事",
+              words: ["曹冲", "称象", "官员", "议论", "果然", "智慧", "聪明", "船舱", "刻舟", "求剑"],
+            },
+          ],
+        },
+        grade2b: {
+          name: "二年级下册",
+          short: "二下",
+          grade: 2,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 找春天",
+              words: ["寻找", "害羞", "姑娘", "嫩芽", "解冻", "触摸", "抖动", "掩盖", "符号", "音符"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 雷锋足迹",
+              words: ["雷锋", "足迹", "泥泞", "晶莹", "寻觅", "平凡", "温暖", "奉献", "助人", "为乐"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 神州大地",
+              words: ["神州", "长城", "黄河", "长江", "台湾", "宝岛", "奔腾", "奋发", "中华", "屹立"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 春日多彩",
+              words: ["烂漫", "缤纷", "彩虹", "清香", "嫩绿", "葱茏", "欣欣", "百花", "争艳", "万紫千红"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 寓言哲理",
+              words: ["亡羊补牢", "揠苗助长", "守株待兔", "拔苗", "纠正", "教训", "收获", "急躁", "耐心", "等待"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 童话世界",
+              words: ["蜘蛛", "河马", "蜗牛", "烤箱", "招牌", "生意", "口罩", "围裙", "顾客", "热情"],
+            },
+          ],
+        },
+        grade3a: {
+          name: "三年级上册",
+          short: "三上",
+          grade: 3,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 校园生活",
+              words: ["早晨", "衣裳", "安静", "绒球", "汉族", "艳丽", "招引", "孔雀", "鞠躬", "热闹", "古老", "敬爱"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 秋之韵",
+              words: ["铺路", "印象", "规则", "邮票", "凉爽", "加紧", "丰收", "苹果", "橙黄", "争着", "落叶", "金黄"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 童话世界",
+              words: ["国王", "款待", "缤纷", "忽然", "坚定", "完成", "飘散", "皇冠", "宫殿", "魔术", "森林", "精灵"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 预测乐趣",
+              words: ["准备", "扁鼻子", "绒线", "情绪", "亲爱", "文具", "缺点", "习惯", "坚持", "改正"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 留心观察",
+              words: ["蟋蟀", "住宅", "慎重", "选择", "向阳", "隐蔽", "洞穴", "出口", "平台", "隧道", "搜索", "发现"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 祖国山河",
+              words: ["富饶", "岛屿", "辽阔", "瑰丽", "五彩", "贝壳", "龙虾", "捕捞", "宝库", "海防", "祖国", "壮美"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 我与自然",
+              words: ["翠鸟", "苇秆", "灰色", "橄榄", "衬衫", "透亮", "机灵", "疾飞", "悄悄", "消逝"],
+            },
+            {
+              key: "u8",
+              name: "第八单元 美好品质",
+              words: ["招呼", "刺猬", "糟糕", "愣住", "发抖", "缩成", "绝望", "奇迹", "勇气", "鼓励"],
+            },
+          ],
+        },
+        grade3b: {
+          name: "三年级下册",
+          short: "三下",
+          grade: 3,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 春之歌",
+              words: ["燕子", "伶俐", "聚集", "增添", "掠过", "吹拂", "聚拢", "波纹", "稻田", "光彩"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 寓言智慧",
+              words: ["寓言", "楚国", "夸口", "戳穿", "张口结舌", "矛盾", "自相矛盾", "守候", "教训", "道理"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 传统文化",
+              words: ["屠苏", "爆竹", "酒兴", "欢度", "传统", "农历", "清明", "端午", "中秋", "团圆"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 实验观察",
+              words: ["蜜蜂", "辨认", "阻力", "几乎", "确实", "本能", "记忆", "推测", "实验", "结论"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 想象世界",
+              words: ["翅膀", "飞翔", "胆子", "宇宙", "探索", "未来", "理想", "希望", "勇气", "美丽"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 童年回忆",
+              words: ["童年", "罗汉豆", "戏台", "归航", "油菜花", "柳枝", "桑叶", "竹篙", "撑船", "笑声"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 自然奇观",
+              words: ["海底", "宁静", "波涛", "依然", "闪烁", "警报", "储藏", "灯塔", "潮汐", "壮丽"],
+            },
+            {
+              key: "u8",
+              name: "第八单元 民间故事",
+              words: ["枣核", "狡猾", "衙役", "惊堂木", "衙门", "官府", "聪明", "机智", "勇敢", "智斗"],
+            },
+          ],
+        },
         grade4a: {
-          name: "四年级上册常用词",
-          words: [
-            "观潮",
-            "据说",
-            "大堤",
-            "宽阔",
-            "笼罩",
-            "薄雾",
-            "屹立",
-            "沸腾",
-            "霎时",
-            "余波",
-            "淘洗",
-            "庄稼",
-            "鹅卵石",
-            "风俗",
-            "跳跃",
-            "葡萄",
-            "成熟",
-            "招待",
-            "研究",
-            "驾驶",
-            "豌豆",
-            "按照",
-            "舒适",
-            "恐怕",
-            "僵硬",
-            "耐心",
-            "探索",
-            "奥秘",
-            "住宅",
-            "临时",
-            "选择",
-            "住址",
-            "洞穴",
-            "大厅",
-            "卧室",
-            "专家",
-            "慎重",
-            "优良",
-            "均匀",
-            "重叠",
-            "空隙",
-            "嫩茎",
-            "叶柄",
-            "牢固",
-            "证明",
-            "操场",
-            "违抗",
-            "悲惨",
-            "敬佩",
-            "归还",
-            "辽阔",
-            "血液",
-            "茂盛",
-            "滋润",
-            "黑暗",
-            "缓缓",
-            "混沌",
-            "严厉",
-            "著名",
-            "纪念",
-            "训斥",
-            "清晰",
-            "胸怀",
-            "赞叹",
-            "表演",
-            "笨拙",
-            "排练",
-            "逃跑",
-            "砸锅",
-            "否则",
-            "旋转",
-            "预料",
-            "溃败",
-            "自豪",
-            "顽强",
+          name: "四年级上册",
+          short: "四上",
+          grade: 4,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 自然奇观",
+              words: ["观潮", "据说", "大堤", "宽阔", "笼罩", "薄雾", "屹立", "沸腾", "霎时", "余波", "风俗"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 留心生活",
+              words: ["跳跃", "葡萄", "成熟", "招待", "研究", "驾驶", "豌豆", "按照", "舒适", "恐怕", "僵硬", "耐心"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 连续观察",
+              words: ["探索", "奥秘", "住宅", "临时", "选择", "住址", "洞穴", "大厅", "卧室", "专家", "慎重", "优良"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 神话传说",
+              words: ["均匀", "重叠", "空隙", "嫩茎", "叶柄", "牢固", "证明", "辽阔", "茂盛", "滋润"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 写出特点",
+              words: ["黑暗", "缓缓", "混沌", "严厉", "著名", "纪念", "训斥", "清晰", "胸怀", "赞叹"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 童年生活",
+              words: ["表演", "笨拙", "排练", "逃跑", "砸锅", "否则", "旋转", "预料", "溃败", "自豪", "顽强"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 家国情怀",
+              words: ["敬佩", "归还", "血液", "淘洗", "庄稼", "鹅卵石", "敬重", "操场", "违抗", "悲惨"],
+            },
           ],
         },
         grade4b: {
-          name: "四年级下册常用词",
-          words: [
-            "乡下",
-            "屋檐",
-            "构成",
-            "装饰",
-            "顺序",
-            "华丽",
-            "独特",
-            "照例",
-            "率领",
-            "倘若",
-            "和谐",
-            "催眠",
-            "甜蜜",
-            "梦乡",
-            "慰藉",
-            "扫荡",
-            "威力",
-            "锐利",
-            "河滩",
-            "帐子",
-            "蝙蝠",
-            "霸气",
-            "猫头鹰",
-            "复杂",
-            "敏捷",
-            "迟钝",
-            "鸽子",
-            "隧道",
-            "形态",
-            "膨大",
-            "前肢",
-            "开辟",
-            "纳米",
-            "拥有",
-            "冰箱",
-            "除臭",
-            "蔬菜",
-            "材料",
-            "隐形",
-            "健康",
-            "细胞",
-            "疾病",
-            "预防",
-            "病灶",
-            "需要",
-            "潇洒",
-            "朦胧",
-            "寂静",
-            "朝霞",
-            "毛茸茸",
-            "藤萝",
-            "波涛",
-            "指挥",
-            "墨绿",
-            "集中",
-            "交叉",
-            "教练",
-            "白桦",
-            "涂抹",
-            "绣花",
-            "花穗",
-            "徜徉",
-            "侍候",
-            "脾气",
-            "警戒",
-            "局促",
-            "姿态",
-            "昂首",
-            "京剧",
-            "供养",
-            "附近",
-            "偶然",
-            "讨厌",
-            "理由",
-            "心事",
-            "反抗",
-            "忠厚",
-            "成绩",
-            "啼叫",
-            "慈爱",
-            "辛苦",
+          name: "四年级下册",
+          short: "四下",
+          grade: 4,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 乡村田园",
+              words: ["乡下", "屋檐", "构成", "装饰", "顺序", "华丽", "独特", "照例", "率领", "倘若", "和谐", "催眠"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 飞向蓝天",
+              words: ["蝙蝠", "霸气", "猫头鹰", "复杂", "敏捷", "迟钝", "鸽子", "隧道", "形态", "膨大", "前肢", "开辟"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 现代科技",
+              words: ["纳米", "拥有", "冰箱", "除臭", "蔬菜", "材料", "隐形", "健康", "细胞", "疾病", "预防", "需要"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 动物朋友",
+              words: ["潇洒", "朦胧", "寂静", "朝霞", "毛茸茸", "藤萝", "波涛", "指挥", "墨绿", "集中"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 游记自然",
+              words: ["甜蜜", "梦乡", "慰藉", "扫荡", "威力", "锐利", "河滩", "帐子", "白桦", "涂抹", "绣花", "花穗"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 成长故事",
+              words: ["徜徉", "侍候", "脾气", "警戒", "局促", "姿态", "昂首", "京剧", "供养", "附近"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 人物风采",
+              words: ["偶然", "讨厌", "理由", "心事", "反抗", "忠厚", "成绩", "啼叫", "慈爱", "辛苦"],
+            },
           ],
         },
-        grade4idioms: {
-          name: "四年级常见四字词",
-          words: [
-            "人声鼎沸",
-            "风平浪静",
-            "水天相接",
-            "山崩地裂",
-            "若隐若现",
-            "齐头并进",
-            "漫天卷地",
-            "横七竖八",
-            "随遇而安",
-            "精疲力竭",
-            "奔流不息",
-            "气急败坏",
-            "愤愤不平",
-            "腾云驾雾",
-            "神通广大",
-            "未卜先知",
-            "各显神通",
-            "上天入地",
-            "刀枪不入",
-            "三头六臂",
-            "神机妙算",
-            "志存高远",
-            "精忠报国",
-            "大义凛然",
-            "英勇无畏",
-            "视死如归",
-            "铁面无私",
-            "秉公执法",
-            "刚正不阿",
-            "眉清目秀",
-            "亭亭玉立",
-            "膀大腰圆",
-            "白发苍苍",
-            "明眸皓齿",
-            "慈眉善目",
+        grade5a: {
+          name: "五年级上册",
+          short: "五上",
+          grade: 5,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 万物有灵",
+              words: ["蓬勃", "飘逸", "纤细", "橘红", "镶嵌", "应和", "蝙蝠", "归巢", "斜阳", "徜徉"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 阅读策略",
+              words: ["浏览", "忌惮", "隔阂", "繁琐", "宛若", "依然", "奉献", "修筑", "抵御", "目瞪口呆"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 民间故事",
+              words: ["嫦娥", "玉兔", "吴刚", "桂树", "凄惶", "瀑布", "银河", "织女", "勤俭", "机灵"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 爱国情怀",
+              words: ["屈辱", "挫败", "振兴", "拼搏", "砥砺", "奋发", "爱戴", "盘踞", "咆哮", "宁死"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 生活说明",
+              words: ["提供", "便捷", "传播", "迅速", "海量", "储存", "检索", "信息", "流量", "芯片"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 父母之爱",
+              words: ["慈祥", "严厉", "呵护", "唠叨", "担忧", "依偎", "抚摸", "教诲", "叮嘱", "感念"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 自然之美",
+              words: ["黎明", "霞光", "绛紫", "镶边", "躲藏", "灯火", "依稀", "辽阔", "海域", "辉煌"],
+            },
+            {
+              key: "u8",
+              name: "第八单元 阅读乐趣",
+              words: ["朗诵", "犹如", "惆怅", "咀嚼", "津津有味", "沉浸", "品味", "畅快", "陶醉", "回味"],
+            },
+          ],
+        },
+        grade5b: {
+          name: "五年级下册",
+          short: "五下",
+          grade: 5,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 童年记忆",
+              words: ["蝴蝶", "瓢虫", "蜻蜓", "樱桃", "倭瓜", "栅栏", "玩耍", "晾晒", "清澈", "童趣"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 中国名著",
+              words: ["梁山", "好汉", "聚义", "英勇", "忠义", "枭雄", "谋略", "智取", "三顾", "桃园"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 汉字文化",
+              words: ["偏旁", "部首", "笔画", "楷书", "行书", "草书", "隶书", "篆书", "横竖", "撇捺"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 家国担当",
+              words: ["边塞", "戍守", "烽火", "家书", "抗战", "解放", "奉献", "捐躯", "英雄", "纪念"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 形象描写",
+              words: ["咆哮", "踉跄", "鬓发", "胡须", "眼眶", "脊梁", "瞳仁", "晶莹", "黝黑", "刚毅"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 思维之窗",
+              words: ["周密", "推断", "严谨", "缜密", "辨析", "推理", "求证", "严密", "准确", "精确"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 域外风光",
+              words: ["牧场", "奶酪", "郁金香", "运河", "古堡", "风车", "旷野", "宁谧", "悠然", "田园"],
+            },
+            {
+              key: "u8",
+              name: "第八单元 风趣幽默",
+              words: ["滑稽", "机智", "风趣", "幽默", "调侃", "嘲讽", "戏谑", "谐趣", "俏皮", "妙语"],
+            },
+          ],
+        },
+        grade6a: {
+          name: "六年级上册",
+          short: "六上",
+          grade: 6,
+          semester: "上",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 自然之美",
+              words: ["漫卷", "宇宙", "明朗", "闪烁", "苍穹", "缀满", "低吟", "静谧", "迷蒙", "汹涌"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 革命岁月",
+              words: ["烽火", "硝烟", "奋勇", "冲锋", "悬崖", "纵身", "英勇", "就义", "热血", "丹心"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 爱护环境",
+              words: ["资源", "矿物", "枯竭", "滥采", "生态", "保护", "可持续", "循环", "节约", "和谐"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 小说世界",
+              words: ["渔夫", "桑娜", "海浪", "心惊", "抱怨", "忐忑", "勉强", "沉默", "皱眉", "怜悯"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 习作训练",
+              words: ["围绕", "描写", "刻画", "烘托", "铺陈", "细节", "神态", "动作", "心理", "对话"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 山水风物",
+              words: ["云海", "奇松", "怪石", "温泉", "巍峨", "嶙峋", "葱郁", "苍翠", "磅礴", "壮丽"],
+            },
+            {
+              key: "u7",
+              name: "第七单元 艺术之美",
+              words: ["蜡烛", "月光", "莱茵河", "纯熟", "清幽", "苏醒", "飞奔", "陶醉", "悠扬", "激昂"],
+            },
+            {
+              key: "u8",
+              name: "第八单元 鲁迅作品",
+              words: ["伶俐", "祭祀", "规矩", "忙月", "缚住", "刺猬", "项圈", "潮汛", "装弶", "捏住"],
+            },
+          ],
+        },
+        grade6b: {
+          name: "六年级下册",
+          short: "六下",
+          grade: 6,
+          semester: "下",
+          units: [
+            {
+              key: "u1",
+              name: "第一单元 民俗风情",
+              words: ["腊八", "煮粥", "初旬", "零七八碎", "万象更新", "灯火通宵", "肃然起敬", "间断", "团圆", "热闹"],
+            },
+            {
+              key: "u2",
+              name: "第二单元 外国名著",
+              words: ["鲁滨逊", "漂流", "孤岛", "栅栏", "栖身", "援助", "圣诞", "簿子", "记号", "求生"],
+            },
+            {
+              key: "u3",
+              name: "第三单元 真情流露",
+              words: ["真情", "流露", "独到", "自然", "透彻", "剖析", "坦诚", "感悟", "倾诉", "心声"],
+            },
+            {
+              key: "u4",
+              name: "第四单元 立志向上",
+              words: ["志向", "抱负", "坚毅", "不屈", "磨砺", "奋斗", "梦想", "追求", "奋发", "笃定"],
+            },
+            {
+              key: "u5",
+              name: "第五单元 科学探索",
+              words: ["探索", "未知", "求证", "假设", "试验", "推理", "严谨", "求真", "好奇", "毅力"],
+            },
+            {
+              key: "u6",
+              name: "第六单元 综合性学习",
+              words: ["综合", "整理", "归纳", "汇报", "展示", "合作", "分享", "表达", "研讨", "提炼"],
+            },
+          ],
+        },
+        themeIdioms4: {
+          name: "专题：四字词与成语",
+          short: "四字词",
+          grade: 0,
+          semester: "专题",
+          units: [
+            {
+              key: "u1",
+              name: "自然天象",
+              words: ["人声鼎沸", "风平浪静", "水天相接", "山崩地裂", "若隐若现", "齐头并进", "漫天卷地", "横七竖八"],
+            },
+            {
+              key: "u2",
+              name: "心境神态",
+              words: ["随遇而安", "精疲力竭", "奔流不息", "气急败坏", "愤愤不平", "目瞪口呆", "聚精会神", "全神贯注"],
+            },
+            {
+              key: "u3",
+              name: "神话本领",
+              words: ["腾云驾雾", "神通广大", "未卜先知", "各显神通", "上天入地", "刀枪不入", "三头六臂", "神机妙算"],
+            },
+            {
+              key: "u4",
+              name: "品格气节",
+              words: ["志存高远", "精忠报国", "大义凛然", "英勇无畏", "视死如归", "铁面无私", "秉公执法", "刚正不阿"],
+            },
+            {
+              key: "u5",
+              name: "人物外貌",
+              words: ["眉清目秀", "亭亭玉立", "膀大腰圆", "白发苍苍", "明眸皓齿", "慈眉善目", "鹤发童颜", "虎背熊腰"],
+            },
+            {
+              key: "u6",
+              name: "勤学求知",
+              words: ["专心致志", "孜孜不倦", "废寝忘食", "夜以继日", "持之以恒", "锲而不舍", "学而不厌", "刻苦钻研"],
+            },
+          ],
+        },
+        themeConfusable: {
+          name: "专题：易错形近字组词",
+          short: "易错字",
+          grade: 0,
+          semester: "专题",
+          units: [
+            {
+              key: "u1",
+              name: "形近字（一）",
+              words: ["辨别", "分辨", "辫子", "争辩", "刺猬", "慰藉", "尉官", "蔚蓝"],
+            },
+            {
+              key: "u2",
+              name: "形近字（二）",
+              words: ["即使", "既然", "概念", "慨叹", "戴帽", "穿戴", "拥戴", "代替"],
+            },
+            {
+              key: "u3",
+              name: "形近字（三）",
+              words: ["蜡烛", "腊月", "措施", "错误", "竞争", "竟然", "鼎力", "顶端"],
+            },
+            {
+              key: "u4",
+              name: "同音异形",
+              words: ["再见", "在意", "做事", "作业", "已经", "以为", "象征", "形象"],
+            },
           ],
         },
       };
+
+      const wordBankOrder = [
+        "grade1a", "grade1b",
+        "grade2a", "grade2b",
+        "grade3a", "grade3b",
+        "grade4a", "grade4b",
+        "grade5a", "grade5b",
+        "grade6a", "grade6b",
+        "themeIdioms4", "themeConfusable",
+      ];
+
+      function bankAllWords(bankKey) {
+        const bank = wordBanks[bankKey];
+        if (!bank) return [];
+        return bank.units.flatMap((u) => u.words);
+      }
+
+      function unitWords(bankKey, unitKey) {
+        const bank = wordBanks[bankKey];
+        if (!bank) return [];
+        if (!unitKey) return bankAllWords(bankKey);
+        const unit = bank.units.find((u) => u.key === unitKey);
+        return unit ? unit.words : [];
+      }
 
       function splitWords(text) {
         return text
@@ -901,25 +1574,161 @@
         renderSheet();
       }
 
-      function loadSelectedBank() {
-        const bank = wordBanks[els.wordBank.value];
+      function populateBankSelect() {
+        els.wordBank.innerHTML = "";
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "选择年级/册次";
+        els.wordBank.append(placeholder);
+        wordBankOrder.forEach((key) => {
+          const bank = wordBanks[key];
+          if (!bank) return;
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = bank.name;
+          els.wordBank.append(opt);
+        });
+      }
+
+      function populateUnitSelect(bankKey) {
+        els.wordUnit.innerHTML = "";
+        const all = document.createElement("option");
+        all.value = "";
+        all.textContent = "整册全部";
+        els.wordUnit.append(all);
+        const bank = wordBanks[bankKey];
         if (!bank) {
-          els.bankStatus.textContent = "请选择一个词库。";
+          els.wordUnit.disabled = true;
+          return;
+        }
+        bank.units.forEach((unit) => {
+          const opt = document.createElement("option");
+          opt.value = unit.key;
+          opt.textContent = unit.name;
+          els.wordUnit.append(opt);
+        });
+        els.wordUnit.disabled = false;
+      }
+
+      function loadSelectedBank({ silent = false } = {}) {
+        const bankKey = els.wordBank.value;
+        const bank = wordBanks[bankKey];
+        if (!bank) {
+          els.bankStatus.textContent = "请选择年级/册次。";
           return;
         }
 
+        const unitKey = els.wordUnit.value;
+        const words = unitWords(bankKey, unitKey);
+        const unit = unitKey ? bank.units.find((u) => u.key === unitKey) : null;
+        const label = unit ? `${bank.name}·${unit.name}` : `${bank.name}（整册）`;
+
         const currentWords = splitWords(els.words.value);
-        if (currentWords.length) {
+        if (!silent && currentWords.length) {
           const shouldReplace = window.confirm(
-            `加载“${bank.name}”会替换当前输入的 ${currentWords.length} 个字词。是否继续？`,
+            `加载“${label}”会替换当前输入的 ${currentWords.length} 个字词。是否继续？`,
           );
           if (!shouldReplace) return;
         }
 
         customPinyin = new Map();
-        els.words.value = bank.words.join("\n");
-        els.bankStatus.textContent = `已加载“${bank.name}”，共 ${bank.words.length} 个字词。`;
+        els.words.value = words.join("\n");
+        els.bankStatus.textContent = `已加载“${label}”，共 ${words.length} 个字词。`;
+        if (unit) {
+          els.title.value = `${bank.short || bank.name} ${unit.name} 看拼音写汉字`;
+        } else {
+          els.title.value = `${bank.name} 看拼音写汉字`;
+        }
+        writeHash(bankKey, unitKey);
+        updateDocumentTitle();
         syncItems();
+      }
+
+      function readHash() {
+        const hash = window.location.hash.replace(/^#/, "");
+        if (!hash) return { bank: "", unit: "" };
+        const params = new URLSearchParams(hash);
+        return {
+          bank: params.get("bank") || "",
+          unit: params.get("unit") || "",
+        };
+      }
+
+      function writeHash(bank, unit) {
+        const params = new URLSearchParams();
+        if (bank) params.set("bank", bank);
+        if (unit) params.set("unit", unit);
+        const next = params.toString();
+        const target = next ? `#${next}` : "";
+        if (window.location.hash !== target) {
+          history.replaceState(null, "", target || window.location.pathname);
+        }
+      }
+
+      function applyHashOnLoad() {
+        const { bank, unit } = readHash();
+        if (!bank || !wordBanks[bank]) return false;
+        els.wordBank.value = bank;
+        populateUnitSelect(bank);
+        if (unit && wordBanks[bank].units.some((u) => u.key === unit)) {
+          els.wordUnit.value = unit;
+        }
+        loadSelectedBank({ silent: true });
+        return true;
+      }
+
+      function updateDocumentTitle() {
+        const bankKey = els.wordBank.value;
+        const unitKey = els.wordUnit.value;
+        const bank = wordBanks[bankKey];
+        const unit = bank && unitKey ? bank.units.find((u) => u.key === unitKey) : null;
+        const base = "看拼音写汉字练习纸";
+        if (bank && unit) {
+          document.title = `${bank.short || bank.name} ${unit.name} - ${base}`;
+        } else if (bank) {
+          document.title = `${bank.name} - ${base}`;
+        } else {
+          document.title = `${base} | 一到六年级部编版语文练字打印工具`;
+        }
+      }
+
+      function renderSitemap() {
+        if (!els.sitemap) return;
+        els.sitemap.innerHTML = "";
+        const wrap = document.createElement("div");
+        wrap.className = "sitemap-inner";
+
+        const heading = document.createElement("h3");
+        heading.textContent = "按年级·单元快速生成";
+        wrap.append(heading);
+
+        wordBankOrder.forEach((bankKey) => {
+          const bank = wordBanks[bankKey];
+          if (!bank) return;
+          const block = document.createElement("section");
+          block.className = "sitemap-block";
+
+          const title = document.createElement("h4");
+          const titleLink = document.createElement("a");
+          titleLink.href = `#bank=${bankKey}`;
+          titleLink.textContent = `${bank.name}（整册）`;
+          title.append(titleLink);
+          block.append(title);
+
+          const list = document.createElement("ul");
+          bank.units.forEach((unit) => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = `#bank=${bankKey}&unit=${unit.key}`;
+            a.textContent = unit.name;
+            li.append(a);
+            list.append(li);
+          });
+          block.append(list);
+          wrap.append(block);
+        });
+
+        els.sitemap.append(wrap);
       }
 
       function renderPinyinEditor() {
@@ -931,24 +1740,101 @@
 
         const frag = document.createDocumentFragment();
         items.forEach((item) => {
+          const polyInfo = getPolyphonesInWord(item.word);
+
           const row = document.createElement("div");
           row.className = "pinyin-row";
 
+          const main = document.createElement("div");
+          main.className = "pinyin-main";
+
           const word = document.createElement("div");
-          word.className = "word-chip";
-          word.title = item.word;
-          word.textContent = item.word;
+          word.className =
+            "word-chip" + (polyInfo.length ? " has-polyphone" : "");
+          word.title = polyInfo.length
+            ? `${item.word}（含多音字：${polyInfo.map((p) => p.char).join("、")}）`
+            : item.word;
+          word.append(document.createTextNode(item.word));
+          if (polyInfo.length) {
+            const badge = document.createElement("span");
+            badge.className = "polyphone-badge";
+            badge.textContent = "多音";
+            word.append(badge);
+          }
 
           const input = document.createElement("input");
           input.value = item.pinyin;
           input.setAttribute("aria-label", `${item.word} 的拼音`);
+
+          main.append(word, input);
+          row.append(main);
+
+          let hintsRow = null;
+          if (polyInfo.length) {
+            hintsRow = document.createElement("div");
+            hintsRow.className = "polyphone-hints";
+            polyInfo.forEach((p) => {
+              const group = document.createElement("div");
+              group.className = "polyphone-group";
+              group.dataset.charIndex = String(p.index);
+
+              const lbl = document.createElement("span");
+              lbl.className = "label";
+              lbl.textContent = `${p.char}：`;
+              group.append(lbl);
+
+              p.options.forEach((opt) => {
+                const chip = document.createElement("button");
+                chip.type = "button";
+                chip.className = "polyphone-chip";
+                chip.dataset.pinyin = opt.p;
+                const py = document.createElement("span");
+                py.textContent = opt.p;
+                const ex = document.createElement("span");
+                ex.className = "ex";
+                ex.textContent = opt.e;
+                chip.append(py, ex);
+                chip.addEventListener("click", () => {
+                  const parts = splitPinyin(item);
+                  parts[p.index] = opt.p;
+                  const next = parts.join(" ");
+                  customPinyin.set(item.word, next);
+                  item.pinyin = next;
+                  input.value = next;
+                  refreshActive();
+                  renderSheet();
+                });
+                group.append(chip);
+              });
+              hintsRow.append(group);
+            });
+            row.append(hintsRow);
+          }
+
+          function refreshActive() {
+            if (!hintsRow) return;
+            const parts = splitPinyin(item);
+            hintsRow.querySelectorAll(".polyphone-group").forEach((g) => {
+              const idx = Number(g.dataset.charIndex);
+              const cur = parts[idx] || "";
+              g.querySelectorAll(".polyphone-chip").forEach((chip) => {
+                chip.classList.toggle(
+                  "active",
+                  chip.dataset.pinyin === cur,
+                );
+              });
+            });
+          }
+
           input.addEventListener("input", () => {
-            customPinyin.set(item.word, input.value.trim());
-            item.pinyin = input.value.trim();
+            const v = input.value.trim();
+            customPinyin.set(item.word, v);
+            item.pinyin = v;
+            refreshActive();
             renderSheet();
           });
 
-          row.append(word, input);
+          refreshActive();
           frag.append(row);
         });
 
@@ -1120,6 +2006,11 @@
         els.copies.value = "1";
         els.perPage.value = "32";
         els.showMeta.value = "no";
+        els.wordBank.value = "";
+        populateUnitSelect("");
+        writeHash("", "");
+        updateDocumentTitle();
+        els.bankStatus.textContent = "内置词库是可编辑参考，加载后仍可增删字词。";
         syncItems();
       }
 
@@ -1137,11 +2028,33 @@
         el.addEventListener("change", syncItems);
       });
 
+      els.wordBank.addEventListener("change", () => {
+        populateUnitSelect(els.wordBank.value);
+        writeHash(els.wordBank.value, "");
+        updateDocumentTitle();
+      });
+
+      els.wordUnit.addEventListener("change", () => {
+        writeHash(els.wordBank.value, els.wordUnit.value);
+        updateDocumentTitle();
+      });
+
+      window.addEventListener("hashchange", () => {
+        applyHashOnLoad();
+      });
+
       els.printBtn.addEventListener("click", () => window.print());
       els.resetBtn.addEventListener("click", resetExample);
-      els.loadBankBtn.addEventListener("click", loadSelectedBank);
+      els.loadBankBtn.addEventListener("click", () => loadSelectedBank());
+
+      populateBankSelect();
+      renderSitemap();
+      const loadedFromHash = applyHashOnLoad();
+      if (!loadedFromHash) {
+        updateDocumentTitle();
+        syncItems();
+      }
       window.addEventListener("load", syncItems);
-      syncItems();
     </script>
   </body>
 </html>
