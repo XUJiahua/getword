@@ -18,6 +18,12 @@ window.GRADE_DATA.grade3b = {
       "key": "u1",
       "name": "第一单元 春天的诗意",
       "words": [
+        "鸳",
+        "鸯",
+        "惠",
+        "崇",
+        "豚",
+        "减",
         "乌黑",
         "活泼",
         "春日",
@@ -46,32 +52,51 @@ window.GRADE_DATA.grade3b = {
         "随风",
         "飘动",
         "舞蹈",
-        "停止"
+        "停止",
+        "录",
+        "凡",
+        "距",
+        "款",
+        "绸",
+        "膜",
+        "瞎",
+        "益",
+        "约",
+        "蚂",
+        "斑"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 2,
           "title": "燕子",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 3,
           "title": "荷花",
           "wordCount": 14,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 4,
           "title": "昆虫备忘录",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
         }
       ]
     },
@@ -79,6 +104,10 @@ window.GRADE_DATA.grade3b = {
       "key": "u2",
       "name": "第二单元 寓言故事",
       "words": [
+        "宋",
+        "耕",
+        "释",
+        "冀",
         "国王",
         "骄傲",
         "傲慢",
@@ -107,32 +136,48 @@ window.GRADE_DATA.grade3b = {
         "哎呀",
         "狮子",
         "机会",
-        "叹气"
+        "叹气",
+        "滔",
+        "涯",
+        "妇",
+        "碌",
+        "遵",
+        "循",
+        "尊",
+        "验"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "守株待兔",
           "wordCount": 0,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 6,
           "title": "陶罐和铁罐",
           "wordCount": 16,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 7,
           "title": "鹿角和鹿腿",
           "wordCount": 13,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 8,
           "title": "池子与河流",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         }
       ]
     },
@@ -140,6 +185,13 @@ window.GRADE_DATA.grade3b = {
       "key": "u3",
       "name": "第三单元 中华传统文化",
       "words": [
+        "屠",
+        "苏",
+        "魂",
+        "酒",
+        "牧",
+        "兄",
+        "倍",
         "造纸术",
         "伟大",
         "记录",
@@ -169,32 +221,50 @@ window.GRADE_DATA.grade3b = {
         "智慧",
         "不但",
         "才干",
-        "历史"
+        "历史",
+        "择",
+        "宫",
+        "摊",
+        "贩",
+        "吏",
+        "驴",
+        "乘",
+        "笼",
+        "栏",
+        "貌"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 10,
           "title": "纸的发明",
           "wordCount": 15,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 11,
           "title": "赵州桥",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 12,
           "title": "一幅名扬中外的画",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
         }
       ]
     },
@@ -231,26 +301,40 @@ window.GRADE_DATA.grade3b = {
         "陌生",
         "确实",
         "记忆",
-        "本能"
+        "本能",
+        "隙",
+        "掀",
+        "稍",
+        "逐",
+        "末",
+        "搏",
+        "较",
+        "腹"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 13,
           "title": "花钟",
           "wordCount": 14,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 14,
           "title": "蜜蜂",
           "wordCount": 16,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 15,
           "title": "小虾",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         }
       ]
     },
@@ -287,16 +371,20 @@ window.GRADE_DATA.grade3b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 16,
           "title": "小真的长头发",
           "wordCount": 10,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 17,
           "title": "我变成了一棵树",
           "wordCount": 16,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 7
         }
       ]
     },
@@ -344,32 +432,45 @@ window.GRADE_DATA.grade3b = {
         "飞越",
         "婴儿",
         "目送",
-        "希望"
+        "希望",
+        "耀",
+        "庆",
+        "盼",
+        "叠",
+        "歉"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 18,
           "title": "童年的水墨画",
           "wordCount": 13,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 19,
           "title": "剃头大师",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 20,
           "title": "肥皂泡",
           "wordCount": 13,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 21,
           "title": "我不能失信",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 5
         }
       ]
     },
@@ -416,22 +517,28 @@ window.GRADE_DATA.grade3b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 22,
           "title": "我们奇妙的世界",
           "wordCount": 15,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 23,
           "title": "海底世界",
           "wordCount": 13,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 19
         },
         {
+          "kind": null,
           "no": 24,
           "title": "火烧云",
           "wordCount": 8,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -454,38 +561,66 @@ window.GRADE_DATA.grade3b = {
         "名声",
         "手艺",
         "感动",
+        "橱",
+        "改",
+        "蕉",
+        "扣",
+        "嚷",
+        "溜",
+        "筒",
+        "董",
         "里屋",
         "莫非",
         "厉害",
         "发抖",
         "松手",
         "跟前",
-        "甘心"
+        "甘心",
+        "枣",
+        "核",
+        "妻",
+        "爹",
+        "犁",
+        "聪",
+        "折",
+        "困",
+        "牲",
+        "府",
+        "罢",
+        "涨"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 25,
           "title": "慢性子裁缝和急性子顾客",
           "wordCount": 15,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 26,
           "title": "方帽子店",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 27,
           "title": "漏",
           "wordCount": 7,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 28,
           "title": "枣核",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     }

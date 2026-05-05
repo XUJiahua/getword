@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "融",
@@ -36,6 +37,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "凑",
@@ -84,6 +86,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [
         "瓣",
@@ -124,6 +127,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [],
       "recognize_chars": [
@@ -142,6 +146,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "守",
@@ -163,6 +168,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "骄",
@@ -211,6 +217,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [
         "鹿",
@@ -254,6 +261,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [],
       "recognize_chars": [
@@ -269,6 +277,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "符",
@@ -295,6 +304,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "伟",
@@ -343,6 +353,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [
         "赵",
@@ -391,6 +402,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [],
       "recognize_chars": [
@@ -408,6 +420,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [
         "芬",
@@ -452,6 +465,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "蜜",
@@ -498,6 +512,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [],
       "recognize_chars": [
@@ -513,6 +528,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "宇",
@@ -550,6 +566,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "状",
@@ -594,6 +611,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "墨",
@@ -632,6 +650,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "表",
@@ -679,6 +698,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [
         "皂",
@@ -724,6 +744,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [],
       "recognize_chars": [
@@ -736,6 +757,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "呈",
@@ -780,6 +802,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [
         "宁",
@@ -833,6 +856,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 24,
       "write_chars": [
         "必",
@@ -862,6 +886,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 25,
       "write_chars": [
         "性",
@@ -909,6 +934,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 26,
       "write_chars": [],
       "recognize_chars": [
@@ -924,6 +950,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 27,
       "write_chars": [
         "漏",
@@ -962,6 +989,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 28,
       "write_chars": [],
       "recognize_chars": [
@@ -982,7 +1010,7 @@
     }
   ],
   "polyphone_chars": {
-    "after_lesson_4": [
+    "after_-4": [
       "援",
       "掷",
       "投",
@@ -994,7 +1022,7 @@
       "贡",
       "贷"
     ],
-    "after_lesson_12": [
+    "after_-12": [
       "税",
       "档",
       "咖",
@@ -1003,7 +1031,7 @@
       "废",
       "贸"
     ],
-    "after_lesson_21": [
+    "after_-21": [
       "旭",
       "屿",
       "瞭",
@@ -1011,7 +1039,7 @@
       "缆",
       "锚"
     ],
-    "after_lesson_28": [
+    "after_-28": [
       "咳",
       "嗽",
       "呕",

@@ -42,32 +42,52 @@ window.GRADE_DATA.grade5a = {
         "桂花",
         "懂得",
         "糕饼",
-        "茶叶"
+        "茶叶",
+        "蔓",
+        "幽",
+        "悉",
+        "雏",
+        "哟",
+        "柜",
+        "享",
+        "陪",
+        "待",
+        "趴",
+        "睑",
+        "眸"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "白鹭",
           "wordCount": 14,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 2,
           "title": "落花生",
           "wordCount": 7,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 3,
           "title": "桂花雨",
           "wordCount": 4,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 2
         },
         {
+          "kind": null,
           "no": 4,
           "title": "珍珠鸟",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -133,28 +153,36 @@ window.GRADE_DATA.grade5a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "搭石",
           "wordCount": 16,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 6,
           "title": "将相和",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 16
         },
         {
+          "kind": null,
           "no": 7,
           "title": "什么比猎豹的速度更快",
           "wordCount": 11,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 3
         },
         {
+          "kind": null,
           "no": 8,
           "title": "冀中的地道战",
           "wordCount": 12,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 9
         }
       ]
     },
@@ -191,26 +219,41 @@ window.GRADE_DATA.grade5a = {
         "晚霞",
         "一辈子",
         "结婚",
-        "相依为命"
+        "相依为命",
+        "俭",
+        "皇",
+        "偎",
+        "衰",
+        "珊",
+        "瑚",
+        "礁",
+        "筐",
+        "拗"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "猎人海力布",
           "wordCount": 17,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 10,
           "title": "牛郎织女（一）",
           "wordCount": 13,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 11,
           "title": "牛郎织女（二）",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 9
         }
       ]
     },
@@ -218,6 +261,17 @@ window.GRADE_DATA.grade5a = {
       "key": "u4",
       "name": "第四单元 爱国情怀",
       "words": [
+        "乃",
+        "熏",
+        "亥",
+        "恃",
+        "擞",
+        "泻",
+        "鳞",
+        "惶",
+        "胎",
+        "履",
+        "哉",
         "毁灭",
         "不可估量",
         "举世闻名",
@@ -239,32 +293,52 @@ window.GRADE_DATA.grade5a = {
         "搬运",
         "销毁",
         "罪证",
-        "奉命"
+        "奉命",
+        "域",
+        "艇",
+        "矛",
+        "盾",
+        "筷",
+        "炊",
+        "哼",
+        "喉",
+        "咙",
+        "勺",
+        "搅",
+        "舀"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 12,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 13,
           "title": "少年中国说",
           "wordCount": 0,
-          "writeCharCount": 7
+          "writeCharCount": 7,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 14,
           "title": "圆明园的毁灭",
           "wordCount": 22,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 15,
           "title": "小岛",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -297,16 +371,20 @@ window.GRADE_DATA.grade5a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 16,
           "title": "太阳",
           "wordCount": 9,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 17,
           "title": "松鼠",
           "wordCount": 13,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 8
         }
       ]
     },
@@ -352,26 +430,37 @@ window.GRADE_DATA.grade5a = {
         "领略",
         "意境",
         "磨灭",
-        "精致"
+        "精致",
+        "誊",
+        "励",
+        "祥",
+        "歧",
+        "谨"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 18,
           "title": "慈母情深",
           "wordCount": 20,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 19,
           "title": "父爱之舟",
           "wordCount": 19,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 16
         },
         {
+          "kind": null,
           "no": 20,
           "title": "“精彩极了”和“糟糕透了”",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 5
         }
       ]
     },
@@ -379,6 +468,10 @@ window.GRADE_DATA.grade5a = {
       "key": "u7",
       "name": "第七单元 自然之美",
       "words": [
+        "榆",
+        "畔",
+        "更",
+        "聒",
         "黎明",
         "红晕",
         "漆黑",
@@ -401,32 +494,47 @@ window.GRADE_DATA.grade5a = {
         "涨潮",
         "树梢",
         "应接不暇",
-        "画眉"
+        "画眉",
+        "悄",
+        "累",
+        "嫦",
+        "娥",
+        "嫉",
+        "妒",
+        "瓷"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 21,
           "title": "古诗词三首",
           "wordCount": 0,
-          "writeCharCount": 5
+          "writeCharCount": 5,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 22,
           "title": "四季之美",
           "wordCount": 13,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 23,
           "title": "鸟的天堂",
           "wordCount": 10,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 3
         },
         {
+          "kind": null,
           "no": 24,
           "title": "月迹",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
         }
       ]
     },
@@ -434,6 +542,11 @@ window.GRADE_DATA.grade5a = {
       "key": "u8",
       "name": "第八单元 阅读乐趣",
       "words": [
+        "耻",
+        "识",
+        "寝",
+        "矣",
+        "岂",
         "舅父",
         "津津有味",
         "英雄",
@@ -448,26 +561,47 @@ window.GRADE_DATA.grade5a = {
         "烦琐",
         "真情实感",
         "质朴",
-        "刊物"
+        "刊物",
+        "喻",
+        "差",
+        "瘾",
+        "奔",
+        "籍",
+        "饥",
+        "偿",
+        "甸",
+        "悟",
+        "馈",
+        "磁",
+        "酵",
+        "皎",
+        "鉴",
+        "沥"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 25,
           "title": "古人谈读书",
           "wordCount": 0,
-          "writeCharCount": 5
+          "writeCharCount": 5,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 26,
           "title": "忆读书",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 17
         },
         {
+          "kind": null,
           "no": 27,
           "title": "我的“长生果”",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 15
         }
       ]
     }

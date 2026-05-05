@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "杂",
@@ -39,6 +40,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "构",
@@ -87,6 +89,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [
         "慰",
@@ -122,6 +125,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [],
       "recognize_chars": [
@@ -132,6 +136,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "怒",
@@ -183,6 +188,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "笨",
@@ -234,6 +240,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [
         "纳",
@@ -286,6 +293,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [],
       "recognize_chars": [
@@ -303,6 +311,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "繁",
@@ -321,6 +330,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "瓶",
@@ -347,6 +357,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [
         "桦",
@@ -381,6 +392,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [],
       "recognize_chars": [
@@ -395,6 +407,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [
         "忧",
@@ -437,6 +450,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "讨",
@@ -481,6 +495,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [
         "吠",
@@ -534,6 +549,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "扩",
@@ -565,6 +581,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "浙",
@@ -610,6 +627,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "囊",
@@ -631,6 +649,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "晋",
@@ -679,6 +698,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [],
       "recognize_chars": [
@@ -701,6 +721,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [],
       "recognize_chars": [
@@ -715,6 +736,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "芙",
@@ -738,6 +760,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [
         "伦",
@@ -789,6 +812,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 24,
       "write_chars": [],
       "recognize_chars": [
@@ -803,6 +827,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 25,
       "write_chars": [],
       "recognize_chars": [
@@ -815,6 +840,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 26,
       "write_chars": [
         "介",
@@ -854,6 +880,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 27,
       "write_chars": [
         "硕",
@@ -895,6 +922,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 28,
       "write_chars": [],
       "recognize_chars": [
@@ -910,7 +938,7 @@
     }
   ],
   "polyphone_chars": {
-    "after_lesson_8": [
+    "after_-8": [
       "宾",
       "吉",
       "咸",
@@ -924,7 +952,7 @@
       "政",
       "浏"
     ],
-    "after_lesson_12": [
+    "after_-12": [
       "屈",
       "渊",
       "孟",
@@ -936,7 +964,7 @@
       "仲",
       "龚"
     ],
-    "after_lesson_15": [
+    "after_-15": [
       "肝",
       "秆",
       "俏",
@@ -950,7 +978,7 @@
       "俊",
       "峻"
     ],
-    "after_lesson_25": [
+    "after_-25": [
       "蔼",
       "慷",
       "慨",

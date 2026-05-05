@@ -18,6 +18,11 @@ window.GRADE_DATA.grade5b = {
       "key": "u1",
       "name": "第一单元 童年记忆",
       "words": [
+        "昼",
+        "耘",
+        "供",
+        "稚",
+        "漪",
         "蝴蝶",
         "蜻蜓",
         "蚂蚱",
@@ -27,32 +32,68 @@ window.GRADE_DATA.grade5b = {
         "瞎闹",
         "锄头",
         "承认",
-        "随意"
+        "随意",
+        "徘",
+        "徊",
+        "渺",
+        "篝",
+        "萌",
+        "澄",
+        "澈",
+        "旖",
+        "旎",
+        "瑞",
+        "莱",
+        "垠",
+        "顷",
+        "峨",
+        "燕",
+        "缀",
+        "葬",
+        "腮",
+        "虬",
+        "玷",
+        "郑",
+        "秉",
+        "飕",
+        "码",
+        "撩",
+        "绢",
+        "侨",
+        "眷"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 2,
           "title": "祖父的园子",
           "wordCount": 10,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 3,
           "title": "月是故乡明",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 16
         },
         {
+          "kind": null,
           "no": 4,
           "title": "梅花魂",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -76,32 +117,67 @@ window.GRADE_DATA.grade5b = {
         "寻思",
         "耻笑",
         "胸膛",
-        "武艺"
+        "武艺",
+        "芝",
+        "遂",
+        "迸",
+        "涧",
+        "獐",
+        "猕",
+        "猿",
+        "耶",
+        "挈",
+        "瞑",
+        "窍",
+        "楷",
+        "镌",
+        "挠",
+        "劣",
+        "呵",
+        "屉",
+        "嫣",
+        "讳",
+        "晦",
+        "墩",
+        "钗",
+        "雯",
+        "袭",
+        "垫",
+        "豁",
+        "喇"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "草船借箭",
           "wordCount": 12,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 6,
           "title": "景阳冈",
           "wordCount": 5,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 19
         },
         {
+          "kind": null,
           "no": 7,
           "title": "猴王出世",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 16
         },
         {
+          "kind": null,
           "no": 8,
           "title": "红楼春趣",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
         }
       ]
     },
@@ -109,6 +185,12 @@ window.GRADE_DATA.grade5b = {
       "key": "u3",
       "name": "第三单元 责任与担当",
       "words": [
+        "仞",
+        "岳",
+        "蓟",
+        "涕",
+        "裳",
+        "襄",
         "拟定",
         "参谋",
         "损失",
@@ -136,32 +218,50 @@ window.GRADE_DATA.grade5b = {
         "苍白",
         "慈祥",
         "肃然起敬",
-        "荣幸"
+        "荣幸",
+        "筹",
+        "矜",
+        "俘",
+        "镯",
+        "吓",
+        "裆",
+        "企",
+        "彼",
+        "褂",
+        "坞"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 6
+          "writeCharCount": 6,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 10,
           "title": "青山处处埋忠骨",
           "wordCount": 13,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 11,
           "title": "军神",
           "wordCount": 15,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 12,
           "title": "清贫",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
         }
       ]
     },
@@ -198,16 +298,20 @@ window.GRADE_DATA.grade5b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 13,
           "title": "人物描写一组",
           "wordCount": 10,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 14,
           "title": "刷子李",
           "wordCount": 16,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 8
         }
       ]
     },
@@ -215,6 +319,9 @@ window.GRADE_DATA.grade5b = {
       "key": "u5",
       "name": "第五单元 思维",
       "words": [
+        "吾",
+        "弗",
+        "夫",
         "赏识",
         "脚力",
         "胸有成竹",
@@ -238,22 +345,28 @@ window.GRADE_DATA.grade5b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 15,
           "title": "自相矛盾",
           "wordCount": 0,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 3
         },
         {
+          "kind": null,
           "no": 16,
           "title": "田忌赛马",
           "wordCount": 8,
-          "writeCharCount": 5
+          "writeCharCount": 5,
+          "recognizeCharCount": 2
         },
         {
+          "kind": null,
           "no": 17,
           "title": "跳水",
           "wordCount": 12,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 7
         }
       ]
     },
@@ -288,26 +401,42 @@ window.GRADE_DATA.grade5b = {
         "恢复",
         "沉睡",
         "牲畜",
-        "灯塔"
+        "灯塔",
+        "译",
+        "愧",
+        "熠",
+        "遐",
+        "黏",
+        "刃",
+        "埃",
+        "滥",
+        "淤",
+        "湛"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 18,
           "title": "威尼斯的小艇",
           "wordCount": 12,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 19,
           "title": "牧场之国",
           "wordCount": 16,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 20,
           "title": "金字塔",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
         }
       ]
     },
@@ -315,6 +444,8 @@ window.GRADE_DATA.grade5b = {
       "key": "u7",
       "name": "第七单元 风趣幽默",
       "words": [
+        "诣",
+        "禽",
         "拇指",
         "接触",
         "纽扣",
@@ -323,26 +454,42 @@ window.GRADE_DATA.grade5b = {
         "渺小",
         "享乐",
         "附庸",
-        "团结"
+        "团结",
+        "胚",
+        "祸",
+        "患",
+        "赋",
+        "痴",
+        "绞",
+        "嘿",
+        "伊",
+        "娜",
+        "窘"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 21,
           "title": "杨氏之子",
           "wordCount": 0,
-          "writeCharCount": 3
+          "writeCharCount": 3,
+          "recognizeCharCount": 2
         },
         {
+          "kind": null,
           "no": 22,
           "title": "手指",
           "wordCount": 9,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 23,
           "title": "童年的发现",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
         }
       ]
     }

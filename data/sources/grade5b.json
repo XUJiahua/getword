@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "昼",
@@ -27,6 +28,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "蝴",
@@ -71,6 +73,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [],
       "recognize_chars": [
@@ -94,6 +97,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [],
       "recognize_chars": [
@@ -113,6 +117,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "妒",
@@ -154,6 +159,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "冈",
@@ -202,6 +208,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [],
       "recognize_chars": [
@@ -225,6 +232,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [],
       "recognize_chars": [
@@ -243,6 +251,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "仞",
@@ -263,6 +272,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "彭",
@@ -308,6 +318,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [
         "庆",
@@ -352,6 +363,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [],
       "recognize_chars": [
@@ -369,6 +381,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [
         "跤",
@@ -415,6 +428,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "浆",
@@ -463,6 +477,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [
         "矛",
@@ -478,6 +493,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "赢",
@@ -502,6 +518,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "艘",
@@ -544,6 +561,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "尼",
@@ -587,6 +605,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "仪",
@@ -636,6 +655,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [],
       "recognize_chars": [
@@ -653,6 +673,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [
         "梁",
@@ -666,6 +687,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "拇",
@@ -712,6 +734,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [],
       "recognize_chars": [

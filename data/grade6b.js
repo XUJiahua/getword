@@ -59,28 +59,36 @@ window.GRADE_DATA.grade6b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "北京的春节",
           "wordCount": 20,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 2,
           "title": "腊八粥",
           "wordCount": 18,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 3,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 4,
           "title": "藏戏",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -113,22 +121,28 @@ window.GRADE_DATA.grade6b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "鲁滨逊漂流记（节选）",
           "wordCount": 22,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 6,
           "title": "骑鹅旅行记（节选）",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 7,
           "title": "汤姆·索亚历险记（节选）",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -168,16 +182,20 @@ window.GRADE_DATA.grade6b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 8,
           "title": "匆匆",
           "wordCount": 11,
-          "writeCharCount": 6
+          "writeCharCount": 6,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 9,
           "title": "那个星期天",
           "wordCount": 18,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -225,28 +243,36 @@ window.GRADE_DATA.grade6b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 10,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 11,
           "title": "十六年前的回忆",
           "wordCount": 20,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 12,
           "title": "为人民服务",
           "wordCount": 17,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 13,
           "title": "金色的鱼钩",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -292,28 +318,36 @@ window.GRADE_DATA.grade6b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 14,
           "title": "文言文二则",
           "wordCount": 0,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 15,
           "title": "真理诞生于一百个问号之后",
           "wordCount": 19,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 16,
           "title": "表里的生物",
           "wordCount": 16,
-          "writeCharCount": 6
+          "writeCharCount": 6,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 17,
           "title": "他们那时候多有趣啊",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     }

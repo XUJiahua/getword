@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "蒜",
@@ -53,6 +54,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "腊",
@@ -92,6 +94,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [
         "侯",
@@ -107,6 +110,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "惧",
@@ -152,6 +156,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [
         "藏",
@@ -177,6 +182,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "媚",
@@ -216,6 +222,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "络",
@@ -227,6 +234,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [
         "稚",
@@ -270,6 +278,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [
         "彻",
@@ -304,6 +313,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "援",
@@ -315,6 +325,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [
         "域",
@@ -353,6 +364,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "脆",

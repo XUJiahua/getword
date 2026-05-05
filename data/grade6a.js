@@ -59,28 +59,36 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "草原",
           "wordCount": 19,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 2,
           "title": "丁香结",
           "wordCount": 19,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 3,
           "title": "古诗词三首",
           "wordCount": 0,
-          "writeCharCount": 3
+          "writeCharCount": 3,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 4,
           "title": "花之歌",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -130,28 +138,36 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "七律·长征",
           "wordCount": 0,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 6,
           "title": "狼牙山五壮士",
           "wordCount": 20,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 7,
           "title": "开国大典",
           "wordCount": 19,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 8,
           "title": "灯光",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -200,22 +216,28 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "竹节人",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 10,
           "title": "宇宙生命之谜",
           "wordCount": 17,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 11,
           "title": "故宫博物院",
           "wordCount": 21,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -255,22 +277,28 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 12,
           "title": "桥",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 13,
           "title": "穷人",
           "wordCount": 11,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 14,
           "title": "在柏林",
           "wordCount": 18,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -292,16 +320,20 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 15,
           "title": "夏天里的成长",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 16,
           "title": "盼",
           "wordCount": 11,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -344,28 +376,36 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 17,
           "title": "古诗三首",
           "wordCount": 12,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 18,
           "title": "只有一个地球",
           "wordCount": 0,
-          "writeCharCount": 2
+          "writeCharCount": 2,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 19,
           "title": "三黑和土地",
           "wordCount": 20,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 20,
           "title": "青山不老",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -387,22 +427,28 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 21,
           "title": "文言文二则",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 22,
           "title": "月光曲",
           "wordCount": 0,
-          "writeCharCount": 6
+          "writeCharCount": 6,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 23,
           "title": "京剧趣谈",
           "wordCount": 11,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 0
         }
       ]
     },
@@ -442,28 +488,36 @@ window.GRADE_DATA.grade6a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 24,
           "title": "少年闰土",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 25,
           "title": "好的故事",
           "wordCount": 14,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 26,
           "title": "我的伯父鲁迅先生",
           "wordCount": 15,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 0
         },
         {
+          "kind": null,
           "no": 27,
           "title": "有的人",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 0
         }
       ]
     }

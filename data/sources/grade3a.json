@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "晨",
@@ -58,6 +59,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "落",
@@ -97,6 +99,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [],
       "recognize_chars": [
@@ -116,6 +119,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [
         "寒",
@@ -146,6 +150,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "铺",
@@ -189,6 +194,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "盒",
@@ -236,6 +242,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [],
       "recognize_chars": [
@@ -252,6 +259,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [
         "柴",
@@ -303,6 +311,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [],
       "recognize_chars": [
@@ -318,6 +327,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "旅",
@@ -371,6 +381,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [],
       "recognize_chars": [
@@ -390,6 +401,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [
         "准",
@@ -432,6 +444,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [],
       "recognize_chars": [
@@ -445,6 +458,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [],
       "recognize_chars": [
@@ -468,6 +482,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [
         "搭",
@@ -505,6 +520,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "蒲",
@@ -547,6 +563,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "断",
@@ -575,6 +592,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "优",
@@ -623,6 +641,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "滨",
@@ -673,6 +692,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [
         "脑",
@@ -722,6 +742,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [
         "妙",
@@ -769,6 +790,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "读",
@@ -819,6 +841,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [
         "朝",
@@ -861,6 +884,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 24,
       "write_chars": [
         "司",
@@ -881,6 +905,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 25,
       "write_chars": [
         "郊",
@@ -925,6 +950,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 26,
       "write_chars": [
         "术",
@@ -974,6 +1000,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 27,
       "write_chars": [],
       "recognize_chars": [
@@ -990,7 +1017,7 @@
     }
   ],
   "polyphone_chars": {
-    "after_lesson_11": [
+    "after_-11": [
       "申",
       "介",
       "绍",
@@ -999,7 +1026,7 @@
       "召",
       "孝"
     ],
-    "after_lesson_14": [
+    "after_-14": [
       "轴",
       "基",
       "础",
@@ -1008,7 +1035,7 @@
       "盲",
       "唐"
     ],
-    "after_lesson_20": [
+    "after_-20": [
       "蝌",
       "蚪",
       "蛾",
@@ -1016,7 +1043,7 @@
       "鲫",
       "鲨"
     ],
-    "after_lesson_27": [
+    "after_-27": [
       "眨",
       "瞪",
       "瞅",

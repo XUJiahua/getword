@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "潮",
@@ -60,6 +61,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "淘",
@@ -106,6 +108,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [],
       "recognize_chars": [
@@ -119,6 +122,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [],
       "recognize_chars": [
@@ -129,6 +133,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "豌",
@@ -178,6 +183,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "蚊",
@@ -225,6 +231,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [
         "唤",
@@ -277,6 +284,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [],
       "recognize_chars": [
@@ -289,6 +297,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "暮",
@@ -316,6 +325,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "虎",
@@ -359,6 +369,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [
         "宅",
@@ -409,6 +420,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [
         "睁",
@@ -454,6 +466,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [
         "帝",
@@ -472,6 +485,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "悲",
@@ -523,6 +537,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [],
       "recognize_chars": [
@@ -539,6 +554,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "嗅",
@@ -584,6 +600,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "级",
@@ -619,6 +636,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "摸",
@@ -669,6 +687,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "班",
@@ -721,6 +740,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [
         "否",
@@ -770,6 +790,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [
         "塞",
@@ -793,6 +814,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "肃",
@@ -839,6 +861,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [],
       "recognize_chars": [
@@ -859,6 +882,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 24,
       "write_chars": [],
       "recognize_chars": [
@@ -872,6 +896,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 25,
       "write_chars": [
         "戎",
@@ -889,6 +914,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 26,
       "write_chars": [
         "豹",
@@ -936,6 +962,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 27,
       "write_chars": [],
       "recognize_chars": [
@@ -952,7 +979,7 @@
     }
   ],
   "polyphone_chars": {
-    "after_lesson_8": [
+    "after_-8": [
       "驻",
       "钞",
       "培",
@@ -966,7 +993,7 @@
       "狡",
       "猾"
     ],
-    "after_lesson_15": [
+    "after_-15": [
       "圃",
       "卉",
       "蕾",
@@ -978,7 +1005,7 @@
       "丹",
       "棠"
     ],
-    "after_lesson_20": [
+    "after_-20": [
       "韭",
       "芥",
       "芹",
@@ -988,7 +1015,7 @@
       "薯",
       "芋"
     ],
-    "after_lesson_27": [
+    "after_-27": [
       "纲",
       "授",
       "揍",

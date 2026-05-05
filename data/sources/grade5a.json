@@ -10,6 +10,7 @@
   },
   "lessons": [
     {
+      "kind": "",
       "lesson_no": 1,
       "write_chars": [
         "宜",
@@ -49,6 +50,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 2,
       "write_chars": [
         "亩",
@@ -80,6 +82,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 3,
       "write_chars": [
         "懂",
@@ -105,6 +108,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 4,
       "write_chars": [],
       "recognize_chars": [
@@ -124,6 +128,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 5,
       "write_chars": [
         "汛",
@@ -166,6 +171,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 6,
       "write_chars": [
         "召",
@@ -220,6 +226,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 7,
       "write_chars": [
         "冠",
@@ -253,6 +260,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 8,
       "write_chars": [
         "侵",
@@ -293,6 +301,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 9,
       "write_chars": [
         "酬",
@@ -334,6 +343,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 10,
       "write_chars": [
         "郎",
@@ -382,6 +392,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 11,
       "write_chars": [],
       "recognize_chars": [
@@ -398,6 +409,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 12,
       "write_chars": [
         "祭",
@@ -419,6 +431,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 13,
       "write_chars": [
         "泻",
@@ -440,6 +453,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 14,
       "write_chars": [
         "毁",
@@ -494,6 +508,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 15,
       "write_chars": [],
       "recognize_chars": [
@@ -513,6 +528,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 16,
       "write_chars": [
         "摄",
@@ -544,6 +560,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 17,
       "write_chars": [
         "鼠",
@@ -585,6 +602,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 18,
       "write_chars": [
         "辞",
@@ -639,6 +657,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 19,
       "write_chars": [
         "蚕",
@@ -696,6 +715,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 20,
       "write_chars": [],
       "recognize_chars": [
@@ -708,6 +728,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 21,
       "write_chars": [
         "孙",
@@ -725,6 +746,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 22,
       "write_chars": [
         "黎",
@@ -762,6 +784,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 23,
       "write_chars": [
         "桨",
@@ -795,6 +818,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 24,
       "write_chars": [],
       "recognize_chars": [
@@ -809,6 +833,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 25,
       "write_chars": [
         "耻",
@@ -827,6 +852,7 @@
       "words": []
     },
     {
+      "kind": "",
       "lesson_no": 26,
       "write_chars": [
         "舅",
@@ -881,6 +907,7 @@
       ]
     },
     {
+      "kind": "",
       "lesson_no": 27,
       "write_chars": [],
       "recognize_chars": [

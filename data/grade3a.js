@@ -45,26 +45,44 @@ window.GRADE_DATA.grade3a = {
         "急急忙忙",
         "自然",
         "能够",
-        "双臂"
+        "双臂",
+        "背",
+        "诵",
+        "例",
+        "圈",
+        "段",
+        "糊",
+        "涂",
+        "呆",
+        "戒",
+        "厉",
+        "挨",
+        "楚"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "大青树下的小学",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 2,
           "title": "花的学校",
           "wordCount": 12,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 3,
           "title": "不懂就要问",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -72,6 +90,16 @@ window.GRADE_DATA.grade3a = {
       "key": "u2",
       "name": "第二单元 金色的秋天",
       "words": [
+        "径",
+        "斜",
+        "赠",
+        "残",
+        "犹",
+        "傲",
+        "君",
+        "橙",
+        "橘",
+        "挑",
         "水泥",
         "放晴",
         "明朗",
@@ -100,32 +128,49 @@ window.GRADE_DATA.grade3a = {
         "香味",
         "加紧",
         "过冬",
-        "丰收"
+        "丰收",
+        "抖",
+        "蟋",
+        "蟀",
+        "振",
+        "韵",
+        "掠",
+        "吟",
+        "辽",
+        "阔"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 4,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 5,
           "title": "铺满金色巴掌的水泥道",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 6,
           "title": "秋天的雨",
           "wordCount": 14,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 7,
           "title": "听听，秋的声音",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 9
         }
       ]
     },
@@ -147,6 +192,14 @@ window.GRADE_DATA.grade3a = {
         "赶紧",
         "痛苦",
         "清晨",
+        "缩",
+        "努",
+        "茎",
+        "锯",
+        "斧",
+        "推",
+        "吱",
+        "拆",
         "旅行",
         "要好",
         "咱们",
@@ -164,32 +217,52 @@ window.GRADE_DATA.grade3a = {
         "几乎",
         "知觉",
         "光亮",
-        "眼泪"
+        "眼泪",
+        "酪",
+        "宣",
+        "处",
+        "诱",
+        "舔",
+        "毅",
+        "犯",
+        "禁",
+        "稍",
+        "豫",
+        "跺",
+        "聚"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 8,
           "title": "卖火柴的小女孩",
           "wordCount": 14,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 15
         },
         {
+          "kind": null,
           "no": 9,
           "title": "那一定会很好",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 10,
           "title": "在牛肚子里旅行",
           "wordCount": 18,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 11,
           "title": "一块奶酪",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -210,26 +283,54 @@ window.GRADE_DATA.grade3a = {
         "根本",
         "蜘蛛",
         "漂亮",
-        "因此"
+        "因此",
+        "萝",
+        "卜",
+        "愁",
+        "沾",
+        "继",
+        "晾",
+        "吗",
+        "讨",
+        "厌",
+        "怒",
+        "批",
+        "访",
+        "担",
+        "压",
+        "差",
+        "默",
+        "模",
+        "中",
+        "弹",
+        "疯",
+        "汪",
+        "搞"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 12,
           "title": "总也倒不了的老屋",
           "wordCount": 14,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 13,
           "title": "胡萝卜先生的长胡子",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 14,
           "title": "不会叫的狗",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 16
         }
       ]
     },
@@ -265,16 +366,20 @@ window.GRADE_DATA.grade3a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 15,
           "title": "搭船的鸟",
           "wordCount": 11,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 16,
           "title": "金色的草地",
           "wordCount": 14,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 6
         }
       ]
     },
@@ -282,6 +387,13 @@ window.GRADE_DATA.grade3a = {
       "key": "u6",
       "name": "第六单元 祖国壮美",
       "words": [
+        "亦",
+        "抹",
+        "宜",
+        "庭",
+        "未",
+        "磨",
+        "盘",
         "位于",
         "部分",
         "风景",
@@ -331,28 +443,36 @@ window.GRADE_DATA.grade3a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 17,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 18,
           "title": "富饶的西沙群岛",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 19,
           "title": "海滨小城",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 20,
           "title": "美丽的小兴安岭",
           "wordCount": 14,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 13
         }
       ]
     },
@@ -410,22 +530,28 @@ window.GRADE_DATA.grade3a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 21,
           "title": "大自然的声音",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 22,
           "title": "父亲、树林和鸟",
           "wordCount": 17,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 23,
           "title": "带刺的朋友",
           "wordCount": 15,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 5
         }
       ]
     },
@@ -433,6 +559,11 @@ window.GRADE_DATA.grade3a = {
       "key": "u8",
       "name": "第八单元 美好品质",
       "words": [
+        "司",
+        "跌",
+        "皆",
+        "弃",
+        "持",
         "郊外",
         "养病",
         "跳动",
@@ -461,32 +592,48 @@ window.GRADE_DATA.grade3a = {
         "匆匆",
         "离开",
         "危险",
-        "转告"
+        "转告",
+        "陈",
+        "曼",
+        "联",
+        "缸",
+        "还",
+        "粱",
+        "顿",
+        "侦"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 24,
           "title": "司马光",
           "wordCount": 0,
-          "writeCharCount": 7
+          "writeCharCount": 7,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 25,
           "title": "灰雀",
           "wordCount": 12,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 26,
           "title": "手术台就是阵地",
           "wordCount": 17,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 27,
           "title": "一个粗瓷大碗",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         }
       ]
     }

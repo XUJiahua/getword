@@ -18,6 +18,12 @@ window.GRADE_DATA.grade4b = {
       "key": "u1",
       "name": "第一单元 田园生活",
       "words": [
+        "杂",
+        "篱",
+        "徐",
+        "疏",
+        "锄",
+        "剥",
         "屋檐",
         "构成",
         "装饰",
@@ -43,32 +49,43 @@ window.GRADE_DATA.grade4b = {
         "蝙蝠",
         "霸气",
         "猫头鹰",
-        "复杂"
+        "复杂",
+        "绮",
+        "和",
+        "谈"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "古诗词三首",
           "wordCount": 0,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 2,
           "title": "乡下人家",
           "wordCount": 14,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 3,
           "title": "天窗",
           "wordCount": 12,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 3
         },
         {
+          "kind": null,
           "no": 4,
           "title": "三月桃花水",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 3
         }
       ]
     },
@@ -121,32 +138,50 @@ window.GRADE_DATA.grade4b = {
         "预防",
         "病灶",
         "需要",
-        "深刻"
+        "深刻",
+        "鹏",
+        "揽",
+        "驱",
+        "践",
+        "着",
+        "党",
+        "施",
+        "懈",
+        "宛",
+        "碑"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "琥珀",
           "wordCount": 15,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 6,
           "title": "飞向蓝天的恐龙",
           "wordCount": 15,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 7,
           "title": "纳米技术就在我们身边",
           "wordCount": 16,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 8,
           "title": "千年梦圆在今朝",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
         }
       ]
     },
@@ -154,6 +189,8 @@ window.GRADE_DATA.grade4b = {
       "key": "u3",
       "name": "第三单元 现代诗",
       "words": [
+        "漫",
+        "涛",
         "墨绿",
         "繁星",
         "藤萝",
@@ -170,32 +207,47 @@ window.GRADE_DATA.grade4b = {
         "潇洒",
         "朦胧",
         "寂静",
-        "朝霞"
+        "朝霞",
+        "炫",
+        "垢",
+        "怯",
+        "曝",
+        "赤",
+        "涉",
+        "晕"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "短诗三首",
           "wordCount": 0,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 2
         },
         {
+          "kind": null,
           "no": 10,
           "title": "绿",
           "wordCount": 11,
-          "writeCharCount": 4
+          "writeCharCount": 4,
+          "recognizeCharCount": 2
         },
         {
+          "kind": null,
           "no": 11,
           "title": "白桦",
           "wordCount": 6,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 12,
           "title": "在天晴了的时候",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
         }
       ]
     },
@@ -242,22 +294,28 @@ window.GRADE_DATA.grade4b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 13,
           "title": "猫",
           "wordCount": 10,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 14,
           "title": "母鸡",
           "wordCount": 10,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 10
         },
         {
+          "kind": null,
           "no": 15,
           "title": "白鹅",
           "wordCount": 16,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 13
         }
       ]
     },
@@ -292,16 +350,20 @@ window.GRADE_DATA.grade4b = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 16,
           "title": "海上日出",
           "wordCount": 9,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 17,
           "title": "记金华的双龙洞",
           "wordCount": 15,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 6
         }
       ]
     },
@@ -309,6 +371,10 @@ window.GRADE_DATA.grade4b = {
       "key": "u6",
       "name": "第六单元 成长故事",
       "words": [
+        "恭",
+        "勤",
+        "焉",
+        "卒",
         "芦花",
         "发愣",
         "铅笔",
@@ -316,32 +382,62 @@ window.GRADE_DATA.grade4b = {
         "胳膊",
         "劫难",
         "鬼脸",
-        "戒指"
+        "戒指",
+        "徽",
+        "谜",
+        "唇",
+        "尚",
+        "荤",
+        "倔",
+        "强",
+        "嘱",
+        "咐",
+        "沮",
+        "吭",
+        "嘹",
+        "仪",
+        "蹬",
+        "妨",
+        "搓",
+        "葵",
+        "祈",
+        "遗",
+        "憾",
+        "污",
+        "屑"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 18,
           "title": "文言文二则",
           "wordCount": 0,
-          "writeCharCount": 9
+          "writeCharCount": 9,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 19,
           "title": "小英雄雨来",
           "wordCount": 8,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 16
         },
         {
+          "kind": null,
           "no": 20,
           "title": "我们家的男子汉",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 15
         },
         {
+          "kind": null,
           "no": 21,
           "title": "芦花鞋",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
         }
       ]
     },
@@ -349,6 +445,13 @@ window.GRADE_DATA.grade4b = {
       "key": "u7",
       "name": "第七单元 人物风采",
       "words": [
+        "芙",
+        "蓉",
+        "洛",
+        "单",
+        "砚",
+        "乾",
+        "坤",
         "行驶",
         "绸子",
         "凌晨",
@@ -363,32 +466,52 @@ window.GRADE_DATA.grade4b = {
         "岗位",
         "主宰",
         "调遣",
-        "践行"
+        "践行",
+        "役",
+        "屡",
+        "启",
+        "摧",
+        "雹",
+        "晕",
+        "膛",
+        "泰",
+        "杖",
+        "敞",
+        "拘",
+        "蕴"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 22,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 23,
           "title": "“诺曼底号”遇难记",
           "wordCount": 15,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 24,
           "title": "黄继光",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 25,
           "title": "挑山工",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 5
         }
       ]
     },
@@ -415,26 +538,39 @@ window.GRADE_DATA.grade4b = {
         "举动",
         "脸颊",
         "凶狠",
-        "拆除"
+        "拆除",
+        "矢",
+        "殿",
+        "抚",
+        "硫",
+        "鲸",
+        "昵",
+        "恰"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 26,
           "title": "宝葫芦的秘密",
           "wordCount": 7,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 27,
           "title": "巨人的花园",
           "wordCount": 13,
-          "writeCharCount": 11
+          "writeCharCount": 11,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 28,
           "title": "海的女儿",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
         }
       ]
     }

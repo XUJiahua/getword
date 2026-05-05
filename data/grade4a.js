@@ -45,32 +45,49 @@ window.GRADE_DATA.grade4a = {
         "水稻",
         "成熟",
         "招待",
-        "传说"
+        "传说",
+        "巢",
+        "苇",
+        "罗",
+        "眠",
+        "霸",
+        "占",
+        "昧",
+        "坠",
+        "怀"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 1,
           "title": "观潮",
           "wordCount": 14,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 2,
           "title": "走月亮",
           "wordCount": 14,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 3,
           "title": "现代诗二首",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 4,
           "title": "繁星",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 3
         }
       ]
     },
@@ -123,32 +140,45 @@ window.GRADE_DATA.grade4a = {
         "哲学",
         "任何",
         "创造",
-        "改善"
+        "改善",
+        "避",
+        "撼",
+        "喧",
+        "雀",
+        "檐"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 5,
           "title": "一个豆荚里的五粒豆",
           "wordCount": 17,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 6,
           "title": "蝙蝠和雷达",
           "wordCount": 12,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 7,
           "title": "呼风唤雨的世纪",
           "wordCount": 17,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 8,
           "title": "蝴蝶的家",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 5
         }
       ]
     },
@@ -156,6 +186,13 @@ window.GRADE_DATA.grade4a = {
       "key": "u3",
       "name": "第三单元 连续观察",
       "words": [
+        "暮",
+        "瑟",
+        "缘",
+        "降",
+        "骚",
+        "逊",
+        "输",
         "爬山虎",
         "操场",
         "嫩红",
@@ -191,22 +228,28 @@ window.GRADE_DATA.grade4a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 9,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 7
         },
         {
+          "kind": null,
           "no": 10,
           "title": "爬山虎的脚",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 11,
           "title": "蟋蟀的住宅",
           "wordCount": 16,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 12
         }
       ]
     },
@@ -228,6 +271,11 @@ window.GRADE_DATA.grade4a = {
         "茂盛",
         "滋润",
         "雨露",
+        "帝",
+        "少",
+        "曰",
+        "溺",
+        "返",
         "人间",
         "悲惨",
         "情景",
@@ -242,32 +290,49 @@ window.GRADE_DATA.grade4a = {
         "尖利",
         "著名",
         "愤愤不平",
-        "获得"
+        "获得",
+        "措",
+        "混",
+        "项",
+        "熄",
+        "浆",
+        "塌",
+        "杀",
+        "颂",
+        "绩"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 12,
           "title": "盘古开天地",
           "wordCount": 14,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 8
         },
         {
+          "kind": null,
           "no": 13,
           "title": "精卫填海",
           "wordCount": 0,
-          "writeCharCount": 5
+          "writeCharCount": 5,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 14,
           "title": "普罗米修斯",
           "wordCount": 15,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 15,
           "title": "女娲补天",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 9
         }
       ]
     },
@@ -307,16 +372,20 @@ window.GRADE_DATA.grade4a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 16,
           "title": "麻雀",
           "wordCount": 17,
-          "writeCharCount": 13
+          "writeCharCount": 13,
+          "recognizeCharCount": 6
         },
         {
+          "kind": null,
           "no": 17,
           "title": "爬天都峰",
           "wordCount": 12,
-          "writeCharCount": 8
+          "writeCharCount": 8,
+          "recognizeCharCount": 6
         }
       ]
     },
@@ -373,22 +442,28 @@ window.GRADE_DATA.grade4a = {
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 18,
           "title": "牛和鹅",
           "wordCount": 14,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 19,
           "title": "一只窝囊的大老虎",
           "wordCount": 17,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 12
         },
         {
+          "kind": null,
           "no": 20,
           "title": "陀螺",
           "wordCount": 15,
-          "writeCharCount": 14
+          "writeCharCount": 14,
+          "recognizeCharCount": 11
         }
       ]
     },
@@ -396,6 +471,11 @@ window.GRADE_DATA.grade4a = {
       "key": "u7",
       "name": "第七单元 家国情怀",
       "words": [
+        "塞",
+        "秦",
+        "征",
+        "将",
+        "杰",
         "严肃",
         "默默",
         "清晰",
@@ -411,32 +491,59 @@ window.GRADE_DATA.grade4a = {
         "训斥",
         "体会",
         "分量",
-        "响亮"
+        "响亮",
+        "蓄",
+        "迫",
+        "租",
+        "纠",
+        "缠",
+        "邀",
+        "扰",
+        "拒",
+        "签",
+        "订",
+        "宁",
+        "要",
+        "妄",
+        "延",
+        "昔",
+        "茅",
+        "炕",
+        "旦",
+        "媚"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 21,
           "title": "古诗三首",
           "wordCount": 0,
-          "writeCharCount": 10
+          "writeCharCount": 10,
+          "recognizeCharCount": 5
         },
         {
+          "kind": null,
           "no": 22,
           "title": "为中华之崛起而读书",
           "wordCount": 16,
-          "writeCharCount": 12
+          "writeCharCount": 12,
+          "recognizeCharCount": 9
         },
         {
+          "kind": null,
           "no": 23,
           "title": "梅兰芳蓄须",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 13
         },
         {
+          "kind": null,
           "no": 24,
           "title": "延安，我把你追寻",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 6
         }
       ]
     },
@@ -444,6 +551,10 @@ window.GRADE_DATA.grade4a = {
       "key": "u8",
       "name": "第八单元 历史故事",
       "words": [
+        "戎",
+        "诸",
+        "竞",
+        "唯",
         "管理",
         "人烟",
         "媳妇",
@@ -455,26 +566,40 @@ window.GRADE_DATA.grade4a = {
         "面如土色",
         "求饶",
         "灌溉",
-        "收成"
+        "收成",
+        "拜",
+        "侯",
+        "肤",
+        "扎",
+        "剂",
+        "髓",
+        "纪",
+        "标"
       ],
       "lessons": [
         {
+          "kind": null,
           "no": 25,
           "title": "王戎不取道旁李",
           "wordCount": 0,
-          "writeCharCount": 5
+          "writeCharCount": 5,
+          "recognizeCharCount": 4
         },
         {
+          "kind": null,
           "no": 26,
           "title": "西门豹治邺",
           "wordCount": 12,
-          "writeCharCount": 15
+          "writeCharCount": 15,
+          "recognizeCharCount": 11
         },
         {
+          "kind": null,
           "no": 27,
           "title": "故事二则",
           "wordCount": 0,
-          "writeCharCount": 0
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
         }
       ]
     }
