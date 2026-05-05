@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "title": "Design System: 看拼音写汉字练习纸",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "墨 / Ink",
+        "canonical": "oklch(28% 0.012 250)",
+        "tonalRamp": [
+          "oklch(15% 0.012 250)",
+          "oklch(22% 0.012 250)",
+          "oklch(28% 0.012 250)",
+          "oklch(38% 0.012 250)",
+          "oklch(50% 0.010 250)",
+          "oklch(62% 0.008 250)",
+          "oklch(78% 0.006 250)",
+          "oklch(92% 0.004 250)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "墨·柔 / Ink Soft",
+        "canonical": "oklch(45% 0.010 250)",
+        "tonalRamp": [
+          "oklch(20% 0.012 250)",
+          "oklch(28% 0.012 250)",
+          "oklch(36% 0.011 250)",
+          "oklch(45% 0.010 250)",
+          "oklch(56% 0.009 250)",
+          "oklch(68% 0.007 250)",
+          "oklch(82% 0.005 250)",
+          "oklch(94% 0.004 250)"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "墨·灰 / Ink Muted",
+        "canonical": "oklch(60% 0.008 250)"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "细线 / Line",
+        "canonical": "oklch(85% 0.005 250)"
+      },
+      "line-soft": {
+        "role": "neutral",
+        "displayName": "细线·柔 / Line Soft",
+        "canonical": "oklch(92% 0.004 250)"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "瓷 / Surface",
+        "canonical": "oklch(99% 0.003 250)"
+      },
+      "surface-recessed": {
+        "role": "neutral",
+        "displayName": "瓷·凹 / Surface Recessed",
+        "canonical": "oklch(96% 0.005 250)"
+      },
+      "surface-page": {
+        "role": "neutral",
+        "displayName": "瓷·页 / Surface Page",
+        "canonical": "oklch(96% 0.006 230)"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "纸 / Paper",
+        "canonical": "oklch(98.5% 0.006 80)",
+        "tonalRamp": [
+          "oklch(60% 0.020 80)",
+          "oklch(72% 0.016 80)",
+          "oklch(82% 0.012 80)",
+          "oklch(90% 0.009 80)",
+          "oklch(94% 0.007 80)",
+          "oklch(96.5% 0.006 80)",
+          "oklch(98.5% 0.006 80)",
+          "oklch(99.5% 0.005 80)"
+        ]
+      },
+      "paper-ink": {
+        "role": "neutral",
+        "displayName": "纸·墨 / Paper Ink",
+        "canonical": "oklch(20% 0.005 250)"
+      },
+      "paper-rule": {
+        "role": "neutral",
+        "displayName": "纸·尺 / Paper Rule",
+        "canonical": "oklch(56% 0.005 250)"
+      },
+      "paper-rule-soft": {
+        "role": "neutral",
+        "displayName": "纸·尺·虚 / Paper Rule Soft",
+        "canonical": "oklch(70% 0.005 250)"
+      },
+      "paper-trace": {
+        "role": "neutral",
+        "displayName": "纸·描 / Paper Trace",
+        "canonical": "oklch(20% 0.005 250 / 0.22)"
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "墨青 / Ink Cyan",
+        "canonical": "oklch(42% 0.045 220)",
+        "tonalRamp": [
+          "oklch(20% 0.040 220)",
+          "oklch(28% 0.045 220)",
+          "oklch(35% 0.050 220)",
+          "oklch(42% 0.045 220)",
+          "oklch(56% 0.038 220)",
+          "oklch(72% 0.028 220)",
+          "oklch(86% 0.018 220)",
+          "oklch(95% 0.012 220)"
+        ]
+      },
+      "accent-deep": {
+        "role": "primary",
+        "displayName": "墨青·深 / Ink Cyan Deep",
+        "canonical": "oklch(35% 0.050 220)"
+      },
+      "accent-tint": {
+        "role": "primary",
+        "displayName": "墨青·浅瓷 / Ink Cyan Wash",
+        "canonical": "oklch(95% 0.012 220)"
+      },
+      "accent-glow": {
+        "role": "primary",
+        "displayName": "墨青·光晕 / Ink Cyan Glow",
+        "canonical": "oklch(42% 0.045 220 / 0.18)"
+      },
+      "caution": {
+        "role": "secondary",
+        "displayName": "琥珀 / Caution Amber",
+        "canonical": "oklch(85% 0.12 80)",
+        "tonalRamp": [
+          "oklch(35% 0.090 60)",
+          "oklch(45% 0.100 70)",
+          "oklch(58% 0.115 75)",
+          "oklch(72% 0.125 78)",
+          "oklch(85% 0.120 80)",
+          "oklch(91% 0.080 80)",
+          "oklch(95% 0.060 80)",
+          "oklch(98% 0.030 80)"
+        ]
+      },
+      "caution-tint": {
+        "role": "secondary",
+        "displayName": "琥珀·浅 / Caution Wash",
+        "canonical": "oklch(97% 0.04 80)"
+      },
+      "caution-deep": {
+        "role": "secondary",
+        "displayName": "琥珀·深 / Caution Ink",
+        "canonical": "oklch(40% 0.08 60)"
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "危险 / Danger",
+        "canonical": "oklch(48% 0.16 25)"
+      }
+    },
+    "typographyMeta": {
+      "ui-display": { "displayName": "UI Display", "purpose": "Page title 〈看拼音写汉字练习纸〉, h1 only." },
+      "ui-label": { "displayName": "UI Label", "purpose": "Form labels, button text, section titles. Weight 650 (not 700) for restrained Chinese-text feel." },
+      "ui-body": { "displayName": "UI Body", "purpose": "Input field text, textarea, chip body text." },
+      "ui-hint": { "displayName": "UI Hint", "purpose": "Status, hints, placeholder context. Never below 12px (parents/teachers may have presbyopia)." },
+      "paper-title": { "displayName": "Paper Title", "purpose": "Worksheet headline (楷体)." },
+      "paper-meta": { "displayName": "Paper Meta", "purpose": "Worksheet name / date / class line." },
+      "paper-pinyin": { "displayName": "Paper Pinyin", "purpose": "Pinyin row above each character cell. Never below 13pt — tone marks must remain legible." },
+      "paper-cell": { "displayName": "Paper Cell", "purpose": "Character inside 田字格 / 米字格 cells. Kaiti script for handwriting reference." }
+    },
+    "shadows": [
+      {
+        "name": "paper-rest",
+        "value": "0 18px 45px oklch(20% 0.005 250 / 0.16)",
+        "purpose": "The single allowed shadow in the entire system. Softly lifts the A4 preview off the workbench background. Removed entirely under @media print."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px oklch(42% 0.045 220 / 0.18)",
+        "purpose": "Keyboard focus glow on inputs and buttons. Not a depth cue."
+      }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default easing for hover and focus state changes." },
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Alternate easing for slightly slower transitions (modal-less reveals like quick-bank disclosure)." },
+      { "name": "duration-fast", "value": "120ms", "purpose": "Color and border transitions." },
+      { "name": "duration-base", "value": "180ms", "purpose": "Layout reveals (e.g. preview collapse), capped here so the workbench feels responsive, never animated for show." }
+    ],
+    "breakpoints": [
+      { "name": "stack", "value": "980px", "purpose": "Below this width the controls + preview switch from side-by-side to stacked." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "墨青行动按钮，仅用于打印 / 加载等用户最终意图。每屏 ≤ 2 个。",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">打印 / 保存 PDF</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid transparent; border-radius: 6px; background: oklch(42% 0.045 220); color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: oklch(35% 0.050 220); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); } .ds-btn-primary:active { background: oklch(30% 0.050 220); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "次级按钮，所有非最终意图的功能（重置、收起预览、加载词库的次按钮）。",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">重置示例</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-secondary:hover { background: oklch(92% 0.004 250); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "表单输入。与按钮等高 (40px)，6px 圆角，墨青聚焦光晕。",
+      "html": "<label class=\"ds-input-label\">中文字词列表<input class=\"ds-input\" type=\"text\" placeholder=\"一行一个词\" /></label>",
+      "css": ".ds-input-label { display: grid; gap: 7px; color: oklch(45% 0.010 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; } .ds-input { width: 100%; height: 40px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(99% 0.003 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; outline: none; transition: border-color 120ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-input:focus { border-color: oklch(42% 0.045 220); box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
+    },
+    {
+      "name": "Word Chip (default)",
+      "kind": "chip",
+      "refersTo": "chip-word",
+      "description": "拼音校对区里待审字词。简洁陈列态。",
+      "html": "<span class=\"ds-chip-word\">春天</span>",
+      "css": ".ds-chip-word { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; }"
+    },
+    {
+      "name": "Word Chip (polyphone)",
+      "kind": "chip",
+      "refersTo": "chip-word-polyphone",
+      "description": "含多音字的字词。整体琥珀色四向边框 + 浅琥珀底，绝不只换 border-left。",
+      "html": "<span class=\"ds-chip-word-poly\">长大 <span class=\"ds-badge-poly\">多音</span></span>",
+      "css": ".ds-chip-word-poly { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.120 80); border-radius: 6px; background: oklch(97% 0.04 80); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; } .ds-badge-poly { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 9999px; background: oklch(94% 0.05 80); color: oklch(40% 0.08 60); border: 1px solid oklch(85% 0.120 80); font-size: 10px; font-weight: 700; line-height: 1.4; }"
+    },
+    {
+      "name": "Pinyin Candidate Pill (selected)",
+      "kind": "chip",
+      "refersTo": "pill-candidate-selected",
+      "description": "多音字候选音节按钮的 selected 态：墨青·浅瓷底 + 墨青边 + 墨青·深字。后跟例词以墨·灰弱化。",
+      "html": "<button class=\"ds-pill-cand selected\" type=\"button\">zhǎng <span class=\"ex\">长大</span></button>",
+      "css": ".ds-pill-cand { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border: 1px solid oklch(85% 0.005 250); border-radius: 4px; background: oklch(99% 0.003 250); color: oklch(45% 0.010 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 11px; font-weight: 400; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1), border-color 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-pill-cand:hover { background: oklch(94% 0.004 250); } .ds-pill-cand.selected { background: oklch(95% 0.012 220); border-color: oklch(42% 0.045 220); color: oklch(35% 0.050 220); font-weight: 650; } .ds-pill-cand .ex { color: oklch(60% 0.008 250); margin-left: 3px; font-weight: 400; }"
+    },
+    {
+      "name": "Section Divider",
+      "kind": "custom",
+      "refersTo": "section",
+      "description": "controls 面板内部分隔。1px 柔灰水平细线 + 14px 上下内边距。绝不使用卡片或阴影。",
+      "html": "<section class=\"ds-section\"><div class=\"ds-section-label\">练习模式</div><div class=\"ds-section-body\">看拼音写汉字 · 描红 · 抄写 · 听写</div></section>",
+      "css": ".ds-section { padding: 14px 0; border-top: 1px solid oklch(92% 0.004 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-section-label { color: oklch(45% 0.010 250); font-size: 14px; font-weight: 650; margin-bottom: 7px; } .ds-section-body { color: oklch(28% 0.012 250); font-size: 14px; font-weight: 400; line-height: 1.55; }"
+    },
+    {
+      "name": "A4 Page (preview)",
+      "kind": "card",
+      "refersTo": "page-paper",
+      "description": "签名组件之一：A4 预览纸。系统中唯一允许投影的元素。屏幕尺寸 1:1，所有子元素只用 Paper Palette。",
+      "html": "<article class=\"ds-page\"><header class=\"ds-paper-head\"><h2 class=\"ds-paper-title\">看拼音写汉字</h2><div class=\"ds-paper-meta\"><span>姓名 <i class=\"ds-paper-line\"></i></span><span>日期 <i class=\"ds-paper-line\"></i></span></div></header><div class=\"ds-cell-row\"><div class=\"ds-cell\"><span class=\"ds-cell-x\"></span><span class=\"ds-cell-y\"></span></div><div class=\"ds-cell\"><span class=\"ds-cell-x\"></span><span class=\"ds-cell-y\"></span></div><div class=\"ds-cell\"><span class=\"ds-cell-x\"></span><span class=\"ds-cell-y\"></span></div></div></article>",
+      "css": ".ds-page { box-sizing: border-box; width: 210mm; min-height: 120mm; padding: 14mm 14mm 13mm; background: oklch(98.5% 0.006 80); color: oklch(20% 0.005 250); box-shadow: 0 18px 45px oklch(20% 0.005 250 / 0.16); } .ds-paper-head { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; padding-bottom: 6mm; border-bottom: 1px solid oklch(56% 0.005 250); } .ds-paper-title { margin: 0; font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', 'Noto Serif CJK SC', serif; font-size: 21pt; font-weight: 700; line-height: 1.2; letter-spacing: 0.02em; } .ds-paper-meta { display: flex; gap: 10mm; color: oklch(45% 0.010 250); font-size: 10.5pt; } .ds-paper-meta span { display: inline-flex; align-items: baseline; gap: 3mm; } .ds-paper-line { display: inline-block; width: 25mm; border-bottom: 1px solid oklch(56% 0.005 250); } .ds-cell-row { display: flex; gap: 2.6mm; padding-top: 7mm; } .ds-cell { position: relative; width: 13.2mm; height: 13.2mm; border: 1.2px solid oklch(56% 0.005 250); background: #fff; overflow: hidden; } .ds-cell-x { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px dashed oklch(70% 0.005 250); } .ds-cell-y { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed oklch(70% 0.005 250); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "排字工作台 (The Press Composer)",
+    "overview": "想象一位铅字工人在公表厂灯下排版：每个汉字都是一块铅，调位、留白、校正都是仪式。屏幕上的左侧设置区是工作台、是工具箱；右侧的 A4 纸是正在排版的成品。所有 UI 元素的存在，是为了让那张纸更准确、更安静地落到纸面上。色彩克制到接近无色：UI 使用偏冷的深墨与浅瓷灰，主调是一种近于中文出版物里『墨青』的低饱和深青色，只在按钮、聚焦圈、选中态出现，从不喧哗。纸张本身用一抹暖白瓷色，与冷调 UI 形成区分，暗示『这是要打印的实物』。This system explicitly rejects K12 在线教育产品的能量色 + 满屏卡片堆叠；学校 OA / 教育局信息系统的老旧蓝灰；Duolingo 路子的玩具化与弹性动画；开发者工具的黑背景 + 霓虹潮品。",
+    "keyCharacteristics": [
+      "工作台冷、纸张暖：全局 UI 偏冷调灰，纸张唯一暖白瓷色",
+      "主调『墨青』低饱和（OKLCH chroma ≤ 0.05），只用于交互可达的位置",
+      "Flat-by-default：除 A4 预览纸的柔和阴影外，全局无阴影、无浮起",
+      "中文排版优先：拉丁字母与数字尺寸服务汉字，不喧宾夺主",
+      "工作台与成品视觉割裂：UI 颜色绝对不渗进打印输出"
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "墨青在任意一屏中占比 ≤ 8%。它的稀有正是它能引导眼睛的原因。", "section": "colors" },
+      { "name": "The Two-World Rule", "body": "UI 调色板和 Paper 调色板是两个独立的世界，不共用任何 token。两个世界的视觉割裂正是『工作台 / 成品』隐喻的具象化。", "section": "colors" },
+      { "name": "The Caution-Solo Rule", "body": "琥珀只用在多音字相关元素上。不要拿琥珀去做与多音字无关的标注。", "section": "colors" },
+      { "name": "The Pinyin-Above-13pt Rule", "body": "拼音字号永远 ≥ 13pt。声调符号在 12pt 以下会和元音粘在一起。", "section": "typography" },
+      { "name": "The 650-Not-700 Rule", "body": "中文 UI 标签、按钮、section 标题用 weight 650 而非 700，平衡层级感与克制气质。", "section": "typography" },
+      { "name": "The Latin-Serves-Hanzi Rule", "body": "任何同行内的拉丁字母与数字尺寸跟随汉字，不另设字号。", "section": "typography" },
+      { "name": "The One-Shadow Rule", "body": "整个系统只有一种内容性阴影：A4 预览纸的投影。其它一律无 box-shadow。", "section": "elevation" },
+      { "name": "The Print-Strips-Shadow Rule", "body": "@media print 内必须把纸张投影显式重置为 none。打印纸面上的阴影都是 bug。", "section": "elevation" }
+    ],
+    "dos": [
+      "Do 把所有颜色定义在 OKLCH，写进 :root 的 CSS 自定义属性。",
+      "Do 把 UI 调色板与 Paper 调色板物理隔离：纸面元素只引用 paper-* 与 paper-rule-* 系列。",
+      "Do 把所有 hover / focus 状态显式定义。键盘焦点必须可见。",
+      "Do 把所有过渡时间控制在 120-180ms，使用 ease-out-expo / ease-out-quint。",
+      "Do 把多音字提示用三重信号（边框 + 背景 + badge 文字），不依赖单一颜色。",
+      "Do 把 prefers-reduced-motion: reduce 内的过渡时间归零。"
+    ],
+    "donts": [
+      "Don't 让 K12 在线教育产品的能量色出现在任何地方。",
+      "Don't 套用学校 OA / 教育局信息系统的老旧蓝灰 + 宋体加粗。",
+      "Don't 引入 Duolingo 路子的玩具化：emoji 粒子动画、弹性 transform、连胜 streak。",
+      "Don't 切到黑背景 / 霉织风 / 开发者潮品的 dark-mode + neon。",
+      "Don't 用 border-left 或 border-right 大于 1px 作为彩色侧边条。",
+      "Don't 用 background-clip: text 渐变文字。",
+      "Don't 给任何 UI 元素加 box-shadow。除 .page 之外的阴影一律删除。",
+      "Don't 给按钮、卡片加 hover-lift 或 hover-scale。",
+      "Don't 在打印输出里出现任何 UI 颜色。",
+      "Don't 用 emoji 替代图标。",
+      "Don't 加注册 / 登录 / PRO 升级提示 / onboarding 引导。",
+      "Don't 把拼音字号压到 13pt 以下。"
+    ]
+  }
+}
