@@ -78,6 +78,24 @@
         min-height: 100vh;
       }
 
+      .app.preview-collapsed {
+        grid-template-columns: minmax(320px, 780px);
+        justify-content: center;
+        background: #fff;
+      }
+
+      .app.preview-collapsed .controls {
+        position: static;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-right: 0;
+      }
+
+      .app.preview-collapsed .preview {
+        display: none;
+      }
+
       .controls {
         position: sticky;
         top: 0;
@@ -92,6 +110,18 @@
         margin: 0 0 14px;
         font-size: 22px;
         line-height: 1.25;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: start;
+        margin-bottom: 14px;
+      }
+
+      .topbar h1 {
+        margin: 0;
       }
 
       .section {
@@ -662,6 +692,10 @@
           background: #fff;
         }
 
+        .app.preview-collapsed .preview {
+          display: block;
+        }
+
         .page {
           width: 210mm;
           min-height: 297mm;
@@ -672,9 +706,12 @@
     </style>
   </head>
   <body>
-    <main class="app">
+    <main id="app" class="app">
       <aside class="controls">
-        <h1>看拼音写汉字练习纸</h1>
+        <div class="topbar">
+          <h1>看拼音写汉字练习纸</h1>
+          <button id="togglePreviewBtn" class="btn secondary" type="button">收起预览</button>
+        </div>
 
         <section class="section">
           <label class="label" for="words">中文字词列表</label>
@@ -930,6 +967,7 @@
       }
 
       const els = {
+        app: document.querySelector("#app"),
         words: document.querySelector("#words"),
         title: document.querySelector("#title"),
         wordBank: document.querySelector("#wordBank"),
@@ -947,6 +985,7 @@
         masteredStatus: document.querySelector("#masteredStatus"),
         pinyinList: document.querySelector("#pinyinList"),
         sheet: document.querySelector("#sheet"),
+        togglePreviewBtn: document.querySelector("#togglePreviewBtn"),
         printBtn: document.querySelector("#printBtn"),
         resetBtn: document.querySelector("#resetBtn"),
         pinyinStatus: document.querySelector("#pinyinStatus"),
@@ -960,6 +999,7 @@
       const storageKeys = {
         masteredWords: "getword.masteredWords",
         hideMastered: "getword.hideMastered",
+        previewCollapsed: "getword.previewCollapsed",
       };
 
       const wordBanks = {
@@ -1616,6 +1656,36 @@
         }
       }
 
+      function setPreviewCollapsed(collapsed, persist = true) {
+        els.app.classList.toggle("preview-collapsed", collapsed);
+        els.togglePreviewBtn.textContent = collapsed ? "展开预览" : "收起预览";
+        els.togglePreviewBtn.setAttribute(
+          "aria-expanded",
+          collapsed ? "false" : "true",
+        );
+
+        if (!persist) return;
+        try {
+          localStorage.setItem(
+            storageKeys.previewCollapsed,
+            collapsed ? "yes" : "no",
+          );
+        } catch (error) {
+          // Preview collapse is still usable without persistence.
+        }
+      }
+
+      function loadPreviewSettings() {
+        let collapsed = false;
+        try {
+          collapsed =
+            localStorage.getItem(storageKeys.previewCollapsed) === "yes";
+        } catch (error) {
+          collapsed = false;
+        }
+        setPreviewCollapsed(collapsed, false);
+      }
+
       function chineseChars(word) {
         return Array.from(word).filter((char) => /\p{Script=Han}/u.test(char));
       }
@@ -2196,8 +2266,12 @@
       els.printBtn.addEventListener("click", () => window.print());
       els.resetBtn.addEventListener("click", resetExample);
       els.loadBankBtn.addEventListener("click", () => loadSelectedBank());
+      els.togglePreviewBtn.addEventListener("click", () => {
+        setPreviewCollapsed(!els.app.classList.contains("preview-collapsed"));
+      });
 
       loadMasteredSettings();
+      loadPreviewSettings();
       populateBankSelect();
       renderSitemap();
       const loadedFromHash = applyHashOnLoad();
