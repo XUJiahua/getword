@@ -262,6 +262,45 @@
         align-items: end;
       }
 
+      /* 出处提示：仅在数据有 source 时显示，告诉用户该单元词语来自哪几篇课文。
+         样式克制——次要信息不抢预览区注意力。 */
+      .bank-source {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 10px;
+        padding: 6px 10px;
+        background: var(--surface-recessed);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .bank-source[hidden] {
+        display: none;
+      }
+
+      .bank-source-pill {
+        display: inline-flex;
+        flex: 0 0 auto;
+        padding: 1px 8px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 9999px;
+        color: var(--ink);
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .bank-source-meta {
+        flex: 1 1 auto;
+        min-width: 0;
+        color: var(--muted);
+      }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -814,6 +853,10 @@
               <span class="hint" id="bankStatus">内置词库是可编辑参考，加载后仍可增删字词。</span>
               <button id="loadBankBtn" class="btn secondary" type="button">加载</button>
             </div>
+            <div class="bank-source" id="bankSource" hidden>
+              <span class="bank-source-pill" id="bankSourcePill"></span>
+              <span class="bank-source-meta" id="bankSourceMeta"></span>
+            </div>
           </div>
           <details class="quick-bank">
             <summary>年级单元快速入口</summary>
@@ -920,6 +963,14 @@
       </section>
     </main>
 
+    <script src="data/grade3a.js"></script>
+    <script src="data/grade3b.js"></script>
+    <script src="data/grade4a.js"></script>
+    <script src="data/grade4b.js"></script>
+    <script src="data/grade5a.js"></script>
+    <script src="data/grade5b.js"></script>
+    <script src="data/grade6a.js"></script>
+    <script src="data/grade6b.js"></script>
     <script>
       const fallbackPinyin = new Map([
         ["春", "chun1"],
@@ -1051,6 +1102,9 @@
         wordUnit: document.querySelector("#wordUnit"),
         loadBankBtn: document.querySelector("#loadBankBtn"),
         bankStatus: document.querySelector("#bankStatus"),
+        bankSource: document.querySelector("#bankSource"),
+        bankSourcePill: document.querySelector("#bankSourcePill"),
+        bankSourceMeta: document.querySelector("#bankSourceMeta"),
         dateText: document.querySelector("#dateText"),
         mode: document.querySelector("#mode"),
         gridType: document.querySelector("#gridType"),
@@ -1259,370 +1313,16 @@
             },
           ],
         },
-        grade3a: {
-          name: "三年级上册",
-          short: "三上",
-          grade: 3,
-          semester: "上",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 校园生活",
-              words: ["早晨", "衣裳", "安静", "绒球", "汉族", "艳丽", "招引", "孔雀", "鞠躬", "热闹", "古老", "敬爱"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 秋之韵",
-              words: ["铺路", "印象", "规则", "邮票", "凉爽", "加紧", "丰收", "苹果", "橙黄", "争着", "落叶", "金黄"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 童话世界",
-              words: ["国王", "款待", "缤纷", "忽然", "坚定", "完成", "飘散", "皇冠", "宫殿", "魔术", "森林", "精灵"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 预测乐趣",
-              words: ["准备", "扁鼻子", "绒线", "情绪", "亲爱", "文具", "缺点", "习惯", "坚持", "改正"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 留心观察",
-              words: ["蟋蟀", "住宅", "慎重", "选择", "向阳", "隐蔽", "洞穴", "出口", "平台", "隧道", "搜索", "发现"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 祖国山河",
-              words: ["富饶", "岛屿", "辽阔", "瑰丽", "五彩", "贝壳", "龙虾", "捕捞", "宝库", "海防", "祖国", "壮美"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 我与自然",
-              words: ["翠鸟", "苇秆", "灰色", "橄榄", "衬衫", "透亮", "机灵", "疾飞", "悄悄", "消逝"],
-            },
-            {
-              key: "u8",
-              name: "第八单元 美好品质",
-              words: ["招呼", "刺猬", "糟糕", "愣住", "发抖", "缩成", "绝望", "奇迹", "勇气", "鼓励"],
-            },
-          ],
-        },
-        grade3b: {
-          name: "三年级下册",
-          short: "三下",
-          grade: 3,
-          semester: "下",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 春之歌",
-              words: ["燕子", "伶俐", "聚集", "增添", "掠过", "吹拂", "聚拢", "波纹", "稻田", "光彩"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 寓言智慧",
-              words: ["寓言", "楚国", "夸口", "戳穿", "张口结舌", "矛盾", "自相矛盾", "守候", "教训", "道理"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 传统文化",
-              words: ["屠苏", "爆竹", "酒兴", "欢度", "传统", "农历", "清明", "端午", "中秋", "团圆"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 实验观察",
-              words: ["蜜蜂", "辨认", "阻力", "几乎", "确实", "本能", "记忆", "推测", "实验", "结论"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 想象世界",
-              words: ["翅膀", "飞翔", "胆子", "宇宙", "探索", "未来", "理想", "希望", "勇气", "美丽"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 童年回忆",
-              words: ["童年", "罗汉豆", "戏台", "归航", "油菜花", "柳枝", "桑叶", "竹篙", "撑船", "笑声"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 自然奇观",
-              words: ["海底", "宁静", "波涛", "依然", "闪烁", "警报", "储藏", "灯塔", "潮汐", "壮丽"],
-            },
-            {
-              key: "u8",
-              name: "第八单元 民间故事",
-              words: ["枣核", "狡猾", "衙役", "惊堂木", "衙门", "官府", "聪明", "机智", "勇敢", "智斗"],
-            },
-          ],
-        },
-        grade4a: {
-          name: "四年级上册",
-          short: "四上",
-          grade: 4,
-          semester: "上",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 自然奇观",
-              words: ["观潮", "据说", "大堤", "宽阔", "笼罩", "薄雾", "屹立", "沸腾", "霎时", "余波", "风俗"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 留心生活",
-              words: ["跳跃", "葡萄", "成熟", "招待", "研究", "驾驶", "豌豆", "按照", "舒适", "恐怕", "僵硬", "耐心"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 连续观察",
-              words: ["探索", "奥秘", "住宅", "临时", "选择", "住址", "洞穴", "大厅", "卧室", "专家", "慎重", "优良"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 神话传说",
-              words: ["均匀", "重叠", "空隙", "嫩茎", "叶柄", "牢固", "证明", "辽阔", "茂盛", "滋润"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 写出特点",
-              words: ["黑暗", "缓缓", "混沌", "严厉", "著名", "纪念", "训斥", "清晰", "胸怀", "赞叹"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 童年生活",
-              words: ["表演", "笨拙", "排练", "逃跑", "砸锅", "否则", "旋转", "预料", "溃败", "自豪", "顽强"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 家国情怀",
-              words: ["敬佩", "归还", "血液", "淘洗", "庄稼", "鹅卵石", "敬重", "操场", "违抗", "悲惨"],
-            },
-          ],
-        },
-        grade4b: {
-          name: "四年级下册",
-          short: "四下",
-          grade: 4,
-          semester: "下",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 乡村田园",
-              words: ["乡下", "屋檐", "构成", "装饰", "顺序", "华丽", "独特", "照例", "率领", "倘若", "和谐", "催眠"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 飞向蓝天",
-              words: ["蝙蝠", "霸气", "猫头鹰", "复杂", "敏捷", "迟钝", "鸽子", "隧道", "形态", "膨大", "前肢", "开辟"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 现代科技",
-              words: ["纳米", "拥有", "冰箱", "除臭", "蔬菜", "材料", "隐形", "健康", "细胞", "疾病", "预防", "需要"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 动物朋友",
-              words: ["潇洒", "朦胧", "寂静", "朝霞", "毛茸茸", "藤萝", "波涛", "指挥", "墨绿", "集中"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 游记自然",
-              words: ["甜蜜", "梦乡", "慰藉", "扫荡", "威力", "锐利", "河滩", "帐子", "白桦", "涂抹", "绣花", "花穗"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 成长故事",
-              words: ["徜徉", "侍候", "脾气", "警戒", "局促", "姿态", "昂首", "京剧", "供养", "附近"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 人物风采",
-              words: ["偶然", "讨厌", "理由", "心事", "反抗", "忠厚", "成绩", "啼叫", "慈爱", "辛苦"],
-            },
-          ],
-        },
-        grade5a: {
-          name: "五年级上册",
-          short: "五上",
-          grade: 5,
-          semester: "上",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 万物有灵",
-              words: ["蓬勃", "飘逸", "纤细", "橘红", "镶嵌", "应和", "蝙蝠", "归巢", "斜阳", "徜徉"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 阅读策略",
-              words: ["浏览", "忌惮", "隔阂", "繁琐", "宛若", "依然", "奉献", "修筑", "抵御", "目瞪口呆"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 民间故事",
-              words: ["嫦娥", "玉兔", "吴刚", "桂树", "凄惶", "瀑布", "银河", "织女", "勤俭", "机灵"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 爱国情怀",
-              words: ["屈辱", "挫败", "振兴", "拼搏", "砥砺", "奋发", "爱戴", "盘踞", "咆哮", "宁死"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 生活说明",
-              words: ["提供", "便捷", "传播", "迅速", "海量", "储存", "检索", "信息", "流量", "芯片"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 父母之爱",
-              words: ["慈祥", "严厉", "呵护", "唠叨", "担忧", "依偎", "抚摸", "教诲", "叮嘱", "感念"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 自然之美",
-              words: ["黎明", "霞光", "绛紫", "镶边", "躲藏", "灯火", "依稀", "辽阔", "海域", "辉煌"],
-            },
-            {
-              key: "u8",
-              name: "第八单元 阅读乐趣",
-              words: ["朗诵", "犹如", "惆怅", "咀嚼", "津津有味", "沉浸", "品味", "畅快", "陶醉", "回味"],
-            },
-          ],
-        },
-        grade5b: {
-          name: "五年级下册",
-          short: "五下",
-          grade: 5,
-          semester: "下",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 童年记忆",
-              words: ["蝴蝶", "瓢虫", "蜻蜓", "樱桃", "倭瓜", "栅栏", "玩耍", "晾晒", "清澈", "童趣"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 中国名著",
-              words: ["梁山", "好汉", "聚义", "英勇", "忠义", "枭雄", "谋略", "智取", "三顾", "桃园"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 汉字文化",
-              words: ["偏旁", "部首", "笔画", "楷书", "行书", "草书", "隶书", "篆书", "横竖", "撇捺"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 家国担当",
-              words: ["边塞", "戍守", "烽火", "家书", "抗战", "解放", "奉献", "捐躯", "英雄", "纪念"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 形象描写",
-              words: ["咆哮", "踉跄", "鬓发", "胡须", "眼眶", "脊梁", "瞳仁", "晶莹", "黝黑", "刚毅"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 思维之窗",
-              words: ["周密", "推断", "严谨", "缜密", "辨析", "推理", "求证", "严密", "准确", "精确"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 域外风光",
-              words: ["牧场", "奶酪", "郁金香", "运河", "古堡", "风车", "旷野", "宁谧", "悠然", "田园"],
-            },
-            {
-              key: "u8",
-              name: "第八单元 风趣幽默",
-              words: ["滑稽", "机智", "风趣", "幽默", "调侃", "嘲讽", "戏谑", "谐趣", "俏皮", "妙语"],
-            },
-          ],
-        },
-        grade6a: {
-          name: "六年级上册",
-          short: "六上",
-          grade: 6,
-          semester: "上",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 自然之美",
-              words: ["漫卷", "宇宙", "明朗", "闪烁", "苍穹", "缀满", "低吟", "静谧", "迷蒙", "汹涌"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 革命岁月",
-              words: ["烽火", "硝烟", "奋勇", "冲锋", "悬崖", "纵身", "英勇", "就义", "热血", "丹心"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 爱护环境",
-              words: ["资源", "矿物", "枯竭", "滥采", "生态", "保护", "可持续", "循环", "节约", "和谐"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 小说世界",
-              words: ["渔夫", "桑娜", "海浪", "心惊", "抱怨", "忐忑", "勉强", "沉默", "皱眉", "怜悯"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 习作训练",
-              words: ["围绕", "描写", "刻画", "烘托", "铺陈", "细节", "神态", "动作", "心理", "对话"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 山水风物",
-              words: ["云海", "奇松", "怪石", "温泉", "巍峨", "嶙峋", "葱郁", "苍翠", "磅礴", "壮丽"],
-            },
-            {
-              key: "u7",
-              name: "第七单元 艺术之美",
-              words: ["蜡烛", "月光", "莱茵河", "纯熟", "清幽", "苏醒", "飞奔", "陶醉", "悠扬", "激昂"],
-            },
-            {
-              key: "u8",
-              name: "第八单元 鲁迅作品",
-              words: ["伶俐", "祭祀", "规矩", "忙月", "缚住", "刺猬", "项圈", "潮汛", "装弶", "捏住"],
-            },
-          ],
-        },
-        grade6b: {
-          name: "六年级下册",
-          short: "六下",
-          grade: 6,
-          semester: "下",
-          units: [
-            {
-              key: "u1",
-              name: "第一单元 民俗风情",
-              words: ["腊八", "煮粥", "初旬", "零七八碎", "万象更新", "灯火通宵", "肃然起敬", "间断", "团圆", "热闹"],
-            },
-            {
-              key: "u2",
-              name: "第二单元 外国名著",
-              words: ["鲁滨逊", "漂流", "孤岛", "栅栏", "栖身", "援助", "圣诞", "簿子", "记号", "求生"],
-            },
-            {
-              key: "u3",
-              name: "第三单元 真情流露",
-              words: ["真情", "流露", "独到", "自然", "透彻", "剖析", "坦诚", "感悟", "倾诉", "心声"],
-            },
-            {
-              key: "u4",
-              name: "第四单元 立志向上",
-              words: ["志向", "抱负", "坚毅", "不屈", "磨砺", "奋斗", "梦想", "追求", "奋发", "笃定"],
-            },
-            {
-              key: "u5",
-              name: "第五单元 科学探索",
-              words: ["探索", "未知", "求证", "假设", "试验", "推理", "严谨", "求真", "好奇", "毅力"],
-            },
-            {
-              key: "u6",
-              name: "第六单元 综合性学习",
-              words: ["综合", "整理", "归纳", "汇报", "展示", "合作", "分享", "表达", "研讨", "提炼"],
-            },
-          ],
-        },
+        // grade3a-grade6b 改为从 data/gradeXX.js 加载（部编版词语表，按教材末页提取）。
+        // 由 scripts/build_bank.py 从 data/sources/gradeXX.json 生成；勿手改本块。
+        grade3a: (window.GRADE_DATA && window.GRADE_DATA.grade3a) || null,
+        grade3b: (window.GRADE_DATA && window.GRADE_DATA.grade3b) || null,
+        grade4a: (window.GRADE_DATA && window.GRADE_DATA.grade4a) || null,
+        grade4b: (window.GRADE_DATA && window.GRADE_DATA.grade4b) || null,
+        grade5a: (window.GRADE_DATA && window.GRADE_DATA.grade5a) || null,
+        grade5b: (window.GRADE_DATA && window.GRADE_DATA.grade5b) || null,
+        grade6a: (window.GRADE_DATA && window.GRADE_DATA.grade6a) || null,
+        grade6b: (window.GRADE_DATA && window.GRADE_DATA.grade6b) || null,
         themeIdioms4: {
           name: "专题：四字词与成语",
           short: "四字词",
@@ -1958,6 +1658,7 @@
         const bank = wordBanks[bankKey];
         if (!bank) {
           els.wordUnit.disabled = true;
+          updateBankSource(null, null);
           return;
         }
         bank.units.forEach((unit) => {
@@ -1967,6 +1668,32 @@
           els.wordUnit.append(opt);
         });
         els.wordUnit.disabled = false;
+        updateBankSource(bank, null);
+      }
+
+      // 数据来源 chip：只在 bank.source 存在时显示。
+      // 选了具体单元 → 列出该单元包含的课次；选「整册全部」→ 给整册概览。
+      // 没 source 字段的旧 bank（凭印象编的那些）不显示，作为隐性差异提示。
+      function updateBankSource(bank, unit) {
+        const root = els.bankSource;
+        if (!root) return;
+        if (!bank || !bank.source) {
+          root.hidden = true;
+          return;
+        }
+        root.hidden = false;
+        els.bankSourcePill.textContent = bank.source.label || bank.source.type || "";
+        let meta = "";
+        if (unit && Array.isArray(unit.lessons) && unit.lessons.length) {
+          meta = "出处：" + unit.lessons.map((l) => `${l.no} ${l.title}`).join(" · ");
+        } else if (Array.isArray(bank.units)) {
+          const lessonCount = bank.units.reduce(
+            (a, u) => a + (Array.isArray(u.lessons) ? u.lessons.length : 0),
+            0,
+          );
+          meta = `整册 ${bank.units.length} 单元 / ${lessonCount} 课`;
+        }
+        els.bankSourceMeta.textContent = meta;
       }
 
       function loadSelectedBank({ silent = false } = {}) {
@@ -2001,6 +1728,7 @@
         }
         writeHash(bankKey, unitKey);
         updateDocumentTitle();
+        updateBankSource(bank, unit);
         syncItems();
       }
 
@@ -2427,6 +2155,10 @@
       els.wordUnit.addEventListener("change", () => {
         writeHash(els.wordBank.value, els.wordUnit.value);
         updateDocumentTitle();
+        const bank = wordBanks[els.wordBank.value];
+        const unitKey = els.wordUnit.value;
+        const unit = bank && unitKey ? bank.units.find((u) => u.key === unitKey) : null;
+        updateBankSource(bank, unit);
       });
 
       window.addEventListener("hashchange", () => {

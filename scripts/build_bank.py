@@ -1,0 +1,269 @@
+#!/usr/bin/env python3
+"""
+把 data/sources/grade<X>.json（按课次）→ data/grade<X>.js（按单元，可被 index.html 直接 <script> 加载）。
+
+单元划分由 UNIT_MAPS 写死（来自部编版教材目录页）。
+"""
+
+from __future__ import annotations
+import argparse
+import json
+from pathlib import Path
+from typing import TypedDict
+
+# 单元映射：lesson_no → (unit_key, unit_name, lesson_title)
+# 来源：教材目录页（PDF 第 4-5 页）。改册时只增改这张表。
+UNIT_MAPS: dict[str, list[dict]] = {
+    "grade3a": [
+        {"key": "u1", "name": "第一单元 校园生活",
+         "lessons": [(1, "大青树下的小学"), (2, "花的学校"), (3, "不懂就要问")]},
+        {"key": "u2", "name": "第二单元 金色的秋天",
+         "lessons": [(4, "古诗三首"), (5, "铺满金色巴掌的水泥道"), (6, "秋天的雨"),
+                     (7, "听听，秋的声音")]},
+        {"key": "u3", "name": "第三单元 童话世界",
+         "lessons": [(8, "卖火柴的小女孩"), (9, "那一定会很好"),
+                     (10, "在牛肚子里旅行"), (11, "一块奶酪")]},
+        {"key": "u4", "name": "第四单元 预测",
+         "lessons": [(12, "总也倒不了的老屋"), (13, "胡萝卜先生的长胡子"),
+                     (14, "不会叫的狗")]},
+        {"key": "u5", "name": "第五单元 留心观察",
+         "lessons": [(15, "搭船的鸟"), (16, "金色的草地")]},
+        {"key": "u6", "name": "第六单元 祖国壮美",
+         "lessons": [(17, "古诗三首"), (18, "富饶的西沙群岛"),
+                     (19, "海滨小城"), (20, "美丽的小兴安岭")]},
+        {"key": "u7", "name": "第七单元 大自然的礼物",
+         "lessons": [(21, "大自然的声音"), (22, "父亲、树林和鸟"),
+                     (23, "带刺的朋友")]},
+        {"key": "u8", "name": "第八单元 美好品质",
+         "lessons": [(24, "司马光"), (25, "灰雀"), (26, "手术台就是阵地"),
+                     (27, "一个粗瓷大碗")]},
+    ],
+    "grade3b": [
+        {"key": "u1", "name": "第一单元 春天的诗意",
+         "lessons": [(1, "古诗三首"), (2, "燕子"), (3, "荷花"), (4, "昆虫备忘录")]},
+        {"key": "u2", "name": "第二单元 寓言故事",
+         "lessons": [(5, "守株待兔"), (6, "陶罐和铁罐"), (7, "鹿角和鹿腿"),
+                     (8, "池子与河流")]},
+        {"key": "u3", "name": "第三单元 中华传统文化",
+         "lessons": [(9, "古诗三首"), (10, "纸的发明"), (11, "赵州桥"),
+                     (12, "一幅名扬中外的画")]},
+        {"key": "u4", "name": "第四单元 留心观察",
+         "lessons": [(13, "花钟"), (14, "蜜蜂"), (15, "小虾")]},
+        {"key": "u5", "name": "第五单元 想象的世界",
+         "lessons": [(16, "小真的长头发"), (17, "我变成了一棵树")]},
+        {"key": "u6", "name": "第六单元 多彩童年",
+         "lessons": [(18, "童年的水墨画"), (19, "剃头大师"), (20, "肥皂泡"),
+                     (21, "我不能失信")]},
+        {"key": "u7", "name": "第七单元 奇妙的世界",
+         "lessons": [(22, "我们奇妙的世界"), (23, "海底世界"), (24, "火烧云")]},
+        {"key": "u8", "name": "第八单元 有趣的故事",
+         "lessons": [(25, "慢性子裁缝和急性子顾客"), (26, "方帽子店"),
+                     (27, "漏"), (28, "枣核")]},
+    ],
+    "grade4a": [
+        {"key": "u1", "name": "第一单元 自然奇观",
+         "lessons": [(1, "观潮"), (2, "走月亮"), (3, "现代诗二首"), (4, "繁星")]},
+        {"key": "u2", "name": "第二单元 提问思考",
+         "lessons": [(5, "一个豆荚里的五粒豆"), (6, "蝙蝠和雷达"),
+                     (7, "呼风唤雨的世纪"), (8, "蝴蝶的家")]},
+        {"key": "u3", "name": "第三单元 连续观察",
+         "lessons": [(9, "古诗三首"), (10, "爬山虎的脚"), (11, "蟋蟀的住宅")]},
+        {"key": "u4", "name": "第四单元 神话故事",
+         "lessons": [(12, "盘古开天地"), (13, "精卫填海"),
+                     (14, "普罗米修斯"), (15, "女娲补天")]},
+        {"key": "u5", "name": "第五单元 生活记录",
+         "lessons": [(16, "麻雀"), (17, "爬天都峰")]},
+        {"key": "u6", "name": "第六单元 童年趣事",
+         "lessons": [(18, "牛和鹅"), (19, "一只窝囊的大老虎"), (20, "陀螺")]},
+        {"key": "u7", "name": "第七单元 家国情怀",
+         "lessons": [(21, "古诗三首"), (22, "为中华之崛起而读书"),
+                     (23, "梅兰芳蓄须"), (24, "延安，我把你追寻")]},
+        {"key": "u8", "name": "第八单元 历史故事",
+         "lessons": [(25, "王戎不取道旁李"), (26, "西门豹治邺"), (27, "故事二则")]},
+    ],
+    "grade4b": [
+        {"key": "u1", "name": "第一单元 田园生活",
+         "lessons": [(1, "古诗词三首"), (2, "乡下人家"), (3, "天窗"), (4, "三月桃花水")]},
+        {"key": "u2", "name": "第二单元 自然奥秘",
+         "lessons": [(5, "琥珀"), (6, "飞向蓝天的恐龙"), (7, "纳米技术就在我们身边"),
+                     (8, "千年梦圆在今朝")]},
+        {"key": "u3", "name": "第三单元 现代诗",
+         "lessons": [(9, "短诗三首"), (10, "绿"), (11, "白桦"), (12, "在天晴了的时候")]},
+        {"key": "u4", "name": "第四单元 作家笔下的动物",
+         "lessons": [(13, "猫"), (14, "母鸡"), (15, "白鹅")]},
+        {"key": "u5", "name": "第五单元 游览体验",
+         "lessons": [(16, "海上日出"), (17, "记金华的双龙洞")]},
+        {"key": "u6", "name": "第六单元 成长故事",
+         "lessons": [(18, "文言文二则"), (19, "小英雄雨来"),
+                     (20, "我们家的男子汉"), (21, "芦花鞋")]},
+        {"key": "u7", "name": "第七单元 人物风采",
+         "lessons": [(22, "古诗三首"), (23, "“诺曼底号”遇难记"),
+                     (24, "黄继光"), (25, "挑山工")]},
+        {"key": "u8", "name": "第八单元 奇思妙想",
+         "lessons": [(26, "宝葫芦的秘密"), (27, "巨人的花园"), (28, "海的女儿")]},
+    ],
+    "grade5a": [
+        {"key": "u1", "name": "第一单元 一花一鸟总关情",
+         "lessons": [(1, "白鹭"), (2, "落花生"), (3, "桂花雨"), (4, "珍珠鸟")]},
+        {"key": "u2", "name": "第二单元 阅读策略",
+         "lessons": [(5, "搭石"), (6, "将相和"),
+                     (7, "什么比猎豹的速度更快"), (8, "冀中的地道战")]},
+        {"key": "u3", "name": "第三单元 民间故事",
+         "lessons": [(9, "猎人海力布"), (10, "牛郎织女（一）"),
+                     (11, "牛郎织女（二）")]},
+        {"key": "u4", "name": "第四单元 爱国情怀",
+         "lessons": [(12, "古诗三首"), (13, "少年中国说"),
+                     (14, "圆明园的毁灭"), (15, "小岛")]},
+        {"key": "u5", "name": "第五单元 说明事物",
+         "lessons": [(16, "太阳"), (17, "松鼠")]},
+        {"key": "u6", "name": "第六单元 父母之爱",
+         "lessons": [(18, "慈母情深"), (19, "父爱之舟"),
+                     (20, "“精彩极了”和“糟糕透了”")]},
+        {"key": "u7", "name": "第七单元 自然之美",
+         "lessons": [(21, "古诗词三首"), (22, "四季之美"),
+                     (23, "鸟的天堂"), (24, "月迹")]},
+        {"key": "u8", "name": "第八单元 阅读乐趣",
+         "lessons": [(25, "古人谈读书"), (26, "忆读书"), (27, "我的“长生果”")]},
+    ],
+    "grade5b": [
+        {"key": "u1", "name": "第一单元 童年记忆",
+         "lessons": [(1, "古诗三首"), (2, "祖父的园子"),
+                     (3, "月是故乡明"), (4, "梅花魂")]},
+        {"key": "u2", "name": "第二单元 中国古典名著",
+         "lessons": [(5, "草船借箭"), (6, "景阳冈"),
+                     (7, "猴王出世"), (8, "红楼春趣")]},
+        {"key": "u3", "name": "第三单元 责任与担当",
+         "lessons": [(9, "古诗三首"), (10, "青山处处埋忠骨"),
+                     (11, "军神"), (12, "清贫")]},
+        {"key": "u4", "name": "第四单元 描写人物",
+         "lessons": [(13, "人物描写一组"), (14, "刷子李")]},
+        {"key": "u5", "name": "第五单元 思维",
+         "lessons": [(15, "自相矛盾"), (16, "田忌赛马"), (17, "跳水")]},
+        {"key": "u6", "name": "第六单元 异国风情",
+         "lessons": [(18, "威尼斯的小艇"), (19, "牧场之国"), (20, "金字塔")]},
+        {"key": "u7", "name": "第七单元 风趣幽默",
+         "lessons": [(21, "杨氏之子"), (22, "手指"), (23, "童年的发现")]},
+    ],
+    "grade6a": [
+        {"key": "u1", "name": "第一单元 触摸自然",
+         "lessons": [(1, "草原"), (2, "丁香结"),
+                     (3, "古诗词三首"), (4, "花之歌")]},
+        {"key": "u2", "name": "第二单元 革命岁月",
+         "lessons": [(5, "七律·长征"), (6, "狼牙山五壮士"),
+                     (7, "开国大典"), (8, "灯光")]},
+        {"key": "u3", "name": "第三单元 阅读策略",
+         "lessons": [(9, "竹节人"), (10, "宇宙生命之谜"), (11, "故宫博物院")]},
+        {"key": "u4", "name": "第四单元 真情故事",
+         "lessons": [(12, "桥"), (13, "穷人"), (14, "在柏林")]},
+        {"key": "u5", "name": "第五单元 围绕中心",
+         "lessons": [(15, "夏天里的成长"), (16, "盼")]},
+        {"key": "u6", "name": "第六单元 保护环境",
+         "lessons": [(17, "古诗三首"), (18, "只有一个地球"),
+                     (19, "三黑和土地"), (20, "青山不老")]},
+        {"key": "u7", "name": "第七单元 艺术之美",
+         "lessons": [(21, "文言文二则"), (22, "月光曲"), (23, "京剧趣谈")]},
+        {"key": "u8", "name": "第八单元 鲁迅作品",
+         "lessons": [(24, "少年闰土"), (25, "好的故事"),
+                     (26, "我的伯父鲁迅先生"), (27, "有的人")]},
+    ],
+    "grade6b": [
+        {"key": "u1", "name": "第一单元 民风民俗",
+         "lessons": [(1, "北京的春节"), (2, "腊八粥"),
+                     (3, "古诗三首"), (4, "藏戏")]},
+        {"key": "u2", "name": "第二单元 外国名著",
+         "lessons": [(5, "鲁滨逊漂流记（节选）"), (6, "骑鹅旅行记（节选）"),
+                     (7, "汤姆·索亚历险记（节选）")]},
+        {"key": "u3", "name": "第三单元 真情实感",
+         "lessons": [(8, "匆匆"), (9, "那个星期天")]},
+        {"key": "u4", "name": "第四单元 理想信念",
+         "lessons": [(10, "古诗三首"), (11, "十六年前的回忆"),
+                     (12, "为人民服务"), (13, "金色的鱼钩")]},
+        {"key": "u5", "name": "第五单元 科学发现",
+         "lessons": [(14, "文言文二则"), (15, "真理诞生于一百个问号之后"),
+                     (16, "表里的生物"), (17, "他们那时候多有趣啊")]},
+    ],
+}
+
+
+def build_bank(raw: dict, unit_map: list[dict]) -> dict:
+    """把按课次的原始数据，按 unit_map 聚合成按单元的 bank。"""
+    by_lesson = {l["lesson_no"]: l for l in raw["lessons"]}
+
+    units = []
+    for unit in unit_map:
+        words: list[str] = []
+        seen: set[str] = set()
+        lesson_summary = []
+        for lesson_no, title in unit["lessons"]:
+            data = by_lesson.get(lesson_no, {"words": [], "write_chars": [],
+                                             "recognize_chars": []})
+            # 词语：保留首次出现的顺序，跨课次去重
+            for w in data["words"]:
+                if w not in seen:
+                    seen.add(w)
+                    words.append(w)
+            lesson_summary.append({
+                "no": lesson_no,
+                "title": title,
+                "wordCount": len(data["words"]),
+                "writeCharCount": len(data["write_chars"]),
+            })
+
+        units.append({
+            "key": unit["key"],
+            "name": unit["name"],
+            "words": words,
+            "lessons": lesson_summary,
+        })
+
+    return {
+        "name": f"{raw['grade']}年级{raw['semester']}册".replace("4", "四").replace("1", "一")
+                .replace("2", "二").replace("3", "三").replace("5", "五").replace("6", "六"),
+        "short": f"{raw['grade']}{raw['semester']}".replace("4", "四").replace("1", "一")
+                 .replace("2", "二").replace("3", "三").replace("5", "五").replace("6", "六"),
+        "grade": raw["grade"],
+        "semester": raw["semester"],
+        "source": {
+            "type": "pep-textbook",
+            "edition": raw["source"].get("publisher", ""),
+            "extractedAt": raw["source"].get("extracted_at"),
+            "pdfFilename": raw["source"].get("pdf_filename"),
+            "label": "部编版 · 词语表",
+        },
+        "units": units,
+    }
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--in", dest="src", required=True, type=Path)
+    ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument("--bank-key", required=True, help="如 grade4b")
+    args = ap.parse_args()
+
+    raw = json.loads(args.src.read_text(encoding="utf-8"))
+    if args.bank_key not in UNIT_MAPS:
+        raise SystemExit(f"unknown bank key {args.bank_key}; "
+                         f"add unit map in UNIT_MAPS first")
+
+    bank = build_bank(raw, UNIT_MAPS[args.bank_key])
+
+    js_payload = json.dumps(bank, ensure_ascii=False, indent=2)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(
+        f"// auto-generated by scripts/build_bank.py — do not edit by hand\n"
+        f"// source: {args.src.name}\n"
+        f"window.GRADE_DATA = window.GRADE_DATA || {{}};\n"
+        f"window.GRADE_DATA.{args.bank_key} = {js_payload};\n",
+        encoding="utf-8",
+    )
+
+    total_words = sum(len(u["words"]) for u in bank["units"])
+    print(f"wrote {args.out}")
+    print(f"  {len(bank['units'])} units, {total_words} words total")
+    for u in bank["units"]:
+        print(f"  {u['key']}: {len(u['words']):>3} 词  {u['name']}")
+
+
+if __name__ == "__main__":
+    main()
