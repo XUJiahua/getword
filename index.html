@@ -78,24 +78,6 @@
         min-height: 100vh;
       }
 
-      .app.preview-collapsed {
-        grid-template-columns: minmax(320px, 780px);
-        justify-content: center;
-        background: #fff;
-      }
-
-      .app.preview-collapsed .controls {
-        position: static;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        border-right: 0;
-      }
-
-      .app.preview-collapsed .preview {
-        display: none;
-      }
-
       .controls {
         position: sticky;
         top: 0;
@@ -657,6 +639,33 @@
         }
       }
 
+      @media screen {
+        .app.preview-collapsed {
+          grid-template-columns: minmax(320px, 780px);
+          justify-content: center;
+          background: #fff;
+        }
+
+        .app.preview-collapsed .controls {
+          position: static;
+          width: 100%;
+          height: auto;
+          min-height: 100vh;
+          border-right: 0;
+        }
+
+        .app.preview-collapsed .preview {
+          position: absolute;
+          top: 0;
+          left: -100000px;
+          width: 210mm;
+          height: 0;
+          overflow: hidden;
+          opacity: 0;
+          pointer-events: none;
+        }
+      }
+
       @media print {
         @page {
           size: A4;
@@ -692,8 +701,14 @@
           background: #fff;
         }
 
+        .app.preview-collapsed,
         .app.preview-collapsed .preview {
           display: block;
+          position: static;
+          width: auto;
+          height: auto;
+          overflow: visible;
+          opacity: 1;
         }
 
         .page {
