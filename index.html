@@ -1051,7 +1051,23 @@
         masteredWords: "getword.masteredWords",
         hideMastered: "getword.hideMastered",
         previewCollapsed: "getword.previewCollapsed",
+        config: "getword.config",
       };
+
+      const persistedConfigKeys = [
+        "words",
+        "title",
+        "dateText",
+        "mode",
+        "gridType",
+        "copies",
+        "perPage",
+        "showMeta",
+        "wordBank",
+        "wordUnit",
+      ];
+
+      let configHydrated = false;
 
       const wordBanks = {
         grade1a: {
@@ -1707,6 +1723,47 @@
         }
       }
 
+      function loadConfigSettings() {
+        let saved = null;
+        try {
+          const raw = localStorage.getItem(storageKeys.config);
+          if (raw) saved = JSON.parse(raw);
+        } catch (error) {
+          return;
+        }
+        if (!saved || typeof saved !== "object") return;
+
+        for (const key of persistedConfigKeys) {
+          if (key === "wordUnit") continue;
+          const value = saved[key];
+          if (typeof value !== "string") continue;
+          if (!els[key]) continue;
+          if (key === "wordBank") {
+            els.wordBank.value = value;
+            populateUnitSelect(value);
+            continue;
+          }
+          els[key].value = value;
+        }
+
+        if (typeof saved.wordUnit === "string" && els.wordUnit) {
+          els.wordUnit.value = saved.wordUnit;
+        }
+      }
+
+      function saveConfigSettings() {
+        if (!configHydrated) return;
+        const payload = {};
+        for (const key of persistedConfigKeys) {
+          if (els[key]) payload[key] = els[key].value;
+        }
+        try {
+          localStorage.setItem(storageKeys.config, JSON.stringify(payload));
+        } catch (error) {
+          // quota exceeded or private mode — silently skip; config is convenience, not data
+        }
+      }
+
       function setPreviewCollapsed(collapsed, persist = true) {
         els.app.classList.toggle("preview-collapsed", collapsed);
         els.togglePreviewBtn.textContent = collapsed ? "展开预览" : "收起预览";
@@ -1811,6 +1868,7 @@
         updateMasteredStatus(mastered.size, hiddenMasteredCount);
         renderPinyinEditor();
         renderSheet();
+        saveConfigSettings();
       }
 
       function populateBankSelect() {
@@ -2248,6 +2306,10 @@
       }
 
       function resetExample() {
+        const confirmed = window.confirm(
+          "将清空当前字词与设置，恢复为示例。继续？",
+        );
+        if (!confirmed) return;
         customPinyin = new Map();
         els.words.value = "春天\n学校\n认真\n一心一意\n长大\n音乐";
         els.title.value = "看拼音写汉字";
@@ -2316,6 +2378,8 @@
       loadPreviewSettings();
       populateBankSelect();
       renderQuickBankLinks();
+      loadConfigSettings();
+      configHydrated = true;
       const loadedFromHash = applyHashOnLoad();
       if (!loadedFromHash) {
         updateDocumentTitle();
