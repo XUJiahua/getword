@@ -347,6 +347,8 @@
         box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
         color: #111827;
         page-break-after: always;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
       }
 
       .page:last-child {
@@ -466,21 +468,61 @@
         width: 13.2mm;
         height: 13.2mm;
         border: 1.2px solid #6b7280;
-        background:
-          linear-gradient(to right, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-          linear-gradient(to bottom, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+        overflow: hidden;
+        background: #fff;
         color: rgba(17, 24, 39, 0.22);
         font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
         font-size: 24pt;
         line-height: 1;
       }
 
-      .cell.mi {
-        background:
-          linear-gradient(45deg, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-          linear-gradient(-45deg, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-          linear-gradient(to right, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-          linear-gradient(to bottom, transparent calc(50% - 0.5px), #c7cdd4 calc(50% - 0.5px), #c7cdd4 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+      .cell::before,
+      .cell::after,
+      .cell-diagonal {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .cell::before {
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        border-left: 1px dashed #9ca3af;
+      }
+
+      .cell::after {
+        top: 50%;
+        left: 0;
+        right: 0;
+        border-top: 1px dashed #9ca3af;
+      }
+
+      .cell-diagonal {
+        display: none;
+        top: 50%;
+        left: -19%;
+        width: 138%;
+        border-top: 1px dashed #9ca3af;
+        transform-origin: center;
+      }
+
+      .cell.mi .cell-diagonal {
+        display: block;
+      }
+
+      .cell-diagonal.forward {
+        transform: rotate(45deg);
+      }
+
+      .cell-diagonal.back {
+        transform: rotate(-45deg);
+      }
+
+      .cell-text {
+        position: relative;
+        z-index: 1;
       }
 
       .cell.blank,
@@ -1850,7 +1892,24 @@
             : `cell ${gridType === "mi" ? "mi" : ""}`;
         if (!char) cell.classList.add("blank");
         if (isSource) cell.classList.add("copy-source");
-        cell.textContent = char || "字";
+
+        if (gridType === "line") {
+          cell.textContent = char || "字";
+          return cell;
+        }
+
+        if (gridType === "mi") {
+          const forward = document.createElement("span");
+          forward.className = "cell-diagonal forward";
+          const back = document.createElement("span");
+          back.className = "cell-diagonal back";
+          cell.append(forward, back);
+        }
+
+        const text = document.createElement("span");
+        text.className = "cell-text";
+        text.textContent = char || "字";
+        cell.append(text);
         return cell;
       }
 
