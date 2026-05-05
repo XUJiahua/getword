@@ -199,7 +199,7 @@
       "refersTo": "button-primary",
       "description": "墨青行动按钮，仅用于打印 / 加载等用户最终意图。每屏 ≤ 2 个。",
       "html": "<button class=\"ds-btn-primary\" type=\"button\">打印 / 保存 PDF</button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid transparent; border-radius: 6px; background: oklch(42% 0.045 220); color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: oklch(35% 0.050 220); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); } .ds-btn-primary:active { background: oklch(30% 0.050 220); }"
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid transparent; border-radius: 6px; background: oklch(42% 0.045 220); color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: oklch(35% 0.050 220); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); } .ds-btn-primary:active { background: oklch(30% 0.050 220); }"
     },
     {
       "name": "Secondary Button",
@@ -207,7 +207,7 @@
       "refersTo": "button-secondary",
       "description": "次级按钮，所有非最终意图的功能（重置、收起预览、加载词库的次按钮）。",
       "html": "<button class=\"ds-btn-secondary\" type=\"button\">重置示例</button>",
-      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-secondary:hover { background: oklch(92% 0.004 250); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 650; cursor: pointer; transition: background 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-secondary:hover { background: oklch(92% 0.004 250); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
     },
     {
       "name": "Input Field",
@@ -215,7 +215,7 @@
       "refersTo": "input-field",
       "description": "表单输入。与按钮等高 (40px)，6px 圆角，墨青聚焦光晕。",
       "html": "<label class=\"ds-input-label\">中文字词列表<input class=\"ds-input\" type=\"text\" placeholder=\"一行一个词\" /></label>",
-      "css": ".ds-input-label { display: grid; gap: 7px; color: oklch(45% 0.010 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 650; } .ds-input { width: 100%; height: 40px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(99% 0.003 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; outline: none; transition: border-color 120ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-input:focus { border-color: oklch(42% 0.045 220); box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
+      "css": ".ds-input-label { display: grid; gap: 7px; color: oklch(45% 0.010 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 650; } .ds-input { width: 100%; height: 40px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(99% 0.003 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 400; outline: none; transition: border-color 120ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-input:focus { border-color: oklch(42% 0.045 220); box-shadow: 0 0 0 3px oklch(42% 0.045 220 / 0.18); }"
     },
     {
       "name": "Word Chip (default)",
@@ -223,7 +223,7 @@
       "refersTo": "chip-word",
       "description": "拼音校对区里待审字词。简洁陈列态。",
       "html": "<span class=\"ds-chip-word\">春天</span>",
-      "css": ".ds-chip-word { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; }"
+      "css": ".ds-chip-word { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.005 250); border-radius: 6px; background: oklch(96% 0.005 250); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 400; }"
     },
     {
       "name": "Word Chip (polyphone)",
@@ -231,7 +231,7 @@
       "refersTo": "chip-word-polyphone",
       "description": "含多音字的字词。整体琥珀色四向边框 + 浅琥珀底，绝不只换 border-left。",
       "html": "<span class=\"ds-chip-word-poly\">长大 <span class=\"ds-badge-poly\">多音</span></span>",
-      "css": ".ds-chip-word-poly { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.120 80); border-radius: 6px; background: oklch(97% 0.04 80); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; font-weight: 400; } .ds-badge-poly { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 9999px; background: oklch(94% 0.05 80); color: oklch(40% 0.08 60); border: 1px solid oklch(85% 0.120 80); font-size: 10px; font-weight: 700; line-height: 1.4; }"
+      "css": ".ds-chip-word-poly { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 11px; border: 1px solid oklch(85% 0.120 80); border-radius: 6px; background: oklch(97% 0.04 80); color: oklch(28% 0.012 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 15px; font-weight: 400; } .ds-badge-poly { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 9999px; background: oklch(94% 0.05 80); color: oklch(40% 0.08 60); border: 1px solid oklch(85% 0.120 80); font-size: 10px; font-weight: 700; line-height: 1.4; }"
     },
     {
       "name": "Pinyin Candidate Pill (selected)",
@@ -247,7 +247,7 @@
       "refersTo": "section",
       "description": "controls 面板内部分隔。1px 柔灰水平细线 + 14px 上下内边距。绝不使用卡片或阴影。",
       "html": "<section class=\"ds-section\"><div class=\"ds-section-label\">练习模式</div><div class=\"ds-section-body\">看拼音写汉字 · 描红 · 抄写 · 听写</div></section>",
-      "css": ".ds-section { padding: 14px 0; border-top: 1px solid oklch(92% 0.004 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-section-label { color: oklch(45% 0.010 250); font-size: 14px; font-weight: 650; margin-bottom: 7px; } .ds-section-body { color: oklch(28% 0.012 250); font-size: 14px; font-weight: 400; line-height: 1.55; }"
+      "css": ".ds-section { padding: 14px 0; border-top: 1px solid oklch(92% 0.004 250); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-section-label { color: oklch(45% 0.010 250); font-size: 15px; font-weight: 650; margin-bottom: 7px; } .ds-section-body { color: oklch(28% 0.012 250); font-size: 15px; font-weight: 400; line-height: 1.55; }"
     },
     {
       "name": "A4 Page (preview)",
