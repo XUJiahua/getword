@@ -94,7 +94,7 @@
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
           "Microsoft YaHei", sans-serif;
-        font-size: 14px;
+        font-size: 15px;
         line-height: 1.55;
       }
 
@@ -153,7 +153,7 @@
         display: block;
         margin: 0 0 7px;
         color: var(--ink-soft);
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 650;
       }
 
@@ -621,7 +621,7 @@
 
       .empty {
         padding: 18mm 0;
-        color: var(--ink-muted);
+        color: var(--paper-meta-ink);
         text-align: center;
         font-size: 13pt;
       }
@@ -637,7 +637,7 @@
         cursor: pointer;
         padding: 10px 11px;
         color: var(--ink);
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 650;
         user-select: none;
       }
@@ -652,7 +652,7 @@
 
       .quick-bank-block h4 {
         margin: 0 0 6px;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 650;
       }
 
@@ -1078,6 +1078,7 @@
         hideMastered: "getword.hideMastered",
         previewCollapsed: "getword.previewCollapsed",
         config: "getword.config",
+        customPinyin: "getword.customPinyin",
       };
 
       const persistedConfigKeys = [
@@ -1790,6 +1791,31 @@
         }
       }
 
+      function loadCustomPinyin() {
+        try {
+          const raw = localStorage.getItem(storageKeys.customPinyin);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return;
+          for (const [word, pinyin] of Object.entries(parsed)) {
+            if (typeof word === "string" && typeof pinyin === "string") {
+              customPinyin.set(word, pinyin);
+            }
+          }
+        } catch (error) {
+          // ignore corrupted blob
+        }
+      }
+
+      function saveCustomPinyin() {
+        const payload = Object.fromEntries(customPinyin);
+        try {
+          localStorage.setItem(storageKeys.customPinyin, JSON.stringify(payload));
+        } catch (error) {
+          // silently skip
+        }
+      }
+
       function setPreviewCollapsed(collapsed, persist = true) {
         els.app.classList.toggle("preview-collapsed", collapsed);
         els.togglePreviewBtn.textContent = collapsed ? "展开预览" : "收起预览";
@@ -2119,6 +2145,7 @@
                   input.value = next;
                   refreshActive();
                   renderSheet();
+                  saveCustomPinyin();
                 });
                 group.append(chip);
               });
@@ -2148,6 +2175,7 @@
             item.pinyin = v;
             refreshActive();
             renderSheet();
+            saveCustomPinyin();
           });
 
           refreshActive();
@@ -2337,6 +2365,7 @@
         );
         if (!confirmed) return;
         customPinyin = new Map();
+        saveCustomPinyin();
         els.words.value = "春天\n学校\n认真\n一心一意\n长大\n音乐";
         els.title.value = "看拼音写汉字";
         els.dateText.value = "";
@@ -2405,6 +2434,7 @@
       populateBankSelect();
       renderQuickBankLinks();
       loadConfigSettings();
+      loadCustomPinyin();
       configHydrated = true;
       const loadedFromHash = applyHashOnLoad();
       if (!loadedFromHash) {
