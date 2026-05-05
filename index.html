@@ -1095,6 +1095,16 @@
       ];
 
       let configHydrated = false;
+      let persistenceWarningShown = false;
+
+      function notePersistenceFailure() {
+        if (persistenceWarningShown) return;
+        persistenceWarningShown = true;
+        if (els.bankStatus) {
+          els.bankStatus.textContent =
+            "本地保存失败（可能是隐身模式或存储已满），本次会话内的设置改动不会被记住。";
+        }
+      }
 
       const wordBanks = {
         grade1a: {
@@ -1787,7 +1797,7 @@
         try {
           localStorage.setItem(storageKeys.config, JSON.stringify(payload));
         } catch (error) {
-          // quota exceeded or private mode — silently skip; config is convenience, not data
+          notePersistenceFailure();
         }
       }
 
@@ -1812,7 +1822,7 @@
         try {
           localStorage.setItem(storageKeys.customPinyin, JSON.stringify(payload));
         } catch (error) {
-          // silently skip
+          notePersistenceFailure();
         }
       }
 
@@ -1831,7 +1841,7 @@
             collapsed ? "yes" : "no",
           );
         } catch (error) {
-          // Preview collapse is still usable without persistence.
+          notePersistenceFailure();
         }
       }
 
@@ -1981,6 +1991,7 @@
         }
 
         customPinyin = new Map();
+        saveCustomPinyin();
         els.words.value = words.join("\n");
         els.bankStatus.textContent = `已加载“${label}”，共 ${words.length} 个字词。`;
         if (unit) {
@@ -2354,7 +2365,7 @@
         const pinyinLoaded =
           window.pinyinPro && typeof window.pinyinPro.pinyin === "function";
         els.pinyinStatus.textContent = pinyinLoaded
-          ? "拼音库已加载。"
+          ? ""
           : "未能加载完整拼音库，当前只使用内置示例字词拼音；联网后刷新页面可自动恢复。";
         els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
       }
