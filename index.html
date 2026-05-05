@@ -137,6 +137,10 @@
         line-height: 1.7;
       }
 
+      #masteredWords {
+        min-height: 92px;
+      }
+
       input,
       select {
         height: 38px;
@@ -769,6 +773,21 @@
         </section>
 
         <section class="section">
+          <label class="label" for="masteredWords">已掌握字词</label>
+          <textarea id="masteredWords" spellcheck="false" placeholder="一行一个已掌握字词"></textarea>
+          <div class="grid-2" style="margin-top: 10px">
+            <div class="field">
+              <label class="label" for="hideMastered">练习纸中</label>
+              <select id="hideMastered">
+                <option value="no" selected>显示已掌握</option>
+                <option value="yes">隐藏已掌握</option>
+              </select>
+            </div>
+          </div>
+          <p id="masteredStatus" class="hint">已掌握字词会保存在当前浏览器中。</p>
+        </section>
+
+        <section class="section">
           <label class="label">拼音校对</label>
           <div id="pinyinList" class="pinyin-list"></div>
         </section>
@@ -923,6 +942,9 @@
         copies: document.querySelector("#copies"),
         perPage: document.querySelector("#perPage"),
         showMeta: document.querySelector("#showMeta"),
+        masteredWords: document.querySelector("#masteredWords"),
+        hideMastered: document.querySelector("#hideMastered"),
+        masteredStatus: document.querySelector("#masteredStatus"),
         pinyinList: document.querySelector("#pinyinList"),
         sheet: document.querySelector("#sheet"),
         printBtn: document.querySelector("#printBtn"),
@@ -933,6 +955,12 @@
 
       let items = [];
       let customPinyin = new Map();
+      let hiddenMasteredCount = 0;
+
+      const storageKeys = {
+        masteredWords: "getword.masteredWords",
+        hideMastered: "getword.hideMastered",
+      };
 
       const wordBanks = {
         grade1a: {
@@ -1550,6 +1578,44 @@
           .filter(Boolean);
       }
 
+      function masteredWordSet() {
+        return new Set(splitWords(els.masteredWords.value));
+      }
+
+      function updateMasteredStatus(masteredCount, hiddenCount) {
+        if (!masteredCount) {
+          els.masteredStatus.textContent = "已掌握字词会保存在当前浏览器中。";
+          return;
+        }
+
+        els.masteredStatus.textContent =
+          els.hideMastered.value === "yes"
+            ? `已录入 ${masteredCount} 个已掌握字词，本次隐藏 ${hiddenCount} 个。`
+            : `已录入 ${masteredCount} 个已掌握字词，当前仍显示在练习纸中。`;
+      }
+
+      function loadMasteredSettings() {
+        try {
+          els.masteredWords.value =
+            localStorage.getItem(storageKeys.masteredWords) || "";
+          els.hideMastered.value =
+            localStorage.getItem(storageKeys.hideMastered) || "no";
+        } catch (error) {
+          els.masteredStatus.textContent =
+            "当前浏览器不允许本地保存，已掌握字词仅本次打开有效。";
+        }
+      }
+
+      function saveMasteredSettings() {
+        try {
+          localStorage.setItem(storageKeys.masteredWords, els.masteredWords.value);
+          localStorage.setItem(storageKeys.hideMastered, els.hideMastered.value);
+        } catch (error) {
+          els.masteredStatus.textContent =
+            "当前浏览器不允许本地保存，已掌握字词仅本次打开有效。";
+        }
+      }
+
       function chineseChars(word) {
         return Array.from(word).filter((char) => /\p{Script=Han}/u.test(char));
       }
@@ -1607,11 +1673,21 @@
       }
 
       function syncItems() {
-        const words = splitWords(els.words.value);
+        const rawWords = splitWords(els.words.value);
+        const mastered = masteredWordSet();
+        const shouldHideMastered = els.hideMastered.value === "yes";
+        hiddenMasteredCount = shouldHideMastered
+          ? rawWords.filter((word) => mastered.has(word)).length
+          : 0;
+        const words = shouldHideMastered
+          ? rawWords.filter((word) => !mastered.has(word))
+          : rawWords;
+
         items = words.map((word) => ({
           word,
           pinyin: customPinyin.get(word) || autoPinyin(word),
         }));
+        updateMasteredStatus(mastered.size, hiddenMasteredCount);
         renderPinyinEditor();
         renderSheet();
       }
@@ -1776,7 +1852,9 @@
       function renderPinyinEditor() {
         els.pinyinList.innerHTML = "";
         if (!items.length) {
-          els.pinyinList.innerHTML = '<p class="hint">输入词语后可校对拼音。</p>';
+          els.pinyinList.innerHTML = hiddenMasteredCount
+            ? '<p class="hint">当前字词已全部隐藏，暂无需要校对的拼音。</p>'
+            : '<p class="hint">输入词语后可校对拼音。</p>';
           return;
         }
 
@@ -2007,7 +2085,9 @@
         if (!pageItems.length) {
           const empty = document.createElement("div");
           empty.className = "empty";
-          empty.textContent = "请在左侧输入中文字词。";
+          empty.textContent = hiddenMasteredCount
+            ? "当前字词已全部隐藏，请调整已掌握字词或显示设置。"
+            : "请在左侧输入中文字词。";
           list.append(empty);
         }
 
@@ -2087,6 +2167,17 @@
         el.addEventListener("change", syncItems);
       });
 
+      [els.masteredWords, els.hideMastered].forEach((el) => {
+        el.addEventListener("input", () => {
+          saveMasteredSettings();
+          syncItems();
+        });
+        el.addEventListener("change", () => {
+          saveMasteredSettings();
+          syncItems();
+        });
+      });
+
       els.wordBank.addEventListener("change", () => {
         populateUnitSelect(els.wordBank.value);
         writeHash(els.wordBank.value, "");
@@ -2106,6 +2197,7 @@
       els.resetBtn.addEventListener("click", resetExample);
       els.loadBankBtn.addEventListener("click", () => loadSelectedBank());
 
+      loadMasteredSettings();
       populateBankSelect();
       renderSitemap();
       const loadedFromHash = applyHashOnLoad();
