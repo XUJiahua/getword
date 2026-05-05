@@ -205,7 +205,8 @@
         line-height: 1.7;
       }
 
-      #masteredWords {
+      #learningWordsBox,
+      #masteredWordsBox {
         min-height: 92px;
       }
 
@@ -349,9 +350,41 @@
 
       .pinyin-main {
         display: grid;
-        grid-template-columns: minmax(72px, 0.8fr) minmax(120px, 1.4fr);
+        grid-template-columns: minmax(72px, 0.8fr) minmax(120px, 1.4fr) auto;
         gap: 8px;
         align-items: center;
+      }
+
+      /* 状态按钮：复用 polyphone-chip 的双态视觉骨架，但用独立 className，
+         避免与 Caution-Solo Rule（琥珀仅多音字）冲撞。
+         未激活=瓷凹+细线；激活=墨青·浅瓷+墨青边+墨青·深字。 */
+      .status-toggle {
+        display: inline-flex;
+        gap: 4px;
+        flex: 0 0 auto;
+      }
+
+      .status-chip {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 4px;
+        padding: 4px 9px;
+        font-size: 12px;
+        cursor: pointer;
+        color: var(--ink-soft);
+        line-height: 1.3;
+        font-family: inherit;
+      }
+
+      .status-chip:hover {
+        background: var(--surface-recessed);
+      }
+
+      .status-chip.active {
+        border-color: var(--accent);
+        background: var(--accent-tint);
+        color: var(--accent-deep);
+        font-weight: 650;
       }
 
       .word-chip {
@@ -931,18 +964,34 @@
         </section>
 
         <section class="section">
-          <label class="label" for="masteredWords">已掌握字词</label>
-          <textarea id="masteredWords" spellcheck="false" placeholder="一行一个已掌握字词"></textarea>
-          <div class="grid-2" style="margin-top: 10px">
-            <div class="field">
-              <label class="label" for="hideMastered">练习纸中</label>
-              <select id="hideMastered">
-                <option value="no" selected>显示已掌握</option>
-                <option value="yes">隐藏已掌握</option>
-              </select>
-            </div>
+          <label class="label">字词记录</label>
+          <p id="recordsStats" class="hint">在下方拼音校对区点「生词」「已掌握」可累积记录。</p>
+          <div class="field" style="margin-top: 10px">
+            <label class="label" for="printFilter">练习纸过滤</label>
+            <select id="printFilter">
+              <option value="all" selected>显示全部</option>
+              <option value="hideMastered">隐藏已掌握</option>
+              <option value="onlyLearning">只练生词本</option>
+              <option value="onlyMastered">只复习已掌握</option>
+            </select>
           </div>
-          <p id="masteredStatus" class="hint">已掌握字词会保存在当前浏览器中。</p>
+          <details class="quick-bank" id="recordsManage">
+            <summary>批量导入 / 编辑</summary>
+            <div class="quick-bank-body">
+              <div class="field">
+                <label class="label" for="learningWordsBox">生词本</label>
+                <textarea id="learningWordsBox" spellcheck="false" placeholder="一行一个生词"></textarea>
+              </div>
+              <div class="field" style="margin-top: 10px">
+                <label class="label" for="masteredWordsBox">已掌握</label>
+                <textarea id="masteredWordsBox" spellcheck="false" placeholder="一行一个已掌握字词"></textarea>
+              </div>
+              <p class="hint">两栏直接编辑即生效；从某栏删除等于清除该字词在本栏的状态。</p>
+              <div class="actions" style="margin-top: 10px">
+                <button id="recordsClearBtn" class="btn secondary" type="button">清空全部记录</button>
+              </div>
+            </div>
+          </details>
         </section>
 
         <section class="section">
@@ -1115,9 +1164,11 @@
         copies: document.querySelector("#copies"),
         perPage: document.querySelector("#perPage"),
         showMeta: document.querySelector("#showMeta"),
-        masteredWords: document.querySelector("#masteredWords"),
-        hideMastered: document.querySelector("#hideMastered"),
-        masteredStatus: document.querySelector("#masteredStatus"),
+        recordsStats: document.querySelector("#recordsStats"),
+        printFilter: document.querySelector("#printFilter"),
+        recordsClearBtn: document.querySelector("#recordsClearBtn"),
+        learningWordsBox: document.querySelector("#learningWordsBox"),
+        masteredWordsBox: document.querySelector("#masteredWordsBox"),
         pinyinList: document.querySelector("#pinyinList"),
         sheet: document.querySelector("#sheet"),
         togglePreviewBtn: document.querySelector("#togglePreviewBtn"),
@@ -1137,7 +1188,156 @@
         previewCollapsed: "getword.previewCollapsed",
         config: "getword.config",
         customPinyin: "getword.customPinyin",
+        records: "getword.records",
+        printFilter: "getword.printFilter",
       };
+
+      const STATUS_LEARNING = "learning";
+      const STATUS_MASTERED = "mastered";
+      const wordRecords = new Map();
+      let printFilter = "all";
+
+      function getRecord(word) {
+        return wordRecords.get(word) || null;
+      }
+      function getStatus(word) {
+        const r = wordRecords.get(word);
+        return r ? r.status : "";
+      }
+      function setStatus(word, status) {
+        const w = (word || "").trim();
+        if (!w) return false;
+        const now = Date.now();
+        const cur = wordRecords.get(w);
+        if (!status) {
+          if (!cur) return false;
+          wordRecords.delete(w);
+          return true;
+        }
+        if (status !== STATUS_LEARNING && status !== STATUS_MASTERED) return false;
+        if (cur && cur.status === status) return false;
+        const next = cur || {
+          status,
+          firstSeen: now,
+          lastSuccess: 0,
+          lastFail: 0,
+          successStreak: 0,
+          failCount: 0,
+          updatedAt: now,
+        };
+        next.status = status;
+        next.updatedAt = now;
+        if (status === STATUS_MASTERED) {
+          next.lastSuccess = now;
+          next.successStreak = (cur && cur.successStreak ? cur.successStreak : 0) + 1;
+        } else if (status === STATUS_LEARNING) {
+          next.lastFail = now;
+          next.failCount = (cur && cur.failCount ? cur.failCount : 0) + 1;
+          next.successStreak = 0;
+        }
+        wordRecords.set(w, next);
+        return true;
+      }
+      function wordsByStatus(status) {
+        const out = [];
+        wordRecords.forEach((rec, word) => {
+          if (rec.status === status) out.push(word);
+        });
+        return out;
+      }
+      function recordsCount(status) {
+        let n = 0;
+        wordRecords.forEach((rec) => {
+          if (rec.status === status) n += 1;
+        });
+        return n;
+      }
+
+      function loadWordRecords() {
+        try {
+          const raw = localStorage.getItem(storageKeys.records);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === "object") {
+              for (const [word, rec] of Object.entries(parsed)) {
+                if (typeof word !== "string" || !rec || typeof rec !== "object") continue;
+                if (rec.status !== STATUS_LEARNING && rec.status !== STATUS_MASTERED) continue;
+                wordRecords.set(word, {
+                  status: rec.status,
+                  firstSeen: Number(rec.firstSeen) || 0,
+                  lastSuccess: Number(rec.lastSuccess) || 0,
+                  lastFail: Number(rec.lastFail) || 0,
+                  successStreak: Number(rec.successStreak) || 0,
+                  failCount: Number(rec.failCount) || 0,
+                  updatedAt: Number(rec.updatedAt) || 0,
+                });
+              }
+            }
+          }
+        } catch (error) {
+          /* corrupt records -> start fresh */
+        }
+
+        try {
+          const filter = localStorage.getItem(storageKeys.printFilter);
+          if (filter) printFilter = filter;
+        } catch (error) {
+          /* ignore */
+        }
+
+        // 旧版迁移：把 getword.masteredWords / getword.hideMastered 映射到新结构。
+        // 保留旧 key 不删除，便于回退。
+        let migrated = false;
+        try {
+          const legacyMastered = localStorage.getItem(storageKeys.masteredWords);
+          if (legacyMastered && !localStorage.getItem(storageKeys.records)) {
+            const now = Date.now();
+            legacyMastered
+              .split(/\n+/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+              .forEach((w) => {
+                if (!wordRecords.has(w)) {
+                  wordRecords.set(w, {
+                    status: STATUS_MASTERED,
+                    firstSeen: now,
+                    lastSuccess: now,
+                    lastFail: 0,
+                    successStreak: 1,
+                    failCount: 0,
+                    updatedAt: now,
+                  });
+                }
+              });
+            migrated = true;
+          }
+        } catch (error) {
+          /* ignore */
+        }
+        try {
+          const legacyHide = localStorage.getItem(storageKeys.hideMastered);
+          if (legacyHide && !localStorage.getItem(storageKeys.printFilter)) {
+            printFilter = legacyHide === "yes" ? "hideMastered" : "all";
+            migrated = true;
+          }
+        } catch (error) {
+          /* ignore */
+        }
+        if (migrated) saveWordRecords();
+      }
+
+      function saveWordRecords() {
+        try {
+          const payload = {};
+          wordRecords.forEach((rec, word) => {
+            payload[word] = rec;
+          });
+          localStorage.setItem(storageKeys.records, JSON.stringify(payload));
+          localStorage.setItem(storageKeys.printFilter, printFilter);
+        } catch (error) {
+          notePersistenceFailure();
+        }
+      }
 
       const persistedConfigKeys = [
         "words",
@@ -1248,7 +1448,34 @@
         },
       };
 
+      // 我的本：从 wordRecords 派生的两本"虚拟词库"。结构与其它 bank 一致，
+      // 但 units[0].words 在每次读取/渲染前由 refreshDynamicBanks() 同步刷新。
+      // 放在最前面，让"用户自己的本"是第一公民。
+      const dynamicBankKeys = new Set(["myDifficult", "myMastered"]);
+      function refreshDynamicBanks() {
+        wordBanks.myDifficult = wordBanks.myDifficult || {
+          name: "我的生词本",
+          short: "生词本",
+          grade: 0,
+          semester: "我的",
+          dynamic: true,
+          units: [{ key: "all", name: "整册全部", words: [] }],
+        };
+        wordBanks.myMastered = wordBanks.myMastered || {
+          name: "我的已掌握",
+          short: "已掌握",
+          grade: 0,
+          semester: "我的",
+          dynamic: true,
+          units: [{ key: "all", name: "整册全部", words: [] }],
+        };
+        wordBanks.myDifficult.units[0].words = wordsByStatus(STATUS_LEARNING);
+        wordBanks.myMastered.units[0].words = wordsByStatus(STATUS_MASTERED);
+      }
+      refreshDynamicBanks();
+
       const wordBankOrder = [
+        "myDifficult", "myMastered",
         "grade1a", "grade1b",
         "grade2a", "grade2b",
         "grade3a", "grade3b",
@@ -1279,42 +1506,47 @@
           .filter(Boolean);
       }
 
-      function masteredWordSet() {
-        return new Set(splitWords(els.masteredWords.value));
+      function syncRecordsTextareas() {
+        if (els.learningWordsBox) {
+          els.learningWordsBox.value = wordsByStatus(STATUS_LEARNING).join("\n");
+        }
+        if (els.masteredWordsBox) {
+          els.masteredWordsBox.value = wordsByStatus(STATUS_MASTERED).join("\n");
+        }
       }
 
-      function updateMasteredStatus(masteredCount, hiddenCount) {
-        if (!masteredCount) {
-          els.masteredStatus.textContent = "已掌握字词会保存在当前浏览器中。";
+      function applyTextareaToRecords(box, status) {
+        const inputWords = splitWords(box.value);
+        const inputSet = new Set(inputWords);
+        let changed = false;
+
+        // 删除：之前在该状态、现在不在 textarea 里的，清掉。
+        const prev = wordsByStatus(status);
+        prev.forEach((w) => {
+          if (!inputSet.has(w)) {
+            if (setStatus(w, "")) changed = true;
+          }
+        });
+        // 新增 / 状态切换。
+        inputWords.forEach((w) => {
+          if (getStatus(w) !== status) {
+            if (setStatus(w, status)) changed = true;
+          }
+        });
+        return changed;
+      }
+
+      function updateRecordsStats() {
+        if (!els.recordsStats) return;
+        const learning = recordsCount(STATUS_LEARNING);
+        const mastered = recordsCount(STATUS_MASTERED);
+        if (!learning && !mastered) {
+          els.recordsStats.textContent =
+            "在下方拼音校对区点「生词」「已掌握」可累积记录。";
           return;
         }
-
-        els.masteredStatus.textContent =
-          els.hideMastered.value === "yes"
-            ? `已录入 ${masteredCount} 个已掌握字词，本次隐藏 ${hiddenCount} 个。`
-            : `已录入 ${masteredCount} 个已掌握字词，当前仍显示在练习纸中。`;
-      }
-
-      function loadMasteredSettings() {
-        try {
-          els.masteredWords.value =
-            localStorage.getItem(storageKeys.masteredWords) || "";
-          els.hideMastered.value =
-            localStorage.getItem(storageKeys.hideMastered) || "no";
-        } catch (error) {
-          els.masteredStatus.textContent =
-            "当前浏览器不允许本地保存，已掌握字词仅本次打开有效。";
-        }
-      }
-
-      function saveMasteredSettings() {
-        try {
-          localStorage.setItem(storageKeys.masteredWords, els.masteredWords.value);
-          localStorage.setItem(storageKeys.hideMastered, els.hideMastered.value);
-        } catch (error) {
-          els.masteredStatus.textContent =
-            "当前浏览器不允许本地保存，已掌握字词仅本次打开有效。";
-        }
+        els.recordsStats.textContent =
+          `生词 ${learning} · 已掌握 ${mastered}（保存在当前浏览器中）`;
       }
 
       function loadConfigSettings() {
@@ -1471,26 +1703,43 @@
 
       function syncItems() {
         const rawWords = splitWords(els.words.value);
-        const mastered = masteredWordSet();
-        const shouldHideMastered = els.hideMastered.value === "yes";
-        hiddenMasteredCount = shouldHideMastered
-          ? rawWords.filter((word) => mastered.has(word)).length
-          : 0;
-        const words = shouldHideMastered
-          ? rawWords.filter((word) => !mastered.has(word))
-          : rawWords;
+        let words = rawWords;
+        hiddenMasteredCount = 0;
+        if (printFilter === "hideMastered") {
+          words = rawWords.filter((w) => getStatus(w) !== STATUS_MASTERED);
+          hiddenMasteredCount = rawWords.length - words.length;
+        } else if (printFilter === "onlyLearning") {
+          words = rawWords.filter((w) => getStatus(w) === STATUS_LEARNING);
+        } else if (printFilter === "onlyMastered") {
+          words = rawWords.filter((w) => getStatus(w) === STATUS_MASTERED);
+        }
 
         items = words.map((word) => ({
           word,
           pinyin: customPinyin.get(word) || autoPinyin(word),
         }));
-        updateMasteredStatus(mastered.size, hiddenMasteredCount);
+        updateRecordsStats();
+        refreshDynamicBanks();
+        // 只更新两个动态本的 option 文本，避免每次输入重建整个下拉、打断用户选择。
+        updateDynamicBankLabels();
         renderPinyinEditor();
         renderSheet();
         saveConfigSettings();
       }
 
+      function updateDynamicBankLabels() {
+        if (!els.wordBank) return;
+        Array.from(els.wordBank.options).forEach((opt) => {
+          if (!dynamicBankKeys.has(opt.value)) return;
+          const bank = wordBanks[opt.value];
+          if (!bank) return;
+          const n = (bank.units[0] && bank.units[0].words.length) || 0;
+          opt.textContent = `${bank.name}（${n}）`;
+        });
+      }
+
       function populateBankSelect() {
+        const prev = els.wordBank.value;
         els.wordBank.innerHTML = "";
         const placeholder = document.createElement("option");
         placeholder.value = "";
@@ -1501,9 +1750,16 @@
           if (!bank) return;
           const opt = document.createElement("option");
           opt.value = key;
-          opt.textContent = bank.name;
+          // 我的本：标题带词数，方便一眼看到累计。空本仍可见，否则用户找不到入口去清。
+          if (bank.dynamic) {
+            const n = (bank.units[0] && bank.units[0].words.length) || 0;
+            opt.textContent = `${bank.name}（${n}）`;
+          } else {
+            opt.textContent = bank.name;
+          }
           els.wordBank.append(opt);
         });
+        if (prev) els.wordBank.value = prev;
       }
 
       function populateUnitSelect(bankKey) {
@@ -1704,7 +1960,30 @@
           input.value = item.pinyin;
           input.setAttribute("aria-label", `${item.word} 的拼音`);
 
-          main.append(word, input);
+          const statusGroup = document.createElement("div");
+          statusGroup.className = "status-toggle";
+          [
+            { key: STATUS_LEARNING, label: "生词" },
+            { key: STATUS_MASTERED, label: "已掌握" },
+          ].forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "status-chip";
+            btn.dataset.status = opt.key;
+            btn.textContent = opt.label;
+            btn.setAttribute("aria-pressed", String(getStatus(item.word) === opt.key));
+            if (getStatus(item.word) === opt.key) btn.classList.add("active");
+            btn.addEventListener("click", () => {
+              const next = getStatus(item.word) === opt.key ? "" : opt.key;
+              setStatus(item.word, next);
+              saveWordRecords();
+              syncRecordsTextareas();
+              syncItems();
+            });
+            statusGroup.append(btn);
+          });
+
+          main.append(word, input, statusGroup);
           row.append(main);
 
           let hintsRow = null;
@@ -1905,9 +2184,10 @@
         if (!pageItems.length) {
           const empty = document.createElement("div");
           empty.className = "empty";
-          empty.textContent = hiddenMasteredCount
-            ? "当前字词已全部隐藏，请调整已掌握字词或显示设置。"
-            : "请在左侧输入中文字词。";
+          empty.textContent =
+            hiddenMasteredCount || printFilter !== "all"
+              ? "当前字词已被过滤掉，请调整「练习纸过滤」或字词记录。"
+              : "请在左侧输入中文字词。";
           list.append(empty);
         }
 
@@ -1992,15 +2272,52 @@
         el.addEventListener("change", syncItems);
       });
 
-      [els.masteredWords, els.hideMastered].forEach((el) => {
-        el.addEventListener("input", () => {
-          saveMasteredSettings();
-          syncItems();
+      els.printFilter.addEventListener("change", () => {
+        printFilter = els.printFilter.value;
+        saveWordRecords();
+        syncItems();
+      });
+
+      // 两个 textarea 编辑后立即把内容写回 records，再回写 textarea 以做 trim/dedupe。
+      function bindRecordsTextarea(box, status) {
+        let timer = null;
+        box.addEventListener("input", () => {
+          clearTimeout(timer);
+          // 防抖：避免每次按键都重排 textarea 光标。
+          timer = setTimeout(() => {
+            const changed = applyTextareaToRecords(box, status);
+            if (changed) {
+              saveWordRecords();
+              syncItems();
+            } else {
+              updateRecordsStats();
+            }
+          }, 250);
         });
-        el.addEventListener("change", () => {
-          saveMasteredSettings();
-          syncItems();
+        box.addEventListener("blur", () => {
+          clearTimeout(timer);
+          const changed = applyTextareaToRecords(box, status);
+          syncRecordsTextareas();
+          if (changed) {
+            saveWordRecords();
+            syncItems();
+          } else {
+            updateRecordsStats();
+          }
         });
+      }
+      bindRecordsTextarea(els.learningWordsBox, STATUS_LEARNING);
+      bindRecordsTextarea(els.masteredWordsBox, STATUS_MASTERED);
+
+      els.recordsClearBtn.addEventListener("click", () => {
+        const total = wordRecords.size;
+        if (!total) return;
+        const ok = window.confirm(`将清空全部 ${total} 条字词记录（生词本与已掌握），确定？`);
+        if (!ok) return;
+        wordRecords.clear();
+        saveWordRecords();
+        syncRecordsTextareas();
+        syncItems();
       });
 
       els.wordBank.addEventListener("change", () => {
@@ -2029,7 +2346,10 @@
         setPreviewCollapsed(!els.app.classList.contains("preview-collapsed"));
       });
 
-      loadMasteredSettings();
+      loadWordRecords();
+      refreshDynamicBanks();
+      syncRecordsTextareas();
+      if (els.printFilter) els.printFilter.value = printFilter;
       loadPreviewSettings();
       populateBankSelect();
       renderQuickBankLinks();
