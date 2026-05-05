@@ -569,54 +569,57 @@
         font-size: 13pt;
       }
 
-      .sitemap {
-        margin: 24px auto 0;
-        max-width: 980px;
-        padding: 18px 22px 24px;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        color: #374151;
+      .quick-bank {
+        margin-top: 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        background: #f9fafb;
+      }
+
+      .quick-bank summary {
+        cursor: pointer;
+        padding: 10px 11px;
+        color: #1f2937;
+        font-size: 13px;
+        font-weight: 650;
+        user-select: none;
+      }
+
+      .quick-bank-body {
+        display: grid;
+        gap: 11px;
+        max-height: 320px;
+        overflow: auto;
+        padding: 0 11px 11px;
         font-size: 13px;
       }
 
-      .sitemap h3 {
-        margin: 0 0 12px;
-        font-size: 15px;
-        color: #111827;
-      }
-
-      .sitemap-block {
-        margin: 0 0 14px;
-      }
-
-      .sitemap-block h4 {
+      .quick-bank-block h4 {
         margin: 0 0 6px;
         font-size: 13px;
-        color: #1f2937;
       }
 
-      .sitemap-block h4 a,
-      .sitemap-block li a {
+      .quick-bank-block h4 a,
+      .quick-bank-block li a {
         color: var(--accent-dark);
         text-decoration: none;
       }
 
-      .sitemap-block h4 a:hover,
-      .sitemap-block li a:hover {
+      .quick-bank-block h4 a:hover,
+      .quick-bank-block li a:hover {
         text-decoration: underline;
       }
 
-      .sitemap-block ul {
+      .quick-bank-block ul {
         margin: 0;
         padding: 0;
         list-style: none;
         display: flex;
         flex-wrap: wrap;
-        gap: 6px 14px;
+        gap: 6px 12px;
       }
 
-      .sitemap-block li {
+      .quick-bank-block li {
         font-size: 12px;
       }
 
@@ -687,8 +690,7 @@
           visibility: visible;
         }
 
-        .controls,
-        .sitemap {
+        .controls {
           display: none;
         }
 
@@ -756,6 +758,10 @@
               <button id="loadBankBtn" class="btn secondary" type="button">加载</button>
             </div>
           </div>
+          <details class="quick-bank">
+            <summary>年级单元快速入口</summary>
+            <div id="quickBankLinks" class="quick-bank-body"></div>
+          </details>
         </section>
 
         <section class="section">
@@ -854,7 +860,6 @@
 
       <section class="preview" aria-label="A4 预览">
         <div id="sheet" class="sheet"></div>
-        <nav id="sitemap" class="sitemap" aria-label="按年级单元导航"></nav>
       </section>
     </main>
 
@@ -1004,7 +1009,7 @@
         printBtn: document.querySelector("#printBtn"),
         resetBtn: document.querySelector("#resetBtn"),
         pinyinStatus: document.querySelector("#pinyinStatus"),
-        sitemap: document.querySelector("#sitemap"),
+        quickBankLinks: document.querySelector("#quickBankLinks"),
       };
 
       let items = [];
@@ -1895,21 +1900,14 @@
         }
       }
 
-      function renderSitemap() {
-        if (!els.sitemap) return;
-        els.sitemap.innerHTML = "";
-        const wrap = document.createElement("div");
-        wrap.className = "sitemap-inner";
-
-        const heading = document.createElement("h3");
-        heading.textContent = "按年级·单元快速生成";
-        wrap.append(heading);
-
+      function renderQuickBankLinks() {
+        if (!els.quickBankLinks) return;
+        els.quickBankLinks.innerHTML = "";
         wordBankOrder.forEach((bankKey) => {
           const bank = wordBanks[bankKey];
           if (!bank) return;
           const block = document.createElement("section");
-          block.className = "sitemap-block";
+          block.className = "quick-bank-block";
 
           const title = document.createElement("h4");
           const titleLink = document.createElement("a");
@@ -1928,10 +1926,8 @@
             list.append(li);
           });
           block.append(list);
-          wrap.append(block);
+          els.quickBankLinks.append(block);
         });
-
-        els.sitemap.append(wrap);
       }
 
       function renderPinyinEditor() {
@@ -2288,7 +2284,7 @@
       loadMasteredSettings();
       loadPreviewSettings();
       populateBankSelect();
-      renderSitemap();
+      renderQuickBankLinks();
       const loadedFromHash = applyHashOnLoad();
       if (!loadedFromHash) {
         updateDocumentTitle();
