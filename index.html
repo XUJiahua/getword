@@ -1054,6 +1054,20 @@
         padding: 0 12px;
         font-size: 14px;
       }
+      .stroke-auto-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        justify-self: center;
+        font-size: 13px;
+        color: var(--ink-soft);
+        cursor: pointer;
+        user-select: none;
+      }
+      .stroke-auto-toggle input {
+        accent-color: var(--accent);
+      }
+
       .stroke-feedback {
         min-height: 22px;
         text-align: center;
@@ -1277,8 +1291,13 @@
           <button type="button" class="btn secondary" id="strokeBtnReplay">▶ 重播</button>
           <button type="button" class="btn secondary" id="strokeBtnPause">⏸ 暂停</button>
           <button type="button" class="btn secondary" id="strokeBtnStep">⏭ 单步</button>
+          <button type="button" class="btn secondary" id="strokeBtnSpeak">🔊 朗读</button>
           <button type="button" class="btn primary" id="strokeBtnQuiz">✍ 我来写</button>
         </div>
+        <label class="stroke-auto-toggle" id="strokeAutoToggleLabel">
+          <input type="checkbox" id="strokeAutoTts" checked />
+          <span>切字时自动朗读</span>
+        </label>
         <div id="strokeFeedback" class="stroke-feedback"></div>
       </div>
     </dialog>
@@ -1653,6 +1672,171 @@
         els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
       }
 
+      // ============= 屏幕端发音（Web Speech API） =============
+      // 纯前端 TTS，无外部依赖。多音字优先用拼音串送给引擎，避开默认读音错读。
+      const ttsState = {
+        supported: typeof window !== "undefined" && "speechSynthesis" in window,
+        voice: null,
+        voicesLoaded: false,
+        autoPlayKey: "getword.autoTts",
+      };
+
+      function pickChineseVoice() {
+        if (!ttsState.supported) return null;
+        const voices = window.speechSynthesis.getVoices();
+        return (
+          voices.find((v) => v.lang.startsWith("zh-CN") && v.localService) ||
+          voices.find((v) => v.lang.startsWith("zh") && v.localService) ||
+          voices.find((v) => v.lang.startsWith("zh-CN")) ||
+          voices.find((v) => v.lang.startsWith("zh")) ||
+          null
+        );
+      }
+
+      function refreshTtsVoice() {
+        ttsState.voice = pickChineseVoice();
+        ttsState.voicesLoaded = true;
+        // 🔊 按钮始终可用：MP3 路径不依赖 Web Speech，没有中文系统声也能放。
+        // title 仅提示当前 Web Speech 兜底状态。
+        const speakBtn = document.querySelector("#strokeBtnSpeak");
+        if (speakBtn) {
+          speakBtn.disabled = false;
+          speakBtn.title = ttsState.voice
+            ? `朗读（兜底声：${ttsState.voice.name}）`
+            : "朗读";
+        }
+      }
+
+      function initTts() {
+        if (!ttsState.supported) return;
+        // getVoices 在部分浏览器是异步的；onvoiceschanged 触发时再选一次。
+        refreshTtsVoice();
+        window.speechSynthesis.addEventListener?.(
+          "voiceschanged",
+          refreshTtsVoice,
+        );
+      }
+
+      function speak(text) {
+        if (!ttsState.supported || !text) return false;
+        try {
+          window.speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(text);
+          utt.lang = "zh-CN";
+          utt.rate = 0.85;
+          utt.pitch = 1;
+          if (ttsState.voice) utt.voice = ttsState.voice;
+          window.speechSynthesis.speak(utt);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      // 拼音音频：davinfifield/mp3-chinese-pinyin-sound（公共领域，jsDelivr）。
+      // 命名 `<拼音><声调数字>.mp3`，例如 chang2.mp3 / le5.mp3。
+      // 优先用它解决 Web Speech 把拼音串当字母读、以及多音字默认读音错的问题。
+      const PINYIN_AUDIO_CDN =
+        "https://cdn.jsdelivr.net/gh/davinfifield/mp3-chinese-pinyin-sound@master/mp3";
+      // 缓存音节命中状态："missing" 表示该音节仓库没有，避免重复发请求。
+      const audioCache = new Map();
+      let currentAudio = null;
+
+      const TONE_MARKS = {
+        ā: ["a", 1], á: ["a", 2], ǎ: ["a", 3], à: ["a", 4],
+        ē: ["e", 1], é: ["e", 2], ě: ["e", 3], è: ["e", 4],
+        ī: ["i", 1], í: ["i", 2], ǐ: ["i", 3], ì: ["i", 4],
+        ō: ["o", 1], ó: ["o", 2], ǒ: ["o", 3], ò: ["o", 4],
+        ū: ["u", 1], ú: ["u", 2], ǔ: ["u", 3], ù: ["u", 4],
+        ǖ: ["ü", 1], ǘ: ["ü", 2], ǚ: ["ü", 3], ǜ: ["ü", 4],
+      };
+
+      // 'cháng' → 'chang2'；'le' → 'le5'（轻声）；'nǚ' → 'nü3'（库不一定有，让 404 触发兜底）。
+      function pinyinSymbolToNumeric(p) {
+        if (!p) return "";
+        let tone = 5;
+        let base = "";
+        for (const ch of p) {
+          if (TONE_MARKS[ch]) {
+            const [letter, t] = TONE_MARKS[ch];
+            base += letter;
+            tone = t;
+          } else {
+            base += ch;
+          }
+        }
+        return base.toLowerCase() + tone;
+      }
+
+      async function playPinyinAudio(pinyinSymbol) {
+        const numeric = pinyinSymbolToNumeric(pinyinSymbol);
+        if (!numeric) return false;
+        if (audioCache.get(numeric) === "missing") return false;
+
+        const url = `${PINYIN_AUDIO_CDN}/${encodeURIComponent(numeric)}.mp3`;
+        // 打断旧音频与 Web Speech 队列，避免叠音。
+        if (currentAudio) {
+          try { currentAudio.pause(); } catch {}
+        }
+        if (ttsState.supported) {
+          try { window.speechSynthesis.cancel(); } catch {}
+        }
+        const audio = new Audio(url);
+        currentAudio = audio;
+        try {
+          await audio.play();
+          audioCache.set(numeric, "ok");
+          return true;
+        } catch {
+          // 404 / 解码失败 / 浏览器不允许（极少见）→ 标 missing，下次直接走兜底。
+          audioCache.set(numeric, "missing");
+          return false;
+        }
+      }
+
+      function isAutoTtsEnabled() {
+        try {
+          // 默认开启；显式 "0" 表示关。
+          return localStorage.getItem(ttsState.autoPlayKey) !== "0";
+        } catch {
+          return true;
+        }
+      }
+
+      function setAutoTtsEnabled(on) {
+        try {
+          localStorage.setItem(ttsState.autoPlayKey, on ? "1" : "0");
+        } catch {}
+      }
+
+      // 多音字感知：找出 char 所在的当前 item，取用户校对过的拼音。
+      function getCharPinyinForSpeak(char) {
+        const word = strokeDialogState.sourceWord;
+        if (!word) return null;
+        const item = items.find((it) => it.word === word);
+        if (!item) return null;
+        const chars = chineseChars(item.word);
+        const idx = chars.indexOf(char);
+        if (idx < 0) return null;
+        const parts = splitPinyin(item);
+        return parts[idx] || null;
+      }
+
+      async function speakCurrentChar() {
+        const ch = strokeDialogState.chars[strokeDialogState.index];
+        if (!ch) return;
+        // 优先：拿用户校对过的拼音 → 直接播放预录 MP3。
+        // 这样多音字按用户选定的读音念，普通字也以拼音音节为准（最准）。
+        const py = getCharPinyinForSpeak(ch);
+        if (py) {
+          const ok = await playPinyinAudio(py);
+          if (ok) return;
+        }
+        // 兜底：Web Speech API 念字。覆盖 davinfifield 库缺失的音节
+        // （如 nü/lüe/儿化音 / 叹词），以及无拼音可用的极端情况。
+        speak(ch);
+      }
+
       // ============= 笔顺动画 dialog（屏幕端 / 与打印解耦） =============
       // 复用 hanzi-writer 库（CDN，~50KB），通过 charDataLoader 钩子让它消费
       // 我们已有的 strokeCache，避免重复请求。打印时 CSS @media print 隐藏。
@@ -1698,6 +1882,9 @@
           pause: document.querySelector("#strokeBtnPause"),
           step: document.querySelector("#strokeBtnStep"),
           quiz: document.querySelector("#strokeBtnQuiz"),
+          speak: document.querySelector("#strokeBtnSpeak"),
+          autoTts: document.querySelector("#strokeAutoTts"),
+          autoTtsLabel: document.querySelector("#strokeAutoToggleLabel"),
           feedback: document.querySelector("#strokeFeedback"),
         };
       }
@@ -1807,6 +1994,7 @@
         strokeDialogState.stepping = false;
         resetPlaybackButtons();
         strokeDialogState.writer.animateCharacter();
+        if (isAutoTtsEnabled()) speakCurrentChar();
       }
 
       async function openStrokeDialog(word) {
@@ -1983,12 +2171,29 @@
         e.pause.addEventListener("click", strokePauseToggle);
         e.step.addEventListener("click", strokeStep);
         e.quiz.addEventListener("click", strokeStartQuiz);
+        if (e.speak) e.speak.addEventListener("click", speakCurrentChar);
+        if (e.autoTts) {
+          e.autoTts.checked = isAutoTtsEnabled();
+          e.autoTts.addEventListener("change", () => {
+            setAutoTtsEnabled(e.autoTts.checked);
+          });
+        }
+        // 没有 Web Speech 也行（MP3 路径仍可用），所以保留自动朗读开关；
+        // 仅在浏览器连 Audio 元素都不支持时才隐藏（极旧环境，几乎不会发生）。
         // 点 backdrop 关闭
         e.dialog.addEventListener("click", (ev) => {
           if (ev.target === e.dialog) closeStrokeDialog();
         });
         // ESC：原生 dialog 自动触发 close 事件
         e.dialog.addEventListener("close", () => {
+          // 关闭时打断未播完的语音 / MP3，避免后台还在念。
+          if (ttsState.supported) {
+            try { window.speechSynthesis.cancel(); } catch {}
+          }
+          if (currentAudio) {
+            try { currentAudio.pause(); } catch {}
+            currentAudio = null;
+          }
           disposeStrokeWriter();
         });
       }
@@ -3300,6 +3505,7 @@
       renderQuickBankLinks();
       loadConfigSettings();
       loadCustomPinyin();
+      initTts();
       bindStrokeDialog();
       configHydrated = true;
       const loadedFromHash = applyHashOnLoad();
