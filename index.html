@@ -100,6 +100,14 @@
         box-sizing: border-box;
       }
 
+      /* 移动端 Chrome/Safari 默认会对"看上去太小"的文本做自动放大（font boost）。
+         这会让 .page 内容真实高度比 mm 排版预期更高，导致按 mm 量出来"装得下"
+         但实际渲染溢出。锁回 100% 确保 mm 排版严格按 CSS 走。 */
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
       body {
         margin: 0;
         color: var(--ink);
@@ -3335,6 +3343,9 @@
 
       // A4 物理高度（px）。CSS 1mm = 96/25.4 px。preview 与 print 都按这个切。
       const A4_PAGE_HEIGHT_PX = (297 * 96) / 25.4;
+      // 安全余量：移动端字体微调、亚像素舍入、打印机最小不可印边距等，
+      // 让"刚好压线"的页在物理打印时再溢出。留 4mm 缓冲。
+      const PAGE_HEIGHT_TOLERANCE_PX = (4 * 96) / 25.4;
 
       // 按 maxPerPage 上限 + 实测高度自动分页。perPage 退化为"软上限"——
       // 内容真正能装多少由实际占多高决定，避免预览看着一张 A4，打印却溢出 1-2 行。
@@ -3342,12 +3353,17 @@
         if (!allItems.length) return [[]];
 
         // 离屏 probe page：宽度仍是 .page 自带的 210mm，所以行内 cell 换行
-        // 与正式渲染一致。位置挪到屏外避免视觉闪烁。
+        // 与正式渲染一致。用 fixed + visibility:hidden，避免 absolute+left:-100000
+        // 在 iOS Safari 撑大 document 触发视口缩放、影响测量精度。
+        // min-height 必须清掉——否则 .page 自身的 297mm 兜底让空 probe 也撑满，
+        // 没法用阈值识别"内容真正快撑爆"的临界点。
         const probe = buildPage([], 0);
-        probe.style.position = "absolute";
+        probe.style.position = "fixed";
         probe.style.top = "0";
-        probe.style.left = "-100000px";
+        probe.style.left = "0";
+        probe.style.minHeight = "0";
         probe.style.visibility = "hidden";
+        probe.style.pointerEvents = "none";
         document.body.appendChild(probe);
         const probeList = probe.querySelector(".word-list");
         probeList.innerHTML = ""; // 清掉 buildPage([]) 留下的 .empty 占位
@@ -3355,8 +3371,9 @@
         const pages = [];
         let current = [];
 
+        const limit = A4_PAGE_HEIGHT_PX - PAGE_HEIGHT_TOLERANCE_PX;
         const overflowed = () =>
-          probe.getBoundingClientRect().height > A4_PAGE_HEIGHT_PX + 0.5;
+          probe.getBoundingClientRect().height > limit;
 
         for (let i = 0; i < allItems.length; i++) {
           const item = allItems[i];
