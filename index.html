@@ -271,6 +271,22 @@
         padding-top: 4px;
       }
 
+      /* 仅触屏设备可见。iOS Safari 完全不支持 @page，会强加打印机最小边距，
+         导致 .page 缩一圈+底部溢出。Android Chrome 也常被打印 app 干预。
+         CSS 改不动；引导用户走"存为 PDF → 文件 app 打印"这条更稳的路径。 */
+      .print-mobile-hint {
+        display: none;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .print-mobile-hint {
+          display: block;
+        }
+      }
+
       .bank-actions {
         display: grid;
         grid-template-columns: 1fr;
@@ -1372,6 +1388,11 @@
             <button id="printBtn" class="btn primary" type="button">打印 / 保存 PDF</button>
             <button id="resetBtn" class="btn secondary" type="button">重置示例</button>
           </div>
+          <p class="print-mobile-hint">
+            手机打印 / 存 PDF 都可能内容缩水或溢出第二页（iOS 所有浏览器
+            都用 Safari 内核，不完整支持 CSS 打印规范，绕不过去）。要精准
+            A4 排版请改用电脑浏览器打开本页。
+          </p>
         </section>
       </aside>
 
