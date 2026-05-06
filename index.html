@@ -502,7 +502,10 @@
       .sheet {
         display: grid;
         gap: 18px;
-        justify-content: center;
+        /* safe center：内容比 .preview 窄时居中；比它宽时（手机视口 < 210mm）
+           退化成 start，让左侧溢出可以横向滚动。否则普通 center 会把左侧
+           推进负坐标，移动端拖不到 .page 的左半边。 */
+        justify-content: safe center;
       }
 
       .page {
