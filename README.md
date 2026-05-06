@@ -45,3 +45,24 @@
 python3 scripts/fetch_strokes.py            # 已下载的字会跳过
 python3 scripts/fetch_strokes.py --version 2.0.1 --workers 24
 ```
+
+## 第三方服务依赖
+
+纯前端静态站，无自建后端、无埋点分析。所有外部资源经 [jsDelivr](https://www.jsdelivr.com/) CDN 加载，单点失效会自动降级。
+
+### 运行时（浏览器加载）
+
+| 服务 | 用途 |
+|---|---|
+| [pinyin-pro](https://github.com/zh-lx/pinyin-pro) `@3` (npm via jsDelivr) | 汉字转拼音；离线时仅有示例词降级数据 |
+| [hanzi-writer](https://github.com/chanind/hanzi-writer) `@3.7` (npm via jsDelivr) | 笔顺动画渲染引擎 |
+| [hanzi-writer-data](https://github.com/chanind/hanzi-writer-data) `@2.0.1` (npm via jsDelivr) | 单字笔顺 JSON 在线兜底（本地 `data/strokes/` 缺字时拉取） |
+| [davinfifield/mp3-chinese-pinyin-sound](https://github.com/davinfifield/mp3-chinese-pinyin-sound) (GitHub via jsDelivr) | 拼音发音 mp3，按 `<拼音><声调>.mp3` 命名 |
+| 浏览器内置 Web Speech API | 拼音 mp3 缺失时的 TTS 兜底 |
+| [schema.org](https://schema.org/) | JSON-LD 结构化数据的 `@context` |
+
+### 构建时（Python 脚本）
+
+| 服务 | 用途 |
+|---|---|
+| jsDelivr + [chanind/hanzi-writer-data](https://github.com/chanind/hanzi-writer-data) | `scripts/fetch_strokes.py` 预抓笔顺数据到 `data/strokes/` |
