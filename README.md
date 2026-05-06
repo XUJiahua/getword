@@ -29,3 +29,19 @@
 ## 拼音库
 
 完整拼音依赖浏览器从 CDN 加载 `pinyin-pro`。如果离线打开，页面仍可使用，但只内置了示例词的一小部分拼音作为降级。
+
+## 笔顺数据
+
+`data/strokes/` 下统一维护词库覆盖的全部 3000 个汉字的笔顺数据，每字一个 JSON：
+
+- 字段：`strokes`（每笔 SVG path）、`medians`（中线坐标，可用于动画）、`radStrokes`（部首笔画索引，可缺省）
+- 索引：`data/strokes/index.json` 列出全部字符与版本元信息
+- 来源：[chanind/hanzi-writer-data](https://github.com/chanind/hanzi-writer-data) v2.0.1（数据上游 [skishore/makemeahanzi](https://github.com/skishore/makemeahanzi)）
+- 许可：Arphic Public License，全文见 `data/strokes/LICENSE.txt`
+
+更新或扩充字表后可重新运行：
+
+```bash
+python3 scripts/fetch_strokes.py            # 已下载的字会跳过
+python3 scripts/fetch_strokes.py --version 2.0.1 --workers 24
+```
