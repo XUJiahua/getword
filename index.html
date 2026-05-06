@@ -1254,6 +1254,35 @@
       </section>
     </main>
 
+    <dialog id="strokeDialog" class="stroke-dialog" aria-labelledby="strokeDialogTitle">
+      <div class="stroke-dialog-body">
+        <div class="stroke-dialog-head">
+          <div>
+            <h3 id="strokeDialogTitle" class="stroke-dialog-title">笔顺</h3>
+            <div id="strokeDialogMeta" class="stroke-dialog-meta"></div>
+          </div>
+          <button
+            type="button"
+            class="stroke-dialog-close"
+            id="strokeDialogClose"
+            aria-label="关闭"
+          >×</button>
+        </div>
+        <div id="strokeDialogChips" class="stroke-char-chips"></div>
+        <div class="stroke-stage">
+          <div id="strokeStageTarget"></div>
+          <div id="strokeStageStatus" class="stroke-stage-status" hidden></div>
+        </div>
+        <div class="stroke-controls">
+          <button type="button" class="btn secondary" id="strokeBtnReplay">▶ 重播</button>
+          <button type="button" class="btn secondary" id="strokeBtnPause">⏸ 暂停</button>
+          <button type="button" class="btn secondary" id="strokeBtnStep">⏭ 单步</button>
+          <button type="button" class="btn primary" id="strokeBtnQuiz">✍ 我来写</button>
+        </div>
+        <div id="strokeFeedback" class="stroke-feedback"></div>
+      </div>
+    </dialog>
+
     <script src="data/grade1a.js"></script>
     <script src="data/grade1b.js"></script>
     <script src="data/grade2a.js"></script>
@@ -1775,6 +1804,8 @@
           },
         });
         strokeDialogState.stepIndex = 0;
+        strokeDialogState.stepping = false;
+        resetPlaybackButtons();
         strokeDialogState.writer.animateCharacter();
       }
 
@@ -1816,6 +1847,13 @@
         if (dialog && dialog.open) dialog.close();
       }
 
+      let strokePaused = false;
+      function resetPlaybackButtons() {
+        const { pause } = getStrokeDialogEls();
+        strokePaused = false;
+        if (pause) pause.textContent = "⏸ 暂停";
+      }
+
       function strokeReplay() {
         const w = strokeDialogState.writer;
         if (!w) return;
@@ -1824,11 +1862,12 @@
           strokeDialogState.quizActive = false;
         }
         strokeDialogState.stepIndex = 0;
+        strokeDialogState.stepping = false;
+        resetPlaybackButtons();
         setStrokeFeedback("");
         w.animateCharacter();
       }
 
-      let strokePaused = false;
       function strokePauseToggle() {
         const w = strokeDialogState.writer;
         const { pause } = getStrokeDialogEls();
@@ -1854,9 +1893,14 @@
         }
         const data = await loadStrokes(ch);
         if (!data) return;
-        if (strokeDialogState.stepIndex >= data.strokes.length) {
-          // 已到末尾：重置回 0
+        // 不在单步模式 / 上次播放过 / 越界 → 重头开始：清空舞台并重置进度。
+        if (
+          !strokeDialogState.stepping ||
+          strokeDialogState.stepIndex >= data.strokes.length
+        ) {
+          strokeDialogState.stepping = true;
           strokeDialogState.stepIndex = 0;
+          resetPlaybackButtons();
           if (typeof w.hideCharacter === "function") w.hideCharacter();
         }
         if (typeof w.animateStroke === "function") {
@@ -3265,34 +3309,5 @@
       }
       window.addEventListener("load", syncItems);
     </script>
-
-    <dialog id="strokeDialog" class="stroke-dialog" aria-labelledby="strokeDialogTitle">
-      <div class="stroke-dialog-body">
-        <div class="stroke-dialog-head">
-          <div>
-            <h3 id="strokeDialogTitle" class="stroke-dialog-title">笔顺</h3>
-            <div id="strokeDialogMeta" class="stroke-dialog-meta"></div>
-          </div>
-          <button
-            type="button"
-            class="stroke-dialog-close"
-            id="strokeDialogClose"
-            aria-label="关闭"
-          >×</button>
-        </div>
-        <div id="strokeDialogChips" class="stroke-char-chips"></div>
-        <div class="stroke-stage">
-          <div id="strokeStageTarget"></div>
-          <div id="strokeStageStatus" class="stroke-stage-status" hidden></div>
-        </div>
-        <div class="stroke-controls">
-          <button type="button" class="btn secondary" id="strokeBtnReplay">▶ 重播</button>
-          <button type="button" class="btn secondary" id="strokeBtnPause">⏸ 暂停</button>
-          <button type="button" class="btn secondary" id="strokeBtnStep">⏭ 单步</button>
-          <button type="button" class="btn primary" id="strokeBtnQuiz">✍ 我来写</button>
-        </div>
-        <div id="strokeFeedback" class="stroke-feedback"></div>
-      </div>
-    </dialog>
   </body>
 </html>
