@@ -127,9 +127,42 @@
       }
 
       .app {
+        position: relative;
         display: grid;
-        grid-template-columns: minmax(320px, 420px) 1fr;
+        grid-template-columns: var(--controls-width, 360px) 1fr;
         min-height: 100vh;
+      }
+
+      /* 拖动调整 controls 宽度的把手。position: absolute 把它从 grid 行列里抽出，
+         避免它被当成第三个 grid item 错位。命中区 8px，可见条只在 hover/drag 时出现，
+         覆盖在 .controls 原本的 border-right 上。
+         移动端 / preview 收起时隐藏（详见各自规则）。 */
+      .resize-handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--controls-width, 360px);
+        width: 8px;
+        margin-left: -4px;
+        cursor: col-resize;
+        z-index: 3;
+        touch-action: none;
+      }
+
+      .resize-handle::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(50% - 1px);
+        width: 2px;
+        background: transparent;
+        transition: background 0.15s ease;
+      }
+
+      .resize-handle:hover::before,
+      .resize-handle.dragging::before {
+        background: var(--accent);
       }
 
       .controls {
@@ -859,6 +892,10 @@
         .page {
           transform-origin: top center;
         }
+
+        .resize-handle {
+          display: none;
+        }
       }
 
       /* 预览缩放：桌面用户从 .zoom-presets 选 50/75/100/125 档位写入这个变量；
@@ -925,7 +962,8 @@
       }
 
       /* preview 收起时档位条也跟着消失（fixed 元素不在 .preview 子树里靠 opacity:0 隐藏）。 */
-      .app.preview-collapsed .preview-toolbar {
+      .app.preview-collapsed .preview-toolbar,
+      .app.preview-collapsed .resize-handle {
         display: none;
       }
 
@@ -1396,6 +1434,14 @@
         </section>
       </aside>
 
+      <div
+        id="resizeHandle"
+        class="resize-handle"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="拖动调整左侧宽度"
+      ></div>
+
       <section class="preview" aria-label="A4 预览">
         <div class="preview-toolbar">
           <div id="zoomPresets" class="zoom-presets" role="group" aria-label="预览缩放">
@@ -1603,6 +1649,7 @@
         sheet: document.querySelector("#sheet"),
         togglePreviewBtn: document.querySelector("#togglePreviewBtn"),
         zoomPresets: document.querySelector("#zoomPresets"),
+        resizeHandle: document.querySelector("#resizeHandle"),
         printBtn: document.querySelector("#printBtn"),
         resetBtn: document.querySelector("#resetBtn"),
         pinyinStatus: document.querySelector("#pinyinStatus"),
@@ -2340,6 +2387,7 @@
         hideMastered: "getword.hideMastered",
         previewCollapsed: "getword.previewCollapsed",
         previewZoom: "getword.previewZoom",
+        controlsWidth: "getword.controlsWidth",
         config: "getword.config",
         customPinyin: "getword.customPinyin",
         records: "getword.records",
@@ -2930,6 +2978,78 @@
           // ignore
         }
         setPreviewZoom(zoom, false);
+      }
+
+      // 左侧 controls 宽度。CSS 变量 --controls-width 驱动 grid 模板列。
+      // 边界：min 280（保证字段不会被挤变形）；max 留给 preview 至少 320，
+      // 同时不超过视口 70%，避免极端拖到全屏。
+      const CONTROLS_WIDTH_MIN = 280;
+      function clampControlsWidth(w) {
+        const max = Math.max(
+          CONTROLS_WIDTH_MIN,
+          Math.min(window.innerWidth - 320, window.innerWidth * 0.7),
+        );
+        return Math.round(Math.max(CONTROLS_WIDTH_MIN, Math.min(max, w)));
+      }
+      function setControlsWidth(w, persist = true) {
+        const clamped = clampControlsWidth(Number(w));
+        if (!Number.isFinite(clamped)) return;
+        document.documentElement.style.setProperty(
+          "--controls-width",
+          `${clamped}px`,
+        );
+        if (!persist) return;
+        try {
+          localStorage.setItem(storageKeys.controlsWidth, String(clamped));
+        } catch (error) {
+          notePersistenceFailure();
+        }
+      }
+      function loadControlsWidth() {
+        try {
+          const saved = parseFloat(localStorage.getItem(storageKeys.controlsWidth));
+          if (Number.isFinite(saved) && saved > 0) {
+            setControlsWidth(saved, false);
+          }
+        } catch (error) {
+          // ignore
+        }
+      }
+      function setupResizeHandle() {
+        const handle = els.resizeHandle;
+        if (!handle) return;
+        let dragging = false;
+        let pointerId = null;
+        handle.addEventListener("pointerdown", (e) => {
+          dragging = true;
+          pointerId = e.pointerId;
+          handle.classList.add("dragging");
+          handle.setPointerCapture(pointerId);
+          // 拖动期间不让 cursor 跳变到下面元素的 default
+          document.body.style.cursor = "col-resize";
+          // 防止文字被选中
+          document.body.style.userSelect = "none";
+          e.preventDefault();
+        });
+        handle.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          setControlsWidth(e.clientX);
+        });
+        const endDrag = (e) => {
+          if (!dragging) return;
+          dragging = false;
+          handle.classList.remove("dragging");
+          if (pointerId !== null) {
+            try { handle.releasePointerCapture(pointerId); } catch {}
+            pointerId = null;
+          }
+          document.body.style.cursor = "";
+          document.body.style.userSelect = "";
+        };
+        handle.addEventListener("pointerup", endDrag);
+        handle.addEventListener("pointercancel", endDrag);
+        // 双击回到默认
+        handle.addEventListener("dblclick", () => setControlsWidth(360));
       }
 
       function chineseChars(word) {
@@ -3753,6 +3873,8 @@
       if (els.printFilter) els.printFilter.value = printFilter;
       loadPreviewSettings();
       loadPreviewZoom();
+      loadControlsWidth();
+      setupResizeHandle();
       populateBankSelect();
       renderQuickBankLinks();
       loadConfigSettings();
