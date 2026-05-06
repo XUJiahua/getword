@@ -870,14 +870,19 @@
       }
 
       @media print {
+        /* 关键：把"纸"的几何让渡给 @page。
+           原本 .page 自己 width:210mm + padding 14mm/13mm 把整张 A4 包死，
+           但移动端 Chrome/Safari 不一定遵守 @page { margin:0 }，会强加默认
+           打印边距，让 210mm 宽的 .page 缩在中间、底部多出来溢到第二页。
+           改成 @page 来声明边距，.page 自身退化成纯内容块——浏览器自己处理
+           "纸边距-内容"的关系，桌面/移动 都按各自习惯排好。 */
         @page {
           size: A4;
-          margin: 0;
+          margin: 14mm 14mm 13mm;
         }
 
         html,
         body {
-          width: 210mm;
           background: #fff;
         }
 
@@ -914,9 +919,11 @@
         }
 
         .page {
-          width: 210mm;
-          min-height: 297mm;
+          width: auto;
+          min-height: 0;
+          padding: 0;
           margin: 0;
+          background: #fff;
           box-shadow: none;
         }
       }
