@@ -670,6 +670,56 @@
         z-index: 1;
       }
 
+      .cell .glyph,
+      .line-cell .glyph {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        fill: var(--paper-trace);
+        pointer-events: none;
+      }
+
+      .line-cell .glyph {
+        width: 13.2mm;
+        height: 13.2mm;
+      }
+
+      /* 笔顺图：旧笔淡灰，新笔深色，起笔小红点 */
+      .glyph .new-stroke {
+        fill: var(--paper-ink);
+      }
+      .glyph .stroke-start {
+        fill: var(--danger);
+        stroke: var(--paper-cell);
+        stroke-width: 8;
+      }
+      .strokes-grid {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.4mm;
+        width: 100%;
+      }
+      .strokes-unit {
+        grid-template-columns: minmax(13.2mm, auto) 1fr;
+        grid-template-areas: "py cells";
+        align-items: center;
+        justify-items: start;
+        gap: 2.4mm;
+      }
+      .strokes-unit .char-pinyin {
+        grid-area: py;
+        text-align: right;
+        white-space: nowrap;
+        min-width: 13.2mm;
+      }
+      .strokes-unit .unit-cells {
+        grid-area: cells;
+        justify-content: flex-start;
+        gap: 1.6mm;
+      }
+
       .cell.blank,
       .line-cell.blank {
         color: transparent;
@@ -917,6 +967,7 @@
               <select id="mode">
                 <option value="write">看拼音写汉字</option>
                 <option value="trace">描红练习</option>
+                <option value="strokes">笔顺图</option>
                 <option value="copy">左范字右抄写</option>
                 <option value="dictation">听写纸</option>
               </select>
@@ -1181,6 +1232,206 @@
       let items = [];
       let customPinyin = new Map();
       let hiddenMasteredCount = 0;
+
+      // 笔顺数据：CDN 懒加载 + 内存缓存（按字符）。失败则保留文字占位作降级。
+      // 数据源 hanzi-writer-data v2.0.1（make-me-a-hanzi 派生），ARPHIC PL。
+      const STROKES_CDN =
+        "https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0.1";
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      const strokeCache = new Map();
+      let renderVersion = 0;
+      let pendingStrokeFills = Promise.resolve();
+
+      function loadStrokes(ch) {
+        if (strokeCache.has(ch)) return strokeCache.get(ch);
+        const url = `${STROKES_CDN}/${encodeURIComponent(ch)}.json`;
+        const promise = fetch(url, { mode: "cors" })
+          .then((r) => {
+            if (!r.ok) throw new Error(`http ${r.status}`);
+            return r.json();
+          })
+          .catch(() => {
+            strokeCache.delete(ch); // 失败可重试
+            return null;
+          });
+        strokeCache.set(ch, promise);
+        return promise;
+      }
+
+      function buildStrokeSvg(data, options = {}) {
+        // highlightIndex: 整数 → 显示前 highlightIndex+1 笔，最后一笔高亮 + 起笔点；
+        //                 缺省/null → 完整字（描红用）。
+        const { highlightIndex = null } = options;
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("viewBox", "0 0 1024 1024");
+        svg.setAttribute("class", "glyph");
+        svg.setAttribute("aria-hidden", "true");
+        const g = document.createElementNS(SVG_NS, "g");
+        // make-me-a-hanzi 的 path 在 1024x1024 内、Y 轴向上，整体翻一下到屏幕坐标。
+        g.setAttribute("transform", "translate(0,900) scale(1,-1)");
+        const upTo =
+          highlightIndex == null ? data.strokes.length - 1 : highlightIndex;
+        for (let i = 0; i <= upTo && i < data.strokes.length; i += 1) {
+          const p = document.createElementNS(SVG_NS, "path");
+          p.setAttribute("d", data.strokes[i]);
+          if (highlightIndex != null && i === highlightIndex) {
+            p.setAttribute("class", "new-stroke");
+          }
+          g.append(p);
+        }
+        if (
+          highlightIndex != null &&
+          data.medians &&
+          data.medians[highlightIndex] &&
+          data.medians[highlightIndex][0]
+        ) {
+          const [x, y] = data.medians[highlightIndex][0];
+          const dot = document.createElementNS(SVG_NS, "circle");
+          dot.setAttribute("cx", String(x));
+          dot.setAttribute("cy", String(y));
+          dot.setAttribute("r", "32");
+          dot.setAttribute("class", "stroke-start");
+          g.append(dot);
+        }
+        svg.append(g);
+        return svg;
+      }
+
+      function fillStrokeSvgs(version) {
+        const placeholders = els.sheet.querySelectorAll("[data-glyph-char]");
+        if (!placeholders.length) return Promise.resolve();
+        const byChar = new Map();
+        placeholders.forEach((el) => {
+          const ch = el.getAttribute("data-glyph-char");
+          if (!byChar.has(ch)) byChar.set(ch, []);
+          byChar.get(ch).push(el);
+        });
+        const tasks = Array.from(byChar.keys()).map((ch) =>
+          loadStrokes(ch).then((data) => ({ ch, data })),
+        );
+        return Promise.all(tasks).then((results) => {
+          if (version !== renderVersion) return; // 期间已重渲染，丢弃旧结果
+          requestAnimationFrame(() => {
+            if (version !== renderVersion) return;
+            results.forEach(({ ch, data }) => {
+              if (!data) return; // 失败：保留占位文字（与现有灰字效果一致）
+              byChar.get(ch).forEach((el) => {
+                const text = el.querySelector(".cell-text");
+                if (text) {
+                  text.replaceWith(buildStrokeSvg(data));
+                  return;
+                }
+                if (el.classList.contains("line-cell")) {
+                  el.textContent = "";
+                  el.append(buildStrokeSvg(data));
+                }
+              });
+            });
+          });
+        });
+      }
+
+      // strokes 模式：renderStrokesSheet 异步取完数据后写入这张表，
+      // 同步路径下的 buildStrokesGroups 直接读取它。
+      let strokesDataForRender = null;
+
+      function makeStrokeCell(data, highlightIndex) {
+        const gridType = els.gridType.value;
+        const cell = document.createElement("span");
+        cell.className =
+          gridType === "line"
+            ? "line-cell"
+            : `cell ${gridType === "mi" ? "mi" : ""}`;
+        if (gridType === "mi") {
+          const forward = document.createElement("span");
+          forward.className = "cell-diagonal forward";
+          const back = document.createElement("span");
+          back.className = "cell-diagonal back";
+          cell.append(forward, back);
+        }
+        cell.append(buildStrokeSvg(data, { highlightIndex }));
+        return cell;
+      }
+
+      function buildStrokesGroups(item) {
+        const grid = document.createElement("div");
+        grid.className = "practice-grid strokes-grid";
+        const chars = chineseChars(item.word);
+        const pinyinParts = splitPinyin(item);
+
+        chars.forEach((ch, charIndex) => {
+          const data = strokesDataForRender
+            ? strokesDataForRender.get(ch)
+            : null;
+          const unit = document.createElement("div");
+          unit.className = "char-unit strokes-unit";
+
+          const py = document.createElement("div");
+          py.className = "char-pinyin";
+          py.textContent = pinyinParts[charIndex] || "";
+
+          const cells = document.createElement("div");
+          cells.className = "unit-cells";
+
+          if (!data) {
+            // 数据缺失（CDN 失败/离线）：降级为单格描红，保持可用。
+            cells.append(makeCell(ch, false, true));
+          } else {
+            cells.append(makeStrokeCell(data, null));
+            for (let s = 0; s < data.strokes.length; s += 1) {
+              cells.append(makeStrokeCell(data, s));
+            }
+          }
+
+          unit.append(py, cells);
+          grid.append(unit);
+        });
+        return grid;
+      }
+
+      async function renderStrokesSheet(version) {
+        // 占位：异步阶段告知用户正在加载。
+        const loading = document.createElement("div");
+        loading.className = "empty";
+        loading.textContent = "笔顺数据加载中…";
+        els.sheet.append(loading);
+
+        const allChars = new Set();
+        items.forEach((it) =>
+          chineseChars(it.word).forEach((ch) => allChars.add(ch)),
+        );
+        const entries = await Promise.all(
+          Array.from(allChars).map((ch) =>
+            loadStrokes(ch).then((data) => [ch, data]),
+          ),
+        );
+        if (version !== renderVersion) return;
+        strokesDataForRender = new Map(entries);
+
+        // 同步路径渲染分页，复用 buildPage（内部 buildPracticeGroups 已分流）。
+        els.sheet.innerHTML = "";
+        const perPage = Number(els.perPage.value);
+        const pages = [];
+        if (!items.length) {
+          pages.push([]);
+        } else {
+          for (let i = 0; i < items.length; i += perPage) {
+            pages.push(items.slice(i, i + perPage));
+          }
+        }
+        const frag = document.createDocumentFragment();
+        pages.forEach((pageItems, pageIndex) => {
+          frag.append(buildPage(pageItems, pageIndex * perPage));
+        });
+        els.sheet.append(frag);
+
+        const pinyinLoaded =
+          window.pinyinPro && typeof window.pinyinPro.pinyin === "function";
+        els.pinyinStatus.textContent = pinyinLoaded
+          ? ""
+          : "未能加载完整拼音库，当前只使用内置示例字词拼音；联网后刷新页面可自动恢复。";
+        els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
+      }
 
       const storageKeys = {
         masteredWords: "getword.masteredWords",
@@ -2060,7 +2311,7 @@
         els.pinyinList.append(frag);
       }
 
-      function makeCell(char, isSource = false) {
+      function makeCell(char, isSource = false, useSvgGlyph = false) {
         const gridType = els.gridType.value;
         const cell = document.createElement("span");
         cell.className =
@@ -2069,6 +2320,8 @@
             : `cell ${gridType === "mi" ? "mi" : ""}`;
         if (!char) cell.classList.add("blank");
         if (isSource) cell.classList.add("copy-source");
+        // 标记需要异步填充笔形 SVG。失败时保留文字占位，视觉上即旧版灰字。
+        if (useSvgGlyph && char) cell.dataset.glyphChar = char;
 
         if (gridType === "line") {
           cell.textContent = char || "字";
@@ -2100,6 +2353,8 @@
 
       function buildPracticeGroups(item) {
         const mode = els.mode.value;
+        if (mode === "strokes") return buildStrokesGroups(item);
+
         const repeat = Number(els.copies.value);
         const chars = chineseChars(item.word);
         const pinyinParts = splitPinyin(item);
@@ -2124,8 +2379,9 @@
             }
           } else {
             const showChar = mode === "trace" ? char : "";
+            const useSvg = mode === "trace";
             for (let i = 0; i < repeat; i += 1) {
-              cells.append(makeCell(showChar));
+              cells.append(makeCell(showChar, false, useSvg));
             }
           }
 
@@ -2210,6 +2466,12 @@
 
       function renderSheet() {
         els.sheet.innerHTML = "";
+        // strokes 模式走异步分支：必须先有数据才能确定 cell 数（=笔画数）。
+        if (els.mode.value === "strokes") {
+          const myVersion = ++renderVersion;
+          pendingStrokeFills = renderStrokesSheet(myVersion);
+          return;
+        }
         const perPage = Number(els.perPage.value);
         const pages = [];
 
@@ -2233,6 +2495,10 @@
           ? ""
           : "未能加载完整拼音库，当前只使用内置示例字词拼音；联网后刷新页面可自动恢复。";
         els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
+
+        // 笔形 SVG 异步填充：版本号防止旧次渲染的结果覆盖新一次的 DOM。
+        const myVersion = ++renderVersion;
+        pendingStrokeFills = fillStrokeSvgs(myVersion);
       }
 
       function resetExample() {
@@ -2339,7 +2605,20 @@
         applyHashOnLoad();
       });
 
-      els.printBtn.addEventListener("click", () => window.print());
+      els.printBtn.addEventListener("click", async () => {
+        // trace 模式下，先等当前页的笔形 SVG 全部就绪，避免打印出占位文字。
+        // 失败/超时也不阻塞打印（最坏情况下回退到原灰字）。
+        els.printBtn.disabled = true;
+        try {
+          await Promise.race([
+            pendingStrokeFills,
+            new Promise((res) => setTimeout(res, 4000)),
+          ]);
+        } finally {
+          els.printBtn.disabled = false;
+        }
+        window.print();
+      });
       els.resetBtn.addEventListener("click", resetExample);
       els.loadBankBtn.addEventListener("click", () => loadSelectedBank());
       els.togglePreviewBtn.addEventListener("click", () => {
