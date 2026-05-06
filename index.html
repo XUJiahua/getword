@@ -873,19 +873,20 @@
       }
 
       @media print {
-        /* 关键：把"纸"的几何让渡给 @page。
-           原本 .page 自己 width:210mm + padding 14mm/13mm 把整张 A4 包死，
-           但移动端 Chrome/Safari 不一定遵守 @page { margin:0 }，会强加默认
-           打印边距，让 210mm 宽的 .page 缩在中间、底部多出来溢到第二页。
-           改成 @page 来声明边距，.page 自身退化成纯内容块——浏览器自己处理
-           "纸边距-内容"的关系，桌面/移动 都按各自习惯排好。 */
+        /* @page margin: 0 是这工具能"打印不带页眉页脚"的关键——浏览器需要
+           margin 区才能塞默认 URL/页码/日期，给 0 它就被迫隐藏。代价是
+           移动端 Chrome / iOS Safari 不一定遵守，会强加打印机最小不可印
+           边距（~10mm），导致 .page 在纸上缩成一圈、底部溢到第二张。
+           两害相权——保留干净打印（影响所有用户），移动端的边距畸变作为
+           已知限制。如要无装饰打印，桌面用 Cmd+P 选"另存为 PDF"最稳。 */
         @page {
           size: A4;
-          margin: 14mm 14mm 13mm;
+          margin: 0;
         }
 
         html,
         body {
+          width: 210mm;
           background: #fff;
         }
 
@@ -922,11 +923,9 @@
         }
 
         .page {
-          width: auto;
-          min-height: 0;
-          padding: 0;
+          width: 210mm;
+          min-height: 297mm;
           margin: 0;
-          background: #fff;
           box-shadow: none;
         }
       }
