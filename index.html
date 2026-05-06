@@ -39,6 +39,10 @@
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7/dist/hanzi-writer.min.js"
+      defer
+    ></script>
     <style>
       :root {
         /* UI palette — cool ink on porcelain. Never appears on .page descendants. */
@@ -899,6 +903,193 @@
           box-shadow: none;
         }
       }
+
+      /* ============= 笔顺动画 dialog（屏幕端，打印隐藏） ============= */
+      .stroke-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--accent-deep);
+        font-size: 14px;
+        line-height: 1;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .stroke-trigger:hover {
+        background: var(--accent-tint);
+        border-color: var(--accent);
+      }
+      .stroke-trigger:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .stroke-dialog {
+        width: min(420px, 92vw);
+        max-width: 92vw;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        box-shadow: 0 24px 60px -28px oklch(20% 0.03 250 / 0.4);
+      }
+      .stroke-dialog::backdrop {
+        background: oklch(20% 0.005 250 / 0.45);
+      }
+      .stroke-dialog-body {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+      }
+      .stroke-dialog-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .stroke-dialog-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .stroke-dialog-meta {
+        font-size: 13px;
+        color: var(--ink-muted);
+      }
+      .stroke-dialog-close {
+        appearance: none;
+        border: none;
+        background: transparent;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        color: var(--ink-muted);
+        padding: 4px 6px;
+      }
+      .stroke-dialog-close:hover {
+        color: var(--ink);
+      }
+      .stroke-char-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .stroke-char-chip {
+        appearance: none;
+        min-width: 36px;
+        height: 36px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--ink);
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .stroke-char-chip.active {
+        border-color: var(--accent);
+        background: var(--accent-tint);
+        color: var(--accent-deep);
+      }
+      .stroke-stage {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        aspect-ratio: 1;
+        max-width: 280px;
+        margin: 0 auto;
+        background: var(--paper-cell);
+        border: 1px solid var(--paper-rule);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .stroke-stage::before,
+      .stroke-stage::after {
+        content: "";
+        position: absolute;
+        background: var(--paper-rule-soft);
+      }
+      .stroke-stage::before {
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+      }
+      .stroke-stage::after {
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
+      }
+      .stroke-stage svg {
+        position: relative;
+        z-index: 1;
+      }
+      .stroke-stage-status {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        color: var(--ink-muted);
+        background: var(--surface);
+      }
+      .stroke-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .stroke-controls .btn {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 14px;
+      }
+      .stroke-feedback {
+        min-height: 22px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--ink-soft);
+      }
+      .stroke-feedback.ok {
+        color: var(--accent-deep);
+        font-weight: 650;
+      }
+      .stroke-feedback.warn {
+        color: var(--caution-deep);
+      }
+
+      @media (max-width: 600px) {
+        .stroke-dialog {
+          width: 100vw;
+          max-width: 100vw;
+          height: 100vh;
+          max-height: 100vh;
+          border-radius: 0;
+          border: none;
+        }
+        .stroke-dialog-body {
+          height: 100%;
+          align-content: start;
+        }
+      }
+
+      @media print {
+        .stroke-trigger,
+        .stroke-dialog,
+        dialog[open].stroke-dialog {
+          display: none !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1431,6 +1622,331 @@
           ? ""
           : "未能加载完整拼音库，当前只使用内置示例字词拼音；联网后刷新页面可自动恢复。";
         els.pinyinStatus.className = pinyinLoaded ? "status" : "status warn";
+      }
+
+      // ============= 笔顺动画 dialog（屏幕端 / 与打印解耦） =============
+      // 复用 hanzi-writer 库（CDN，~50KB），通过 charDataLoader 钩子让它消费
+      // 我们已有的 strokeCache，避免重复请求。打印时 CSS @media print 隐藏。
+
+      let hanziWriterLibPromise = null;
+      function loadHanziWriterLib() {
+        if (window.HanziWriter) return Promise.resolve(window.HanziWriter);
+        if (hanziWriterLibPromise) return hanziWriterLibPromise;
+        // 脚本已用 defer 引入；这里只需等待。脚本失败时 90s 后超时。
+        hanziWriterLibPromise = new Promise((resolve, reject) => {
+          const start = Date.now();
+          const tick = () => {
+            if (window.HanziWriter) return resolve(window.HanziWriter);
+            if (Date.now() - start > 9000)
+              return reject(new Error("hanzi-writer 加载超时"));
+            setTimeout(tick, 80);
+          };
+          tick();
+        });
+        return hanziWriterLibPromise;
+      }
+
+      const strokeDialogState = {
+        writer: null,
+        chars: [], // 当前 dialog 里的所有字
+        index: 0, // 当前展示的字的下标
+        stepIndex: 0, // 单步模式：下一个要画的笔画索引
+        quizActive: false,
+        quizMistakes: 0,
+        sourceWord: "", // 触发 dialog 的原词，用于 quiz 后写 records
+      };
+
+      function getStrokeDialogEls() {
+        return {
+          dialog: document.querySelector("#strokeDialog"),
+          title: document.querySelector("#strokeDialogTitle"),
+          meta: document.querySelector("#strokeDialogMeta"),
+          chips: document.querySelector("#strokeDialogChips"),
+          target: document.querySelector("#strokeStageTarget"),
+          status: document.querySelector("#strokeStageStatus"),
+          close: document.querySelector("#strokeDialogClose"),
+          replay: document.querySelector("#strokeBtnReplay"),
+          pause: document.querySelector("#strokeBtnPause"),
+          step: document.querySelector("#strokeBtnStep"),
+          quiz: document.querySelector("#strokeBtnQuiz"),
+          feedback: document.querySelector("#strokeFeedback"),
+        };
+      }
+
+      function setStrokeStageStatus(text) {
+        const { status } = getStrokeDialogEls();
+        if (!status) return;
+        if (text) {
+          status.textContent = text;
+          status.hidden = false;
+        } else {
+          status.textContent = "";
+          status.hidden = true;
+        }
+      }
+
+      function setStrokeFeedback(text, kind = "") {
+        const { feedback } = getStrokeDialogEls();
+        if (!feedback) return;
+        feedback.textContent = text || "";
+        feedback.className =
+          "stroke-feedback" + (kind ? ` ${kind}` : "");
+      }
+
+      function updateStrokeChipActive() {
+        const { chips } = getStrokeDialogEls();
+        chips.querySelectorAll(".stroke-char-chip").forEach((b, i) => {
+          b.classList.toggle("active", i === strokeDialogState.index);
+          b.setAttribute(
+            "aria-pressed",
+            String(i === strokeDialogState.index),
+          );
+        });
+      }
+
+      function disposeStrokeWriter() {
+        const { target } = getStrokeDialogEls();
+        if (strokeDialogState.writer && strokeDialogState.quizActive) {
+          try {
+            strokeDialogState.writer.cancelQuiz();
+          } catch {}
+        }
+        strokeDialogState.writer = null;
+        strokeDialogState.quizActive = false;
+        strokeDialogState.stepIndex = 0;
+        strokeDialogState.quizMistakes = 0;
+        if (target) target.innerHTML = "";
+      }
+
+      async function showStrokeChar(char) {
+        const { target, title, meta } = getStrokeDialogEls();
+        title.textContent = `笔顺：${char}`;
+        meta.textContent = "";
+        setStrokeFeedback("");
+        setStrokeStageStatus("加载中…");
+
+        let lib;
+        try {
+          lib = await loadHanziWriterLib();
+        } catch {
+          setStrokeStageStatus("笔顺库加载失败，请检查网络后重试");
+          return;
+        }
+        const data = await loadStrokes(char);
+        if (!data) {
+          setStrokeStageStatus("此字暂无笔顺数据");
+          return;
+        }
+
+        disposeStrokeWriter();
+        setStrokeStageStatus("");
+        // 拼音：从当前 item 找；找不到就走 autoPinyin（单字）。
+        let pinyinHint = "";
+        try {
+          const fromItem = items.find((it) =>
+            chineseChars(it.word).includes(char),
+          );
+          if (fromItem) {
+            const idx = chineseChars(fromItem.word).indexOf(char);
+            pinyinHint = splitPinyin(fromItem)[idx] || "";
+          }
+          if (!pinyinHint) pinyinHint = autoPinyin(char);
+        } catch {}
+        meta.textContent = `${pinyinHint ? pinyinHint + " · " : ""}${data.strokes.length} 笔`;
+
+        strokeDialogState.writer = lib.create(target, char, {
+          width: 260,
+          height: 260,
+          padding: 8,
+          showOutline: true,
+          showCharacter: false,
+          strokeAnimationSpeed: 1.2,
+          delayBetweenStrokes: 250,
+          strokeColor: "#222",
+          outlineColor: "#cfcfcf",
+          drawingColor: "#1d6fa5",
+          radicalColor: "#1d6fa5",
+          // 关键：把 hanzi-writer 的数据请求接到我们已有的缓存上。
+          charDataLoader: (c, onComplete, onError) => {
+            loadStrokes(c).then(
+              (d) => (d ? onComplete(d) : onError && onError()),
+              () => onError && onError(),
+            );
+          },
+        });
+        strokeDialogState.stepIndex = 0;
+        strokeDialogState.writer.animateCharacter();
+      }
+
+      async function openStrokeDialog(word) {
+        const { dialog, chips } = getStrokeDialogEls();
+        if (!dialog) return;
+        const chars = chineseChars(word);
+        if (!chars.length) return;
+
+        strokeDialogState.chars = chars;
+        strokeDialogState.index = 0;
+        strokeDialogState.sourceWord = word;
+
+        // 字符切换 chip
+        chips.innerHTML = "";
+        chars.forEach((ch, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "stroke-char-chip";
+          b.textContent = ch;
+          b.addEventListener("click", () => {
+            strokeDialogState.index = i;
+            updateStrokeChipActive();
+            showStrokeChar(ch);
+          });
+          chips.append(b);
+        });
+        chips.style.display = chars.length > 1 ? "flex" : "none";
+        updateStrokeChipActive();
+
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+        showStrokeChar(chars[0]);
+      }
+
+      function closeStrokeDialog() {
+        const { dialog } = getStrokeDialogEls();
+        disposeStrokeWriter();
+        if (dialog && dialog.open) dialog.close();
+      }
+
+      function strokeReplay() {
+        const w = strokeDialogState.writer;
+        if (!w) return;
+        if (strokeDialogState.quizActive) {
+          try { w.cancelQuiz(); } catch {}
+          strokeDialogState.quizActive = false;
+        }
+        strokeDialogState.stepIndex = 0;
+        setStrokeFeedback("");
+        w.animateCharacter();
+      }
+
+      let strokePaused = false;
+      function strokePauseToggle() {
+        const w = strokeDialogState.writer;
+        const { pause } = getStrokeDialogEls();
+        if (!w) return;
+        if (strokePaused) {
+          if (typeof w.resumeAnimation === "function") w.resumeAnimation();
+          strokePaused = false;
+          pause.textContent = "⏸ 暂停";
+        } else {
+          if (typeof w.pauseAnimation === "function") w.pauseAnimation();
+          strokePaused = true;
+          pause.textContent = "▷ 继续";
+        }
+      }
+
+      async function strokeStep() {
+        const w = strokeDialogState.writer;
+        const ch = strokeDialogState.chars[strokeDialogState.index];
+        if (!w || !ch) return;
+        if (strokeDialogState.quizActive) {
+          try { w.cancelQuiz(); } catch {}
+          strokeDialogState.quizActive = false;
+        }
+        const data = await loadStrokes(ch);
+        if (!data) return;
+        if (strokeDialogState.stepIndex >= data.strokes.length) {
+          // 已到末尾：重置回 0
+          strokeDialogState.stepIndex = 0;
+          if (typeof w.hideCharacter === "function") w.hideCharacter();
+        }
+        if (typeof w.animateStroke === "function") {
+          w.animateStroke(strokeDialogState.stepIndex);
+        }
+        strokeDialogState.stepIndex += 1;
+      }
+
+      function strokeStartQuiz() {
+        const w = strokeDialogState.writer;
+        if (!w) return;
+        strokeDialogState.quizActive = true;
+        strokeDialogState.quizMistakes = 0;
+        setStrokeFeedback("用手指/鼠标按笔顺一笔一笔地写。");
+        try {
+          w.quiz({
+            onMistake: () => {
+              strokeDialogState.quizMistakes += 1;
+              setStrokeFeedback(
+                `这一笔不对，再试一次（已错 ${strokeDialogState.quizMistakes} 次）`,
+                "warn",
+              );
+            },
+            onCorrectStroke: () => {
+              setStrokeFeedback("好，继续下一笔。");
+            },
+            onComplete: ({ totalMistakes }) => {
+              strokeDialogState.quizActive = false;
+              if (totalMistakes === 0) {
+                setStrokeFeedback("全对！要把这个词标为已掌握吗？", "ok");
+                offerMarkMastered();
+              } else {
+                setStrokeFeedback(
+                  `完成（共错 ${totalMistakes} 次）。多写两遍再来。`,
+                );
+              }
+            },
+          });
+        } catch (err) {
+          strokeDialogState.quizActive = false;
+          setStrokeFeedback("无法开始测验，请重试。", "warn");
+        }
+      }
+
+      function offerMarkMastered() {
+        const word = strokeDialogState.sourceWord;
+        if (!word) return;
+        const { feedback } = getStrokeDialogEls();
+        if (!feedback) return;
+        // 已经是 mastered 就不再追加按钮，避免重复操作。
+        if (getStatus(word) === STATUS_MASTERED) {
+          feedback.append(document.createTextNode("（已在「已掌握」中）"));
+          return;
+        }
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn primary";
+        btn.style.marginLeft = "10px";
+        btn.style.minHeight = "30px";
+        btn.style.padding = "0 10px";
+        btn.style.fontSize = "12px";
+        btn.textContent = "标为已掌握";
+        btn.addEventListener("click", () => {
+          if (setStatus(word, STATUS_MASTERED)) {
+            saveWordRecords();
+            syncRecordsTextareas();
+            syncItems();
+          }
+          btn.disabled = true;
+          btn.textContent = "已标记 ✓";
+        });
+        feedback.append(btn);
+      }
+
+      function bindStrokeDialog() {
+        const e = getStrokeDialogEls();
+        if (!e.dialog) return;
+        e.close.addEventListener("click", closeStrokeDialog);
+        e.replay.addEventListener("click", strokeReplay);
+        e.pause.addEventListener("click", strokePauseToggle);
+        e.step.addEventListener("click", strokeStep);
+        e.quiz.addEventListener("click", strokeStartQuiz);
+        // 点 backdrop 关闭
+        e.dialog.addEventListener("click", (ev) => {
+          if (ev.target === e.dialog) closeStrokeDialog();
+        });
+        // ESC：原生 dialog 自动触发 close 事件
+        e.dialog.addEventListener("close", () => {
+          disposeStrokeWriter();
+        });
       }
 
       const storageKeys = {
@@ -2234,7 +2750,17 @@
             statusGroup.append(btn);
           });
 
-          main.append(word, input, statusGroup);
+          const strokeBtn = document.createElement("button");
+          strokeBtn.type = "button";
+          strokeBtn.className = "stroke-trigger";
+          strokeBtn.title = `查看「${item.word}」的笔顺`;
+          strokeBtn.setAttribute("aria-label", `查看 ${item.word} 笔顺`);
+          strokeBtn.textContent = "▶";
+          strokeBtn.addEventListener("click", () => {
+            openStrokeDialog(item.word);
+          });
+
+          main.append(word, input, statusGroup, strokeBtn);
           row.append(main);
 
           let hintsRow = null;
@@ -2634,6 +3160,7 @@
       renderQuickBankLinks();
       loadConfigSettings();
       loadCustomPinyin();
+      bindStrokeDialog();
       configHydrated = true;
       const loadedFromHash = applyHashOnLoad();
       if (!loadedFromHash) {
@@ -2642,5 +3169,34 @@
       }
       window.addEventListener("load", syncItems);
     </script>
+
+    <dialog id="strokeDialog" class="stroke-dialog" aria-labelledby="strokeDialogTitle">
+      <div class="stroke-dialog-body">
+        <div class="stroke-dialog-head">
+          <div>
+            <h3 id="strokeDialogTitle" class="stroke-dialog-title">笔顺</h3>
+            <div id="strokeDialogMeta" class="stroke-dialog-meta"></div>
+          </div>
+          <button
+            type="button"
+            class="stroke-dialog-close"
+            id="strokeDialogClose"
+            aria-label="关闭"
+          >×</button>
+        </div>
+        <div id="strokeDialogChips" class="stroke-char-chips"></div>
+        <div class="stroke-stage">
+          <div id="strokeStageTarget"></div>
+          <div id="strokeStageStatus" class="stroke-stage-status" hidden></div>
+        </div>
+        <div class="stroke-controls">
+          <button type="button" class="btn secondary" id="strokeBtnReplay">▶ 重播</button>
+          <button type="button" class="btn secondary" id="strokeBtnPause">⏸ 暂停</button>
+          <button type="button" class="btn secondary" id="strokeBtnStep">⏭ 单步</button>
+          <button type="button" class="btn primary" id="strokeBtnQuiz">✍ 我来写</button>
+        </div>
+        <div id="strokeFeedback" class="stroke-feedback"></div>
+      </div>
+    </dialog>
   </body>
 </html>
