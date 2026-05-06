@@ -845,6 +845,89 @@
         }
       }
 
+      /* 预览缩放：桌面用户从 .zoom-presets 选 50/75/100/125 档位写入这个变量；
+         移动端无视档位、走 auto-fit（下方 max-width 规则）。zoom 同时缩布局盒，
+         不像 transform: scale 留空白滚动区。
+         作用域 .preview .page 是有意的——分页 probe 直接挂在 document.body 下，
+         不在 .preview 里，所以测量页高仍按真实 794px。
+         打印不会被影响：规则套在 @media screen 里。 */
+      @media screen {
+        .preview .page {
+          zoom: var(--preview-zoom, 1);
+        }
+      }
+
+      /* 视口比 .page (210mm≈794px) 窄时强制 auto-fit，盖掉用户档位选择，
+         避免 mobile 残留 100% 又回到横滚。双指放大依赖 viewport meta 未禁用缩放，
+         浏览器原生 pinch-zoom 照常生效。 */
+      @media screen and (max-width: 820px) {
+        .preview .page {
+          zoom: calc((100vw - 28px) / 794);
+        }
+      }
+
+      /* 用 position: fixed 而非 sticky——.preview 有 overflow: auto 但没有高度上限，
+         本身不真的滚动（window 滚动），sticky 绑在 .preview 上就退化为 static。
+         fixed 钉到视口右上角，独立于任何滚动容器，始终可见。
+         preview 收起 / 移动端 / 打印时单独 display:none 隐藏。 */
+      .preview-toolbar {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 5;
+      }
+
+      .zoom-presets {
+        display: inline-flex;
+        gap: 4px;
+        padding: 5px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 8px 22px -14px oklch(20% 0.03 250 / 0.5);
+      }
+
+      .zoom-presets .btn {
+        min-height: 30px;
+        padding: 0;
+        font-size: 13px;
+      }
+
+      .zoom-step {
+        width: 30px;
+        font-weight: 700;
+      }
+
+      .zoom-readout {
+        min-width: 56px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .zoom-presets .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* preview 收起时档位条也跟着消失（fixed 元素不在 .preview 子树里靠 opacity:0 隐藏）。 */
+      .app.preview-collapsed .preview-toolbar {
+        display: none;
+      }
+
+      /* 移动端走 auto-fit，档位按钮没有效果，整条 toolbar 隐藏避免误导。 */
+      @media (max-width: 820px) {
+        .preview-toolbar {
+          display: none;
+        }
+      }
+
+      /* 打印路径：body * { visibility: hidden } 已让 toolbar 不可见，
+         但占位会让 .sheet 起始下移；display:none 彻底剔除布局。 */
+      @media print {
+        .preview-toolbar {
+          display: none !important;
+        }
+      }
+
       @media screen {
         .app.preview-collapsed {
           grid-template-columns: minmax(320px, 780px);
@@ -1293,6 +1376,13 @@
       </aside>
 
       <section class="preview" aria-label="A4 预览">
+        <div class="preview-toolbar">
+          <div id="zoomPresets" class="zoom-presets" role="group" aria-label="预览缩放">
+            <button type="button" class="btn secondary zoom-step" data-zoom-step="-1" aria-label="缩小">−</button>
+            <button type="button" class="btn secondary zoom-readout" data-zoom-reset aria-label="重置为 100%">100%</button>
+            <button type="button" class="btn secondary zoom-step" data-zoom-step="1" aria-label="放大">+</button>
+          </div>
+        </div>
         <div id="sheet" class="sheet"></div>
       </section>
     </main>
@@ -1491,6 +1581,7 @@
         pinyinList: document.querySelector("#pinyinList"),
         sheet: document.querySelector("#sheet"),
         togglePreviewBtn: document.querySelector("#togglePreviewBtn"),
+        zoomPresets: document.querySelector("#zoomPresets"),
         printBtn: document.querySelector("#printBtn"),
         resetBtn: document.querySelector("#resetBtn"),
         pinyinStatus: document.querySelector("#pinyinStatus"),
@@ -2227,6 +2318,7 @@
         masteredWords: "getword.masteredWords",
         hideMastered: "getword.hideMastered",
         previewCollapsed: "getword.previewCollapsed",
+        previewZoom: "getword.previewZoom",
         config: "getword.config",
         customPinyin: "getword.customPinyin",
         records: "getword.records",
@@ -2780,6 +2872,43 @@
           collapsed = false;
         }
         setPreviewCollapsed(collapsed, false);
+      }
+
+      // 通过 CSS 变量驱动 .preview .page 的 zoom；移动端 @media 规则会盖掉。
+      // [- readout +] 步进档位；readout 点一下回到 100%。
+      const ZOOM_PRESETS = [0.5, 0.75, 1, 1.25];
+      let currentZoom = 1;
+      function setPreviewZoom(zoom, persist = true) {
+        const z = Number(zoom);
+        if (!Number.isFinite(z) || z <= 0) return;
+        currentZoom = z;
+        document.documentElement.style.setProperty("--preview-zoom", String(z));
+        if (els.zoomPresets) {
+          const idx = ZOOM_PRESETS.indexOf(z);
+          const readout = els.zoomPresets.querySelector(".zoom-readout");
+          const minusBtn = els.zoomPresets.querySelector('[data-zoom-step="-1"]');
+          const plusBtn = els.zoomPresets.querySelector('[data-zoom-step="1"]');
+          if (readout) readout.textContent = `${Math.round(z * 100)}%`;
+          if (minusBtn) minusBtn.disabled = idx <= 0;
+          if (plusBtn) plusBtn.disabled = idx >= ZOOM_PRESETS.length - 1;
+        }
+        if (!persist) return;
+        try {
+          localStorage.setItem(storageKeys.previewZoom, String(z));
+        } catch (error) {
+          notePersistenceFailure();
+        }
+      }
+
+      function loadPreviewZoom() {
+        let zoom = 1;
+        try {
+          const saved = parseFloat(localStorage.getItem(storageKeys.previewZoom));
+          if (ZOOM_PRESETS.includes(saved)) zoom = saved;
+        } catch (error) {
+          // ignore
+        }
+        setPreviewZoom(zoom, false);
       }
 
       function chineseChars(word) {
@@ -3580,12 +3709,29 @@
       els.togglePreviewBtn.addEventListener("click", () => {
         setPreviewCollapsed(!els.app.classList.contains("preview-collapsed"));
       });
+      if (els.zoomPresets) {
+        els.zoomPresets.addEventListener("click", (ev) => {
+          const btn = ev.target.closest("button");
+          if (!btn || btn.disabled) return;
+          if (btn.hasAttribute("data-zoom-reset")) {
+            setPreviewZoom(1);
+            return;
+          }
+          const step = Number(btn.dataset.zoomStep);
+          if (!step) return;
+          const baseIdx = ZOOM_PRESETS.indexOf(currentZoom);
+          const fromIdx = baseIdx >= 0 ? baseIdx : ZOOM_PRESETS.indexOf(1);
+          const nextIdx = Math.max(0, Math.min(ZOOM_PRESETS.length - 1, fromIdx + step));
+          setPreviewZoom(ZOOM_PRESETS[nextIdx]);
+        });
+      }
 
       loadWordRecords();
       refreshDynamicBanks();
       syncRecordsTextareas();
       if (els.printFilter) els.printFilter.value = printFilter;
       loadPreviewSettings();
+      loadPreviewZoom();
       populateBankSelect();
       renderQuickBankLinks();
       loadConfigSettings();
