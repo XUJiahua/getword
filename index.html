@@ -1651,19 +1651,15 @@
         strokesDataForRender = new Map(entries);
 
         // 同步路径渲染分页，复用 buildPage（内部 buildPracticeGroups 已分流）。
+        // strokes 行高随笔画数差异极大，更需要按实测高度分页。
         els.sheet.innerHTML = "";
         const perPage = Number(els.perPage.value);
-        const pages = [];
-        if (!items.length) {
-          pages.push([]);
-        } else {
-          for (let i = 0; i < items.length; i += perPage) {
-            pages.push(items.slice(i, i + perPage));
-          }
-        }
+        const pages = packItemsIntoPages(items, perPage);
         const frag = document.createDocumentFragment();
-        pages.forEach((pageItems, pageIndex) => {
-          frag.append(buildPage(pageItems, pageIndex * perPage));
+        let cumStart = 0;
+        pages.forEach((pageItems) => {
+          frag.append(buildPage(pageItems, cumStart));
+          cumStart += pageItems.length;
         });
         els.sheet.append(frag);
 
@@ -3295,20 +3291,7 @@
         list.className = "word-list";
 
         pageItems.forEach((item, idx) => {
-          const mode = els.mode.value;
-          const row = document.createElement("section");
-          row.className = "item";
-
-          const index = document.createElement("div");
-          index.className = "index";
-          index.textContent = `${startIndex + idx + 1}.`;
-
-          const practice = document.createElement("div");
-          practice.className = "practice";
-
-          practice.append(buildPracticeGroups(item));
-          row.append(index, practice);
-          list.append(row);
+          list.append(buildItemRow(item, startIndex + idx + 1));
         });
 
         if (!pageItems.length) {
@@ -3323,6 +3306,76 @@
 
         page.append(list);
         return page;
+      }
+
+      function buildItemRow(item, indexNumber) {
+        const row = document.createElement("section");
+        row.className = "item";
+
+        const index = document.createElement("div");
+        index.className = "index";
+        index.textContent = `${indexNumber}.`;
+
+        const practice = document.createElement("div");
+        practice.className = "practice";
+        practice.append(buildPracticeGroups(item));
+
+        row.append(index, practice);
+        return row;
+      }
+
+      // A4 物理高度（px）。CSS 1mm = 96/25.4 px。preview 与 print 都按这个切。
+      const A4_PAGE_HEIGHT_PX = (297 * 96) / 25.4;
+
+      // 按 maxPerPage 上限 + 实测高度自动分页。perPage 退化为"软上限"——
+      // 内容真正能装多少由实际占多高决定，避免预览看着一张 A4，打印却溢出 1-2 行。
+      function packItemsIntoPages(allItems, maxPerPage) {
+        if (!allItems.length) return [[]];
+
+        // 离屏 probe page：宽度仍是 .page 自带的 210mm，所以行内 cell 换行
+        // 与正式渲染一致。位置挪到屏外避免视觉闪烁。
+        const probe = buildPage([], 0);
+        probe.style.position = "absolute";
+        probe.style.top = "0";
+        probe.style.left = "-100000px";
+        probe.style.visibility = "hidden";
+        document.body.appendChild(probe);
+        const probeList = probe.querySelector(".word-list");
+        probeList.innerHTML = ""; // 清掉 buildPage([]) 留下的 .empty 占位
+
+        const pages = [];
+        let current = [];
+
+        const overflowed = () =>
+          probe.getBoundingClientRect().height > A4_PAGE_HEIGHT_PX + 0.5;
+
+        for (let i = 0; i < allItems.length; i++) {
+          const item = allItems[i];
+          const row = buildItemRow(item, i + 1);
+          probeList.appendChild(row);
+          current.push(item);
+
+          if (overflowed() && current.length > 1) {
+            // 这条 item 把页撑爆：撤回，定稿当前页，新页从这条 item 起头。
+            probeList.removeChild(row);
+            current.pop();
+            pages.push(current);
+            current = [];
+            probeList.innerHTML = "";
+            probeList.appendChild(buildItemRow(item, i + 1));
+            current.push(item);
+          }
+
+          if (current.length >= maxPerPage) {
+            pages.push(current);
+            current = [];
+            probeList.innerHTML = "";
+          }
+        }
+        if (current.length) pages.push(current);
+
+        document.body.removeChild(probe);
+        return pages;
       }
 
       function escapeHtml(value) {
@@ -3347,19 +3400,13 @@
           return;
         }
         const perPage = Number(els.perPage.value);
-        const pages = [];
-
-        if (!items.length) {
-          pages.push([]);
-        } else {
-          for (let i = 0; i < items.length; i += perPage) {
-            pages.push(items.slice(i, i + perPage));
-          }
-        }
+        const pages = packItemsIntoPages(items, perPage);
 
         const frag = document.createDocumentFragment();
-        pages.forEach((pageItems, pageIndex) => {
-          frag.append(buildPage(pageItems, pageIndex * perPage));
+        let cumStart = 0;
+        pages.forEach((pageItems) => {
+          frag.append(buildPage(pageItems, cumStart));
+          cumStart += pageItems.length;
         });
         els.sheet.append(frag);
 
