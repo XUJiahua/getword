@@ -38,6 +38,9 @@
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
       }
     </script>
+    <!-- Google AdSense：申请通过后把 ca-pub-XXXXXXXXXXXXXXXX 替换成你的发布商 ID，
+         并取消下一行注释。审核期保留注释也可以——下方 .ad-slot 占位不会显示。 -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7/dist/hanzi-writer.min.js"
@@ -980,6 +983,25 @@
         .preview-toolbar {
           display: none !important;
         }
+        /* .controls { display: none } 已经盖掉 aside 内的广告，这里再兜底一次，
+           防止以后广告挪到其他容器时被打到纸上。 */
+        .ad-slot {
+          display: none !important;
+        }
+      }
+
+      .ad-slot {
+        min-height: 90px;
+      }
+      .ad-slot .ad-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 90px;
+        border: 1px dashed var(--line-soft);
+        border-radius: 8px;
+        color: var(--ink-soft);
+        font-size: 13px;
       }
 
       @media screen {
@@ -1431,6 +1453,20 @@
             都用 Safari 内核，不完整支持 CSS 打印规范，绕不过去）。要精准
             A4 排版请改用电脑浏览器打开本页。
           </p>
+        </section>
+
+        <section class="section ad-slot" aria-label="广告位">
+          <!-- 拿到 AdSense ID 后：
+               1. 取消 <head> 里 adsbygoogle.js 那行注释、填入 ca-pub-...
+               2. 把下方 .ad-placeholder 整块替换成 AdSense 给的 <ins> 代码：
+               <ins class="adsbygoogle" style="display:block"
+                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                    data-ad-slot="0000000000"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+               <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          -->
+          <div class="ad-placeholder"></div>
         </section>
       </aside>
 
