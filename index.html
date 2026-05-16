@@ -2834,10 +2834,16 @@
       }
 
       function splitWords(text) {
+        const seen = new Set();
         return text
           .split(/\n+/)
           .map((line) => line.trim())
-          .filter(Boolean);
+          .filter(Boolean)
+          .filter((word) => {
+            if (seen.has(word)) return false;
+            seen.add(word);
+            return true;
+          });
       }
 
       function syncRecordsTextareas() {
