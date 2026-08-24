@@ -1,2 +1,8 @@
 PDF
 data/strokes/
+.next/
+node_modules/
+out/
+coverage/
+*.tsbuildinfo
+.DS_Store
