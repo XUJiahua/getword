@@ -49,7 +49,14 @@ const defaultConfig: StoredConfig = {
 };
 
 function isPracticeMode(value: unknown): value is PracticeMode {
-  return value === "recall" || value === "hint" || value === "dictation";
+  return (
+    value === "recall" ||
+    value === "hint" ||
+    value === "dictation" ||
+    value === "reverse" ||
+    value === "context" ||
+    value === "mixed"
+  );
 }
 
 function isLineStyle(value: unknown): value is LineStyle {
@@ -254,6 +261,9 @@ export function WorksheetApp() {
                 ["recall", "中文写英文", "无字母提示"],
                 ["hint", "首字母提示", "适合生词"],
                 ["dictation", "英文听写", "家长朗读"],
+                ["reverse", "英文写中文", "检查识义"],
+                ["context", "语境填空", "结合例句"],
+                ["mixed", "混合复习", "三种题型"],
               ] as const).map(([value, label, hint]) => (
                 <label className="choice-option" key={value}>
                   <input
@@ -271,6 +281,14 @@ export function WorksheetApp() {
               ))}
             </div>
           </fieldset>
+          {config.mode === "reverse" ? (
+            <p className="control-hint">英文写中文会自动使用普通横线。</p>
+          ) : null}
+          {config.mode === "context" || config.mode === "mixed" ? (
+            <p className="control-hint">
+              没有填空例句的词条会自动退回中文写英文。
+            </p>
+          ) : null}
 
           <div className="form-grid three-columns compact-grid">
             <div className="field">

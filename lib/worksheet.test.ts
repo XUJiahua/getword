@@ -4,6 +4,8 @@ import {
   maskEnglishWord,
   paginate,
   parseWordEntries,
+  resolvePracticeMode,
+  revealExampleAnswer,
   seededShuffle,
 } from "./worksheet";
 
@@ -38,6 +40,28 @@ describe("worksheet helpers", () => {
     expect(paginate([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
     expect(seededShuffle([1, 2, 3, 4], 42)).toEqual(
       seededShuffle([1, 2, 3, 4], 42),
+    );
+  });
+
+  it("balances mixed practice and falls back when context is unavailable", () => {
+    const withExample = {
+      id: "one",
+      chinese: "苹果",
+      english: "apple",
+      example: "I eat an ____.",
+    };
+    const withoutExample = { id: "two", chinese: "友好的", english: "kind" };
+
+    expect(resolvePracticeMode("mixed", withExample, 0)).toBe("recall");
+    expect(resolvePracticeMode("mixed", withExample, 1)).toBe("context");
+    expect(resolvePracticeMode("mixed", withExample, 2)).toBe("reverse");
+    expect(resolvePracticeMode("mixed", withoutExample, 1)).toBe("recall");
+    expect(resolvePracticeMode("context", withoutExample, 0)).toBe("recall");
+  });
+
+  it("reveals the first answer blank in an example", () => {
+    expect(revealExampleAnswer("I eat an ____ every day.", "apple")).toBe(
+      "I eat an apple every day.",
     );
   });
 });

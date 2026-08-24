@@ -1,4 +1,11 @@
-export type PracticeMode = "recall" | "hint" | "dictation";
+export type PracticeMode =
+  | "recall"
+  | "hint"
+  | "dictation"
+  | "reverse"
+  | "context"
+  | "mixed";
+export type ResolvedPracticeMode = Exclude<PracticeMode, "mixed">;
 export type LineStyle = "ruled" | "four-line";
 export type EntryFilter = "all" | "learning";
 
@@ -92,6 +99,26 @@ export function maskEnglishWord(word: string): string {
       return character;
     })
     .join("");
+}
+
+export function resolvePracticeMode(
+  mode: PracticeMode,
+  entry: WordEntry,
+  index: number,
+): ResolvedPracticeMode {
+  if (mode !== "mixed") {
+    if (mode === "context" && !entry.example?.includes("__")) return "recall";
+    return mode;
+  }
+
+  const pattern: ResolvedPracticeMode[] = ["recall", "context", "reverse"];
+  const resolved = pattern[index % pattern.length];
+  if (resolved === "context" && !entry.example?.includes("__")) return "recall";
+  return resolved;
+}
+
+export function revealExampleAnswer(example: string, answer: string): string {
+  return example.replace(/_{2,}/, answer);
 }
 
 export function paginate<T>(items: T[], size: number): T[][] {
