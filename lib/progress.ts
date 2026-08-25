@@ -156,6 +156,7 @@ export function filterEntriesByProgress(
   now = new Date(),
 ): WordEntry[] {
   if (filter === "all") return entries;
+  if (filter === "daily") return entries;
 
   return entries.filter((entry) => {
     const record = progress[entry.id];

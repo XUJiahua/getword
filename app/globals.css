@@ -60,6 +60,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
+select:disabled {
+  color: var(--ink-muted);
+  background: var(--surface-recessed);
+  cursor: not-allowed;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: minmax(390px, 430px) minmax(0, 1fr);
@@ -243,6 +249,10 @@ textarea {
 
 .compact-grid {
   margin-top: 14px;
+}
+
+.daily-plan-summary {
+  color: var(--ink-soft);
 }
 
 .field {
@@ -994,6 +1004,184 @@ textarea {
   font-size: 8.5pt;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.report-paper {
+  padding-bottom: 9mm;
+}
+
+.report-overview {
+  display: grid;
+  margin-top: 1mm;
+  border-top: 1px solid var(--paper-rule-soft);
+  border-bottom: 1px solid var(--paper-rule-soft);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.report-overview div {
+  display: flex;
+  min-width: 0;
+  min-height: 21mm;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.report-overview div + div {
+  border-inline-start: 1px solid var(--paper-rule-soft);
+}
+
+.report-overview b {
+  font-size: 18pt;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.report-overview span {
+  margin-top: 1.2mm;
+  color: var(--paper-meta-ink);
+  font-size: 7.5pt;
+}
+
+.report-section {
+  margin-top: 6mm;
+}
+
+.report-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6mm;
+  margin-bottom: 2mm;
+}
+
+.report-section-head h3 {
+  margin: 0;
+  font-size: 11pt;
+  font-weight: 650;
+}
+
+.report-section-head span {
+  color: var(--paper-meta-ink);
+  font-size: 7.5pt;
+  white-space: nowrap;
+}
+
+.review-calendar {
+  display: grid;
+  border-top: 1px solid var(--paper-rule-soft);
+  border-bottom: 1px solid var(--paper-rule-soft);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.review-calendar div {
+  display: flex;
+  min-height: 19mm;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.review-calendar div + div {
+  border-inline-start: 1px solid var(--paper-rule-soft);
+}
+
+.review-calendar span,
+.review-calendar small {
+  color: var(--paper-meta-ink);
+  font-size: 7pt;
+}
+
+.review-calendar b {
+  margin: 0.4mm 0;
+  font-size: 15pt;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.report-grow {
+  min-height: 80mm;
+}
+
+.attention-table,
+.recent-session-list {
+  border-top: 1px solid var(--paper-rule-soft);
+}
+
+.report-table-head,
+.report-table-row {
+  display: grid;
+  min-height: 6.5mm;
+  align-items: center;
+  gap: 2mm;
+  padding: 0 1mm;
+  border-bottom: 1px solid var(--paper-rule-soft);
+  grid-template-columns: minmax(26mm, 0.9fr) minmax(48mm, 1.5fr) repeat(4, 12mm);
+  font-size: 8.5pt;
+}
+
+.report-table-head {
+  min-height: 6mm;
+  color: var(--paper-meta-ink);
+  font-size: 7pt;
+}
+
+.report-table-head span:nth-child(n + 3),
+.report-table-row span:nth-child(n + 3) {
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.report-table-row span,
+.report-table-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-table-row strong {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
+}
+
+.recent-report-section {
+  margin-top: 5mm;
+}
+
+.recent-session-list div {
+  display: grid;
+  min-height: 6.5mm;
+  align-items: center;
+  gap: 3mm;
+  padding: 0 1mm;
+  color: var(--paper-meta-ink);
+  border-bottom: 1px solid var(--paper-rule-soft);
+  grid-template-columns: 16mm minmax(40mm, 1fr) 34mm 26mm;
+  font-size: 8pt;
+}
+
+.recent-session-list strong {
+  overflow: hidden;
+  color: var(--paper-ink);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-session-list span:last-child {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.report-empty {
+  margin: 0;
+  padding: 8mm 3mm;
+  color: var(--paper-meta-ink);
+  border-top: 1px solid var(--paper-rule-soft);
+  border-bottom: 1px solid var(--paper-rule-soft);
+  font-size: 9pt;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

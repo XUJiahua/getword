@@ -17,6 +17,11 @@ import {
   type ProgressMap,
 } from "@/lib/progress";
 import {
+  buildDailyPlan,
+  buildStudyReport,
+  buildWorksheetVariants,
+} from "@/lib/planning";
+import {
   createPracticeSession,
   createStudyBackup,
   MAX_PRACTICE_SESSIONS,
@@ -39,7 +44,7 @@ import {
   type LineStyle,
   type PracticeMode,
 } from "@/lib/worksheet";
-import { AnswerPaper, StudentPaper } from "./worksheet-paper";
+import { AnswerPaper, StudentPaper, StudyReportPaper } from "./worksheet-paper";
 import {
   DataTransferSection,
   SessionReviewSection,
@@ -61,6 +66,7 @@ const filterOptions: ReadonlyArray<{
   { value: "learning", label: "生词本" },
   { value: "mastered", label: "已掌握" },
   { value: "review", label: "到期复习" },
+  { value: "daily", label: "今日计划" },
 ];
 
 type StoredConfig = {
@@ -68,16 +74,19 @@ type StoredConfig = {
   answerPages: boolean;
   bankKey: string;
   dateText: string;
+  dailyTarget: number;
   filter: EntryFilter;
   lineStyle: LineStyle;
   mode: PracticeMode;
   perPage: number;
+  reportPage: boolean;
   selectedWordBookId: string;
   showMeta: boolean;
   shuffle: boolean;
   shuffleSeed: number;
   source: string;
   title: string;
+  variantCount: number;
   wordBookName: string;
   zoom: number;
 };
@@ -87,16 +96,19 @@ const defaultConfig: StoredConfig = {
   answerPages: true,
   bankKey: DEFAULT_BANK.key,
   dateText: "",
+  dailyTarget: 10,
   filter: "all",
   lineStyle: "ruled",
   mode: "recall",
   perPage: 10,
+  reportPage: false,
   selectedWordBookId: "",
   showMeta: true,
   shuffle: false,
   shuffleSeed: 1,
   source: DEFAULT_SOURCE,
   title: DEFAULT_BANK.title,
+  variantCount: 1,
   wordBookName: "人物特点",
   zoom: 0.85,
 };
@@ -135,10 +147,14 @@ function normalizeConfig(value: unknown): Partial<StoredConfig> {
     answerPages: typeof config.answerPages === "boolean" ? config.answerPages : undefined,
     bankKey: typeof config.bankKey === "string" ? config.bankKey : undefined,
     dateText: typeof config.dateText === "string" ? config.dateText : undefined,
+    dailyTarget: [8, 10, 12, 20].includes(Number(config.dailyTarget))
+      ? Number(config.dailyTarget)
+      : undefined,
     filter: isEntryFilter(config.filter) ? config.filter : undefined,
     lineStyle: isLineStyle(config.lineStyle) ? config.lineStyle : undefined,
     mode: isPracticeMode(config.mode) ? config.mode : undefined,
     perPage: [8, 10, 12].includes(Number(config.perPage)) ? Number(config.perPage) : undefined,
+    reportPage: typeof config.reportPage === "boolean" ? config.reportPage : undefined,
     selectedWordBookId:
       typeof config.selectedWordBookId === "string" ? config.selectedWordBookId : undefined,
     showMeta: typeof config.showMeta === "boolean" ? config.showMeta : undefined,
@@ -146,6 +162,9 @@ function normalizeConfig(value: unknown): Partial<StoredConfig> {
     shuffleSeed: Number.isFinite(config.shuffleSeed) ? Number(config.shuffleSeed) : undefined,
     source: typeof config.source === "string" ? config.source : undefined,
     title: typeof config.title === "string" ? config.title : undefined,
+    variantCount: [1, 2, 3].includes(Number(config.variantCount))
+      ? Number(config.variantCount)
+      : undefined,
     wordBookName: typeof config.wordBookName === "string" ? config.wordBookName : undefined,
     zoom: [0.7, 0.85, 1].includes(Number(config.zoom)) ? Number(config.zoom) : undefined,
   };
@@ -241,18 +260,48 @@ export function WorksheetApp() {
     () => getProgressCounts(parsed.entries, progress, reviewNow),
     [parsed.entries, progress, reviewNow],
   );
-  const activeEntries = useMemo(() => {
-    const filtered = filterEntriesByProgress(
-      parsed.entries,
-      config.filter,
-      progress,
-      reviewNow,
-    );
-    return config.shuffle ? seededShuffle(filtered, config.shuffleSeed) : filtered;
-  }, [config.filter, config.shuffle, config.shuffleSeed, parsed.entries, progress, reviewNow]);
-  const pages = useMemo(
-    () => paginate(activeEntries, config.perPage),
-    [activeEntries, config.perPage],
+  const dailyPlan = useMemo(
+    () => buildDailyPlan(parsed.entries, progress, config.dailyTarget, reviewNow),
+    [config.dailyTarget, parsed.entries, progress, reviewNow],
+  );
+  const selectedEntries = useMemo(() => {
+    if (config.filter === "daily") return dailyPlan.entries;
+    return filterEntriesByProgress(parsed.entries, config.filter, progress, reviewNow);
+  }, [config.filter, dailyPlan.entries, parsed.entries, progress, reviewNow]);
+  const orderedEntries = useMemo(
+    () =>
+      config.shuffle && config.variantCount === 1
+        ? seededShuffle(selectedEntries, config.shuffleSeed)
+        : selectedEntries,
+    [config.shuffle, config.shuffleSeed, config.variantCount, selectedEntries],
+  );
+  const worksheetVariants = useMemo(
+    () => buildWorksheetVariants(orderedEntries, config.variantCount, config.shuffleSeed),
+    [config.shuffleSeed, config.variantCount, orderedEntries],
+  );
+  const modeIndexByEntry = useMemo(
+    () =>
+      Object.fromEntries(
+        selectedEntries.map((entry, index) => [entry.id, index]),
+      ) as Record<string, number>,
+    [selectedEntries],
+  );
+  const pagesByVariant = useMemo(
+    () =>
+      worksheetVariants.map((variant) => ({
+        ...variant,
+        pages: paginate(variant.entries, config.perPage),
+      })),
+    [config.perPage, worksheetVariants],
+  );
+  const studyReport = useMemo(
+    () => buildStudyReport(parsed.entries, progress, sessions, reviewNow),
+    [parsed.entries, progress, reviewNow, sessions],
+  );
+  const activeEntries = worksheetVariants[0]?.entries ?? [];
+  const studentPageCount = pagesByVariant.reduce(
+    (total, variant) => total + variant.pages.length,
+    0,
   );
 
   const updateConfig = <Key extends keyof StoredConfig>(
@@ -302,6 +351,7 @@ export function WorksheetApp() {
       id,
       mode: config.mode,
       title: config.title,
+      variantCount: config.variantCount,
     });
     setSessions((current) =>
       normalizePracticeSessions([session, ...current]).slice(0, MAX_PRACTICE_SESSIONS),
@@ -524,7 +574,7 @@ export function WorksheetApp() {
             <p className="app-kicker">GETWORD · ENGLISH</p>
             <h1>英语词汇练习纸</h1>
           </div>
-          <span className="version-mark">第七批</span>
+          <span className="version-mark">第十批</span>
         </header>
 
         <section className="control-section first-section">
@@ -697,6 +747,50 @@ export function WorksheetApp() {
             </div>
           </div>
 
+          <div className="form-grid two-columns compact-grid print-layout-grid">
+            <div className="field">
+              <label className="control-label" htmlFor="daily-target">
+                今日目标
+              </label>
+              <select
+                disabled={config.filter !== "daily"}
+                id="daily-target"
+                onChange={(event) => updateConfig("dailyTarget", Number(event.target.value))}
+                value={config.dailyTarget}
+              >
+                <option value={8}>8 词</option>
+                <option value={10}>10 词</option>
+                <option value={12}>12 词</option>
+                <option value={20}>20 词</option>
+              </select>
+            </div>
+            <div className="field">
+              <label className="control-label" htmlFor="variant-count">
+                试卷版本
+              </label>
+              <select
+                id="variant-count"
+                onChange={(event) => updateConfig("variantCount", Number(event.target.value))}
+                value={config.variantCount}
+              >
+                <option value={1}>单卷</option>
+                <option value={2}>A / B 两版</option>
+                <option value={3}>A / B / C 三版</option>
+              </select>
+            </div>
+          </div>
+          {config.filter === "daily" ? (
+            <p className="control-hint daily-plan-summary">
+              今日安排 {dailyPlan.entries.length} 词：到期 {dailyPlan.dueCount}，新词 {dailyPlan.newCount}
+              {progressCounts.review > dailyPlan.dueCount
+                ? `；另有 ${progressCounts.review - dailyPlan.dueCount} 个到期词待后续练习。`
+                : "。"}
+            </p>
+          ) : null}
+          {config.variantCount > 1 ? (
+            <p className="control-hint">多版本使用相同题目、不同顺序，共用同一个批次编号。</p>
+          ) : null}
+
           <div className="toggle-list">
             <label className="toggle-row">
               <input
@@ -706,6 +800,17 @@ export function WorksheetApp() {
               />
               <span>附带答案页</span>
               <small>听写时也作为家长朗读清单</small>
+            </label>
+            <label className="toggle-row">
+              <input
+                checked={config.reportPage}
+                onChange={(event) => updateConfig("reportPage", event.target.checked)}
+                type="checkbox"
+              />
+              <span>附学习报告页</span>
+              <small>
+                当前正确率 {studyReport.accuracy === null ? "暂无" : `${studyReport.accuracy}%`}
+              </small>
             </label>
             <label className="toggle-row">
               <input
@@ -745,8 +850,9 @@ export function WorksheetApp() {
             打印 / 保存 PDF
           </button>
           <p className="control-hint">
-            打印时保存批次编号；将输出 {pages.length} 张学生页
-            {config.answerPages ? `和 ${pages.length} 张答案页` : ""}。
+            打印时保存批次编号；将输出 {studentPageCount} 张学生页
+            {config.answerPages ? `、${studentPageCount} 张答案页` : ""}
+            {config.reportPage ? "和 1 张学习报告" : ""}。
           </p>
         </section>
 
@@ -831,8 +937,9 @@ export function WorksheetApp() {
           <div>
             <span className="preview-label">A4 预览</span>
             <span className="preview-summary">
-              {activeEntries.length} 词 · {activeFilterLabel} · {pages.length} 学生页
-              {config.answerPages ? ` · ${pages.length} 答案页` : ""}
+              {activeEntries.length} 词 · {activeFilterLabel} · {studentPageCount} 学生页
+              {config.answerPages ? ` · ${studentPageCount} 答案页` : ""}
+              {config.reportPage ? " · 1 报告页" : ""}
             </span>
           </div>
           <div className="zoom-control" aria-label="预览缩放">
@@ -852,39 +959,55 @@ export function WorksheetApp() {
 
         <div className="paper-viewport">
           <div className="paper-stack" style={{ zoom: config.zoom }}>
-            {pages.map((pageEntries, index) => (
-              <StudentPaper
+            {pagesByVariant.map((variant, variantIndex) =>
+              variant.pages.map((pageEntries, index) => (
+                <StudentPaper
+                  batchCode={printBatchCode}
+                  dateText={config.dateText}
+                  entries={pageEntries}
+                  key={`student-${variantIndex}-${index}`}
+                  lineStyle={config.lineStyle}
+                  modeIndexByEntry={modeIndexByEntry}
+                  mode={config.mode}
+                  pageNumber={index + 1}
+                  pageTotal={variant.pages.length}
+                  perPage={config.perPage}
+                  showMeta={config.showMeta}
+                  startIndex={index * config.perPage}
+                  title={config.title}
+                  variantLabel={variant.label}
+                />
+              )),
+            )}
+            {config.answerPages
+              ? pagesByVariant.map((variant, variantIndex) =>
+                  variant.pages.map((pageEntries, index) => (
+                    <AnswerPaper
+                      batchCode={printBatchCode}
+                      dateText={config.dateText}
+                      entries={pageEntries}
+                      key={`answer-${variantIndex}-${index}`}
+                      modeIndexByEntry={modeIndexByEntry}
+                      mode={config.mode}
+                      pageNumber={index + 1}
+                      pageTotal={variant.pages.length}
+                      perPage={config.perPage}
+                      showMeta={config.showMeta}
+                      startIndex={index * config.perPage}
+                      title={config.title}
+                      variantLabel={variant.label}
+                    />
+                  )),
+                )
+              : null}
+            {config.reportPage ? (
+              <StudyReportPaper
                 batchCode={printBatchCode}
                 dateText={config.dateText}
-                entries={pageEntries}
-                key={`student-${index}`}
-                lineStyle={config.lineStyle}
-                mode={config.mode}
-                pageNumber={index + 1}
-                pageTotal={pages.length}
-                perPage={config.perPage}
-                showMeta={config.showMeta}
-                startIndex={index * config.perPage}
-                title={config.title}
+                report={studyReport}
+                title={`${config.title || "英语词汇"} · 学习报告`}
               />
-            ))}
-            {config.answerPages
-              ? pages.map((pageEntries, index) => (
-                  <AnswerPaper
-                    batchCode={printBatchCode}
-                    dateText={config.dateText}
-                    entries={pageEntries}
-                    key={`answer-${index}`}
-                    mode={config.mode}
-                    pageNumber={index + 1}
-                    pageTotal={pages.length}
-                    perPage={config.perPage}
-                    showMeta={config.showMeta}
-                    startIndex={index * config.perPage}
-                    title={config.title}
-                  />
-                ))
-              : null}
+            ) : null}
           </div>
         </div>
       </section>

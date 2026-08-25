@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 
+import type { StudyReport } from "@/lib/planning";
 import {
   maskEnglishWord,
   resolvePracticeMode,
@@ -16,12 +17,14 @@ type PaperProps = {
   title: string;
   dateText: string;
   lineStyle: LineStyle;
+  modeIndexByEntry: Record<string, number>;
   mode: PracticeMode;
   pageNumber: number;
   pageTotal: number;
   perPage: number;
   showMeta: boolean;
   startIndex: number;
+  variantLabel: string;
 };
 
 const modeCopy: Record<PracticeMode, { label: string; instruction: string }> = {
@@ -153,12 +156,14 @@ export function StudentPaper({
   title,
   dateText,
   lineStyle,
+  modeIndexByEntry,
   mode,
   pageNumber,
   pageTotal,
   perPage,
   showMeta,
   startIndex,
+  variantLabel,
 }: PaperProps) {
   const rowStyle = { "--paper-rows": perPage } as CSSProperties;
 
@@ -166,7 +171,7 @@ export function StudentPaper({
     <article className="paper student-paper">
       <PaperHeader
         dateText={dateText}
-        label={modeCopy[mode].label}
+        label={`${modeCopy[mode].label}${variantLabel ? ` · ${variantLabel}` : ""}`}
         showMeta={showMeta}
         title={title}
       />
@@ -176,7 +181,11 @@ export function StudentPaper({
         {entries.length ? (
           entries.map((entry, index) => {
             const number = startIndex + index + 1;
-            const resolvedMode = resolvePracticeMode(mode, entry, number - 1);
+            const resolvedMode = resolvePracticeMode(
+              mode,
+              entry,
+              modeIndexByEntry[entry.id] ?? number - 1,
+            );
             const hint =
               resolvedMode === "hint" ? maskEnglishWord(entry.english) : undefined;
             const resolvedLineStyle =
@@ -184,6 +193,7 @@ export function StudentPaper({
             return (
               <section
                 className={`practice-row ${resolvedMode}-row`}
+                data-entry-id={entry.id}
                 key={entry.id}
               >
                 <div className="row-number">{number}.</div>
@@ -212,7 +222,7 @@ export function StudentPaper({
       <footer className="paper-footer">
         <span>
           {batchCode ? `批次 ${batchCode} · ` : ""}
-          核对后回录“对、疑、错”
+          {variantLabel ? `${variantLabel} · ` : ""}核对后回录“对、疑、错”
         </span>
         <span>
           学生页 {pageNumber}/{pageTotal}
@@ -227,12 +237,14 @@ export function AnswerPaper({
   entries,
   title,
   dateText,
+  modeIndexByEntry,
   mode,
   pageNumber,
   pageTotal,
   perPage,
   showMeta,
   startIndex,
+  variantLabel,
 }: Omit<PaperProps, "lineStyle">) {
   const rowStyle = { "--paper-rows": perPage } as CSSProperties;
   const instruction =
@@ -246,7 +258,9 @@ export function AnswerPaper({
     <article className="paper answer-paper">
       <PaperHeader
         dateText={dateText}
-        label={mode === "dictation" ? "家长朗读与答案" : "参考答案"}
+        label={`${mode === "dictation" ? "家长朗读与答案" : "参考答案"}${
+          variantLabel ? ` · ${variantLabel}` : ""
+        }`}
         showMeta={showMeta}
         title={title}
       />
@@ -255,7 +269,11 @@ export function AnswerPaper({
       <div className="answer-list" style={rowStyle}>
         {entries.map((entry, index) => {
           const number = startIndex + index + 1;
-          const resolvedMode = resolvePracticeMode(mode, entry, number - 1);
+          const resolvedMode = resolvePracticeMode(
+            mode,
+            entry,
+            modeIndexByEntry[entry.id] ?? number - 1,
+          );
           const cue =
             resolvedMode === "reverse"
               ? entry.english
@@ -272,6 +290,7 @@ export function AnswerPaper({
           return (
             <section
               className={`answer-row ${resolvedMode}-answer-row`}
+              data-entry-id={entry.id}
               key={entry.id}
             >
               <div className="row-number">{number}.</div>
@@ -296,11 +315,128 @@ export function AnswerPaper({
       <footer className="paper-footer">
         <span>
           {batchCode ? `批次 ${batchCode} · ` : ""}
-          核对后将结果回录到同一批次
+          {variantLabel ? `${variantLabel} · ` : ""}核对后将结果回录到同一批次
         </span>
         <span>
           答案页 {pageNumber}/{pageTotal}
         </span>
+      </footer>
+    </article>
+  );
+}
+
+function formatReportDate(value: string): string {
+  return new Intl.DateTimeFormat("zh-CN", {
+    day: "numeric",
+    month: "numeric",
+  }).format(new Date(value));
+}
+
+function reviewDayLabel(dayOffset: number, date: string): string {
+  if (dayOffset === 0) return "今天";
+  if (dayOffset === 1) return "明天";
+  if (dayOffset === 2) return "后天";
+  return formatReportDate(date);
+}
+
+export function StudyReportPaper({
+  batchCode,
+  dateText,
+  report,
+  title,
+}: {
+  batchCode: string;
+  dateText: string;
+  report: StudyReport;
+  title: string;
+}) {
+  return (
+    <article className="paper report-paper">
+      <PaperHeader
+        dateText={dateText}
+        label="学习报告"
+        showMeta
+        title={title || "英语词汇学习报告"}
+      />
+      <p className="paper-instruction">
+        本页只统计当前词库中已经回录的练习结果；未回录题目不计入正确率。
+      </p>
+
+      <section className="report-overview" aria-label="词库学习概览">
+        <div><b>{report.total}</b><span>词条总数</span></div>
+        <div><b>{report.learning}</b><span>生词</span></div>
+        <div><b>{report.mastered}</b><span>已掌握</span></div>
+        <div><b>{report.due}</b><span>今日到期</span></div>
+        <div><b>{report.marked}</b><span>累计回录</span></div>
+        <div><b>{report.accuracy === null ? "—" : `${report.accuracy}%`}</b><span>累计正确率</span></div>
+      </section>
+
+      <section className="report-section">
+        <div className="report-section-head">
+          <h3>未来七天复习安排</h3>
+          <span>新词 {report.newCount} 个，尚未进入复习日程</span>
+        </div>
+        <div className="review-calendar">
+          {report.reviewDays.map((day) => (
+            <div key={day.dayOffset}>
+              <span>{reviewDayLabel(day.dayOffset, day.date)}</span>
+              <b>{day.count}</b>
+              <small>词</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="report-section report-grow">
+        <div className="report-section-head">
+          <h3>需要关注</h3>
+          <span>按错题、存疑和到期状态排序</span>
+        </div>
+        {report.attention.length ? (
+          <div className="attention-table">
+            <div className="report-table-head">
+              <span>中文</span><span>英文</span><span>练习</span><span>对</span><span>疑</span><span>错</span>
+            </div>
+            {report.attention.map((entry) => (
+              <div className="report-table-row" key={entry.id}>
+                <span>{entry.chinese}</span>
+                <strong>{entry.english}</strong>
+                <span>{entry.attempts}</span>
+                <span>{entry.correct}</span>
+                <span>{entry.unsure}</span>
+                <span>{entry.wrong}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="report-empty">当前没有到期、生词或曾经答错的词条。</p>
+        )}
+      </section>
+
+      <section className="report-section recent-report-section">
+        <div className="report-section-head">
+          <h3>近期练习</h3>
+          <span>最近 5 个有回录结果的批次</span>
+        </div>
+        {report.recentSessions.length ? (
+          <div className="recent-session-list">
+            {report.recentSessions.map((session) => (
+              <div key={`${session.code}-${session.createdAt}`}>
+                <span>{formatReportDate(session.createdAt)}</span>
+                <strong>{session.title}</strong>
+                <span>批次 {session.code}</span>
+                <span>{session.correct}/{session.marked} 正确</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="report-empty">完成打印并回录结果后，这里会出现近期记录。</p>
+        )}
+      </section>
+
+      <footer className="paper-footer">
+        <span>{batchCode ? `批次 ${batchCode} · ` : ""}建议按到期顺序安排下一次练习</span>
+        <span>学习报告 1/1</span>
       </footer>
     </article>
   );

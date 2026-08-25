@@ -153,6 +153,7 @@ export function SessionReviewSection({
             {sessions.map((item) => (
               <option key={item.id} value={item.id}>
                 {formatSessionDate(item.createdAt)} · {item.code} · {item.entries.length} 词
+                {item.variantCount > 1 ? ` · ${item.variantCount} 版` : ""}
               </option>
             ))}
           </select>

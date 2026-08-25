@@ -12,7 +12,8 @@ export type EntryFilter =
   | "unmastered"
   | "learning"
   | "mastered"
-  | "review";
+  | "review"
+  | "daily";
 
 export type WordEntry = {
   id: string;

@@ -32,6 +32,7 @@ describe("practice sessions", () => {
       id: "session-one",
       mode: "recall",
       title: "Unit 1",
+      variantCount: 2,
     });
     const recorded = setSessionResult(session, entry.id, "correct");
     expect(session.results).toEqual({});
@@ -42,6 +43,7 @@ describe("practice sessions", () => {
       unmarked: 0,
       wrong: 0,
     });
+    expect(recorded.variantCount).toBe(2);
   });
 
   it("drops malformed sessions and results", () => {
@@ -59,7 +61,7 @@ describe("practice sessions", () => {
         },
         { id: "broken" },
       ]),
-    ).toHaveLength(1);
+    ).toMatchObject([{ variantCount: 1 }]);
   });
 });
 

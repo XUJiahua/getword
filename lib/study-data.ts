@@ -23,6 +23,7 @@ export type PracticeSession = {
   mode: PracticeMode;
   results: Record<string, PracticeResult>;
   title: string;
+  variantCount: number;
 };
 
 export type WordBook = {
@@ -94,11 +95,13 @@ export function createPracticeSession(input: {
   id: string;
   mode: PracticeMode;
   title: string;
+  variantCount?: number;
 }): PracticeSession {
   return {
     ...input,
     entries: input.entries.map((entry) => ({ ...entry })),
     results: {},
+    variantCount: Math.min(3, Math.max(1, Math.floor(input.variantCount ?? 1))),
   };
 }
 
@@ -166,6 +169,10 @@ export function normalizePracticeSessions(value: unknown): PracticeSession[] {
       mode: session.mode,
       results,
       title: session.title,
+      variantCount:
+        typeof session.variantCount === "number"
+          ? Math.min(3, Math.max(1, Math.floor(session.variantCount)))
+          : 1,
     });
   });
 
