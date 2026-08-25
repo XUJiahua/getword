@@ -7,7 +7,12 @@ export type PracticeMode =
   | "mixed";
 export type ResolvedPracticeMode = Exclude<PracticeMode, "mixed">;
 export type LineStyle = "ruled" | "four-line";
-export type EntryFilter = "all" | "learning";
+export type EntryFilter =
+  | "all"
+  | "unmastered"
+  | "learning"
+  | "mastered"
+  | "review";
 
 export type WordEntry = {
   id: string;

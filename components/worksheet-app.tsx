@@ -4,6 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 
 import { DEFAULT_BANK, DEFAULT_SOURCE, WORD_BANKS } from "@/lib/banks";
 import {
+  filterEntriesByProgress,
+  getMasteryStatus,
+  getProgressCounts,
+  isReviewDue,
+  normalizeProgress,
+  REVIEW_INTERVAL_DAYS,
+  setMasteryStatus,
+  type MasteryStatus,
+  type ProgressMap,
+} from "@/lib/progress";
+import {
   paginate,
   parseWordEntries,
   seededShuffle,
@@ -14,7 +25,19 @@ import {
 import { AnswerPaper, StudentPaper } from "./worksheet-paper";
 
 const CONFIG_KEY = "getword.english.config.v1";
+const PROGRESS_KEY = "getword.english.progress.v1";
 const LEARNING_KEY = "getword.english.learning.v1";
+
+const filterOptions: ReadonlyArray<{
+  value: EntryFilter;
+  label: string;
+}> = [
+  { value: "all", label: "全部词条" },
+  { value: "unmastered", label: "待巩固" },
+  { value: "learning", label: "生词本" },
+  { value: "mastered", label: "已掌握" },
+  { value: "review", label: "到期复习" },
+];
 
 type StoredConfig = {
   answerPages: boolean;
@@ -63,6 +86,10 @@ function isLineStyle(value: unknown): value is LineStyle {
   return value === "ruled" || value === "four-line";
 }
 
+function isEntryFilter(value: unknown): value is EntryFilter {
+  return filterOptions.some((option) => option.value === value);
+}
+
 function restoreConfig(): Partial<StoredConfig> {
   try {
     const raw = window.localStorage.getItem(CONFIG_KEY);
@@ -72,7 +99,7 @@ function restoreConfig(): Partial<StoredConfig> {
       answerPages: typeof value.answerPages === "boolean" ? value.answerPages : undefined,
       bankKey: typeof value.bankKey === "string" ? value.bankKey : undefined,
       dateText: typeof value.dateText === "string" ? value.dateText : undefined,
-      filter: value.filter === "learning" || value.filter === "all" ? value.filter : undefined,
+      filter: isEntryFilter(value.filter) ? value.filter : undefined,
       lineStyle: isLineStyle(value.lineStyle) ? value.lineStyle : undefined,
       mode: isPracticeMode(value.mode) ? value.mode : undefined,
       perPage: [8, 10, 12].includes(Number(value.perPage)) ? Number(value.perPage) : undefined,
@@ -88,28 +115,33 @@ function restoreConfig(): Partial<StoredConfig> {
   }
 }
 
-function restoreLearning(): Set<string> {
+function readStoredJson(key: string): unknown {
+  const raw = window.localStorage.getItem(key);
+  if (!raw) return undefined;
   try {
-    const raw = window.localStorage.getItem(LEARNING_KEY);
-    if (!raw) return new Set();
-    const value = JSON.parse(raw) as unknown;
-    return Array.isArray(value)
-      ? new Set(value.filter((item): item is string => typeof item === "string"))
-      : new Set();
+    return JSON.parse(raw) as unknown;
   } catch {
-    return new Set();
+    return undefined;
   }
+}
+
+function restoreProgress(): ProgressMap {
+  const legacy = readStoredJson(LEARNING_KEY);
+  const progress = normalizeProgress(readStoredJson(PROGRESS_KEY), legacy);
+  if (legacy !== undefined) window.localStorage.removeItem(LEARNING_KEY);
+  return progress;
 }
 
 export function WorksheetApp() {
   const [config, setConfig] = useState<StoredConfig>(defaultConfig);
-  const [learningIds, setLearningIds] = useState<Set<string>>(new Set());
+  const [progress, setProgress] = useState<ProgressMap>({});
   const [hydrated, setHydrated] = useState(false);
+  const reviewNow = useMemo(() => new Date(), []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       setConfig((current) => ({ ...current, ...restoreConfig() }));
-      setLearningIds(restoreLearning());
+      setProgress(restoreProgress());
       setHydrated(true);
     });
     return () => window.cancelAnimationFrame(frame);
@@ -122,17 +154,23 @@ export function WorksheetApp() {
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(LEARNING_KEY, JSON.stringify([...learningIds]));
-  }, [hydrated, learningIds]);
+    window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  }, [hydrated, progress]);
 
   const parsed = useMemo(() => parseWordEntries(config.source), [config.source]);
+  const progressCounts = useMemo(
+    () => getProgressCounts(parsed.entries, progress, reviewNow),
+    [parsed.entries, progress, reviewNow],
+  );
   const activeEntries = useMemo(() => {
-    const filtered =
-      config.filter === "learning"
-        ? parsed.entries.filter((entry) => learningIds.has(entry.id))
-        : parsed.entries;
+    const filtered = filterEntriesByProgress(
+      parsed.entries,
+      config.filter,
+      progress,
+      reviewNow,
+    );
     return config.shuffle ? seededShuffle(filtered, config.shuffleSeed) : filtered;
-  }, [config.filter, config.shuffle, config.shuffleSeed, learningIds, parsed.entries]);
+  }, [config.filter, config.shuffle, config.shuffleSeed, parsed.entries, progress, reviewNow]);
   const pages = useMemo(
     () => paginate(activeEntries, config.perPage),
     [activeEntries, config.perPage],
@@ -160,14 +198,21 @@ export function WorksheetApp() {
     }));
   };
 
-  const toggleLearning = (entryId: string) => {
-    setLearningIds((current) => {
-      const next = new Set(current);
-      if (next.has(entryId)) next.delete(entryId);
-      else next.add(entryId);
+  const updateMastery = (entryId: string, status: MasteryStatus) => {
+    setProgress((current) => setMasteryStatus(current, entryId, status));
+  };
+
+  const clearCurrentProgress = () => {
+    const entryIds = new Set(parsed.entries.map((entry) => entry.id));
+    setProgress((current) => {
+      const next = { ...current };
+      entryIds.forEach((entryId) => delete next[entryId]);
       return next;
     });
   };
+
+  const activeFilterLabel =
+    filterOptions.find((option) => option.value === config.filter)?.label ?? "全部词条";
 
   return (
     <main className="app-shell">
@@ -177,7 +222,7 @@ export function WorksheetApp() {
             <p className="app-kicker">GETWORD · ENGLISH</p>
             <h1>英语词汇练习纸</h1>
           </div>
-          <span className="version-mark">第一版</span>
+          <span className="version-mark">第三批</span>
         </header>
 
         <section className="control-section first-section">
@@ -327,8 +372,11 @@ export function WorksheetApp() {
                 onChange={(event) => updateConfig("filter", event.target.value as EntryFilter)}
                 value={config.filter}
               >
-                <option value="all">全部词条</option>
-                <option value="learning">只练生词</option>
+                {filterOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -374,35 +422,55 @@ export function WorksheetApp() {
         <section className="control-section">
           <div className="section-heading-row">
             <div>
-              <h2 className="control-label">生词标记</h2>
-              <p className="control-hint no-margin">练后把“疑”和“错”点为生词，下次可单独打印。</p>
+              <h2 className="control-label">练习结果</h2>
+              <p className="control-hint no-margin">
+                已掌握词 {REVIEW_INTERVAL_DAYS} 天后到期；复习通过后再次选择“掌握”。
+              </p>
             </div>
-            {learningIds.size ? (
+            {progressCounts.learning + progressCounts.mastered > 0 ? (
               <button
                 className="text-button muted-text-button"
-                onClick={() => setLearningIds(new Set())}
+                onClick={clearCurrentProgress}
                 type="button"
               >
-                清空 {learningIds.size} 个
+                重置当前
               </button>
             ) : null}
           </div>
+          <div className="progress-summary" aria-label="当前词库学习进度">
+            <span>待巩固 {progressCounts.unmastered}</span>
+            <span>生词 {progressCounts.learning}</span>
+            <span>已掌握 {progressCounts.mastered}</span>
+            <span>到期 {progressCounts.review}</span>
+          </div>
           <div className="entry-review-list">
             {parsed.entries.map((entry, index) => {
-              const isLearning = learningIds.has(entry.id);
+              const status = getMasteryStatus(progress, entry.id);
+              const isDueMastered =
+                status === "mastered" && isReviewDue(progress[entry.id], reviewNow);
+              const displayedStatus = isDueMastered ? "review" : status;
               return (
                 <div className="entry-review-row" key={entry.id}>
                   <span className="entry-index">{index + 1}</span>
                   <span className="entry-chinese">{entry.chinese}</span>
                   <span className="entry-english">{entry.english}</span>
-                  <button
-                    aria-pressed={isLearning}
-                    className={isLearning ? "status-button active" : "status-button"}
-                    onClick={() => toggleLearning(entry.id)}
-                    type="button"
+                  <select
+                    aria-label={`${entry.chinese}：掌握状态`}
+                    className={`status-select ${displayedStatus}`}
+                    onChange={(event) =>
+                      updateMastery(entry.id, event.target.value as MasteryStatus)
+                    }
+                    value={displayedStatus}
                   >
-                    {isLearning ? "生词" : "标记"}
-                  </button>
+                    {isDueMastered ? (
+                      <option disabled value="review">
+                        到期
+                      </option>
+                    ) : null}
+                    <option value="new">待练</option>
+                    <option value="learning">生词</option>
+                    <option value="mastered">掌握</option>
+                  </select>
                 </div>
               );
             })}
@@ -431,7 +499,7 @@ export function WorksheetApp() {
           <div>
             <span className="preview-label">A4 预览</span>
             <span className="preview-summary">
-              {activeEntries.length} 词 · {pages.length} 学生页
+              {activeEntries.length} 词 · {activeFilterLabel} · {pages.length} 学生页
               {config.answerPages ? ` · ${pages.length} 答案页` : ""}
             </span>
           </div>

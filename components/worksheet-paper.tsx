@@ -208,7 +208,7 @@ export function StudentPaper({
       </div>
 
       <footer className="paper-footer">
-        <span>完成后将“疑”和“错”的词加入生词本</span>
+        <span>核对后回录：对可标已掌握，“疑”和“错”标为生词</span>
         <span>
           学生页 {pageNumber}/{pageTotal}
         </span>
@@ -288,7 +288,7 @@ export function AnswerPaper({
       </div>
 
       <footer className="paper-footer">
-        <span>核对后只需回录“疑”和“错”</span>
+        <span>核对后将结果回录到生词本或已掌握</span>
         <span>
           答案页 {pageNumber}/{pageTotal}
         </span>
