@@ -83,11 +83,16 @@ export function parseWordEntries(source: string): ParseResult {
 
 export function serializeEntries(entries: WordEntry[]): string {
   return entries
-    .map((entry) =>
-      [entry.chinese, entry.english, entry.partOfSpeech ?? "", entry.example ?? ""]
-        .join(" | ")
-        .replace(/(?: \| ){2}$/, ""),
-    )
+    .map((entry) => {
+      const parts = [
+        entry.chinese,
+        entry.english,
+        entry.partOfSpeech ?? "",
+        entry.example ?? "",
+      ];
+      while (parts.at(-1) === "") parts.pop();
+      return parts.join(" | ");
+    })
     .join("\n");
 }
 

@@ -11,6 +11,7 @@ import {
 } from "@/lib/worksheet";
 
 type PaperProps = {
+  batchCode: string;
   entries: WordEntry[];
   title: string;
   dateText: string;
@@ -147,6 +148,7 @@ function PaperHeader({
 }
 
 export function StudentPaper({
+  batchCode,
   entries,
   title,
   dateText,
@@ -208,7 +210,10 @@ export function StudentPaper({
       </div>
 
       <footer className="paper-footer">
-        <span>核对后回录：对可标已掌握，“疑”和“错”标为生词</span>
+        <span>
+          {batchCode ? `批次 ${batchCode} · ` : ""}
+          核对后回录“对、疑、错”
+        </span>
         <span>
           学生页 {pageNumber}/{pageTotal}
         </span>
@@ -218,6 +223,7 @@ export function StudentPaper({
 }
 
 export function AnswerPaper({
+  batchCode,
   entries,
   title,
   dateText,
@@ -288,7 +294,10 @@ export function AnswerPaper({
       </div>
 
       <footer className="paper-footer">
-        <span>核对后将结果回录到生词本或已掌握</span>
+        <span>
+          {batchCode ? `批次 ${batchCode} · ` : ""}
+          核对后将结果回录到同一批次
+        </span>
         <span>
           答案页 {pageNumber}/{pageTotal}
         </span>

@@ -6,6 +6,7 @@ import {
   parseWordEntries,
   resolvePracticeMode,
   revealExampleAnswer,
+  serializeEntries,
   seededShuffle,
 } from "./worksheet";
 
@@ -27,6 +28,15 @@ describe("parseWordEntries", () => {
     const result = parseWordEntries("苹果 | apple\n无分隔符\n苹果 | apple");
     expect(result.entries).toHaveLength(1);
     expect(result.invalidLines).toEqual([2]);
+  });
+
+  it("serializes optional trailing fields without empty separators", () => {
+    expect(
+      serializeEntries([
+        { id: "one", chinese: "苹果", english: "apple", partOfSpeech: "n." },
+        { id: "two", chinese: "梨", english: "pear" },
+      ]),
+    ).toBe("苹果 | apple | n.\n梨 | pear");
   });
 });
 

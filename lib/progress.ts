@@ -1,17 +1,21 @@
 import type { EntryFilter, WordEntry } from "@/lib/worksheet";
 
-export const REVIEW_INTERVAL_DAYS = 7;
-const REVIEW_INTERVAL_MS = REVIEW_INTERVAL_DAYS * 24 * 60 * 60 * 1000;
+export const REVIEW_INTERVAL_DAYS = [1, 3, 7, 14, 30] as const;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type MasteryStatus = "new" | "learning" | "mastered";
 export type StoredMasteryStatus = Exclude<MasteryStatus, "new">;
 
 export type ProgressRecord = {
+  intervalDays: number;
+  nextReviewAt: string;
   status: StoredMasteryStatus;
+  streak: number;
   updatedAt: string;
 };
 
 export type ProgressMap = Record<string, ProgressRecord>;
+export type PracticeResult = "correct" | "unsure" | "wrong";
 
 function isStoredStatus(value: unknown): value is StoredMasteryStatus {
   return value === "learning" || value === "mastered";
@@ -19,6 +23,10 @@ function isStoredStatus(value: unknown): value is StoredMasteryStatus {
 
 function hasValidDate(value: unknown): value is string {
   return typeof value === "string" && Number.isFinite(Date.parse(value));
+}
+
+function addDays(date: Date, days: number): string {
+  return new Date(date.getTime() + days * DAY_MS).toISOString();
 }
 
 export function normalizeProgress(
@@ -33,8 +41,23 @@ export function normalizeProgress(
       if (!record || typeof record !== "object" || Array.isArray(record)) return;
       const candidate = record as Partial<ProgressRecord>;
       if (!isStoredStatus(candidate.status) || !hasValidDate(candidate.updatedAt)) return;
+      const legacyInterval = candidate.status === "mastered" ? 7 : 0;
+      const intervalDays =
+        typeof candidate.intervalDays === "number" && candidate.intervalDays >= 0
+          ? candidate.intervalDays
+          : legacyInterval;
       progress[entryId] = {
+        intervalDays,
+        nextReviewAt: hasValidDate(candidate.nextReviewAt)
+          ? candidate.nextReviewAt
+          : addDays(new Date(candidate.updatedAt), intervalDays),
         status: candidate.status,
+        streak:
+          typeof candidate.streak === "number" && candidate.streak >= 0
+            ? Math.floor(candidate.streak)
+            : candidate.status === "mastered"
+              ? 3
+              : 0,
         updatedAt: candidate.updatedAt,
       };
     });
@@ -44,7 +67,10 @@ export function normalizeProgress(
     legacyLearningIds.forEach((entryId) => {
       if (typeof entryId !== "string" || progress[entryId]) return;
       progress[entryId] = {
+        intervalDays: 0,
+        nextReviewAt: now.toISOString(),
         status: "learning",
+        streak: 0,
         updatedAt: now.toISOString(),
       };
     });
@@ -71,15 +97,56 @@ export function setMasteryStatus(
     delete next[entryId];
     return next;
   }
-
-  next[entryId] = { status, updatedAt: now.toISOString() };
-  return next;
+  return recordPracticeResult(
+    next,
+    entryId,
+    status === "mastered" ? "correct" : "wrong",
+    now,
+  );
 }
 
 export function isReviewDue(record: ProgressRecord | undefined, now = new Date()): boolean {
   if (!record) return false;
-  if (record.status === "learning") return true;
-  return now.getTime() - Date.parse(record.updatedAt) >= REVIEW_INTERVAL_MS;
+  return Date.parse(record.nextReviewAt) <= now.getTime();
+}
+
+export function recordPracticeResult(
+  progress: ProgressMap,
+  entryId: string,
+  result: PracticeResult,
+  now = new Date(),
+): ProgressMap {
+  const current = progress[entryId];
+  const updatedAt = now.toISOString();
+
+  if (result === "correct") {
+    const previousStreak = current?.status === "mastered" ? current.streak : 0;
+    const streak = previousStreak + 1;
+    const intervalDays =
+      REVIEW_INTERVAL_DAYS[Math.min(streak - 1, REVIEW_INTERVAL_DAYS.length - 1)];
+    return {
+      ...progress,
+      [entryId]: {
+        intervalDays,
+        nextReviewAt: addDays(now, intervalDays),
+        status: "mastered",
+        streak,
+        updatedAt,
+      },
+    };
+  }
+
+  const intervalDays = result === "unsure" ? 1 : 0;
+  return {
+    ...progress,
+    [entryId]: {
+      intervalDays,
+      nextReviewAt: addDays(now, intervalDays),
+      status: "learning",
+      streak: 0,
+      updatedAt,
+    },
+  };
 }
 
 export function filterEntriesByProgress(
