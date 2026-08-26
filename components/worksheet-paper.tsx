@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import type { StudyReport } from "@/lib/planning";
 import {
   maskEnglishWord,
@@ -21,7 +19,6 @@ type PaperProps = {
   mode: PracticeMode;
   pageNumber: number;
   pageTotal: number;
-  perPage: number;
   showMeta: boolean;
   startIndex: number;
   variantLabel: string;
@@ -160,13 +157,10 @@ export function StudentPaper({
   mode,
   pageNumber,
   pageTotal,
-  perPage,
   showMeta,
   startIndex,
   variantLabel,
 }: PaperProps) {
-  const rowStyle = { "--paper-rows": perPage } as CSSProperties;
-
   return (
     <article className="paper student-paper">
       <PaperHeader
@@ -177,7 +171,7 @@ export function StudentPaper({
       />
       <p className="paper-instruction">{modeCopy[mode].instruction}</p>
 
-      <div className="practice-list" style={rowStyle}>
+      <div className="practice-list">
         {entries.length ? (
           entries.map((entry, index) => {
             const number = startIndex + index + 1;
@@ -241,12 +235,10 @@ export function AnswerPaper({
   mode,
   pageNumber,
   pageTotal,
-  perPage,
   showMeta,
   startIndex,
   variantLabel,
 }: Omit<PaperProps, "lineStyle">) {
-  const rowStyle = { "--paper-rows": perPage } as CSSProperties;
   const instruction =
     mode === "dictation"
       ? "朗读英文，不要读中文。先按顺序读一遍，再按需要重复。"
@@ -266,7 +258,7 @@ export function AnswerPaper({
       />
       <p className="paper-instruction">{instruction}</p>
 
-      <div className="answer-list" style={rowStyle}>
+      <div className="answer-list">
         {entries.map((entry, index) => {
           const number = startIndex + index + 1;
           const resolvedMode = resolvePracticeMode(

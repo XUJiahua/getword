@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   maskEnglishWord,
+  movePageOverflow,
   paginate,
   parseWordEntries,
   resolvePracticeMode,
@@ -51,6 +52,14 @@ describe("worksheet helpers", () => {
     expect(seededShuffle([1, 2, 3, 4], 42)).toEqual(
       seededShuffle([1, 2, 3, 4], 42),
     );
+  });
+
+  it("moves measured A4 overflow forward without changing entry order", () => {
+    const pages = [["one", "two", "three", "four"], ["five", "six", "seven"]];
+    expect(movePageOverflow(pages, 0, 3, 4)).toEqual([
+      ["one", "two", "three"],
+      ["four", "five", "six", "seven"],
+    ]);
   });
 
   it("balances mixed practice and falls back when context is unavailable", () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { DEFAULT_BANK, DEFAULT_SOURCE, WORD_BANKS } from "@/lib/banks";
 import {
@@ -39,11 +39,13 @@ import {
 import {
   paginate,
   parseWordEntries,
+  movePageOverflow,
   seededShuffle,
   serializeEntries,
   type EntryFilter,
   type LineStyle,
   type PracticeMode,
+  type WordEntry,
 } from "@/lib/worksheet";
 import { AnswerPaper, StudentPaper, StudyReportPaper } from "./worksheet-paper";
 import {
@@ -101,7 +103,7 @@ const defaultConfig: StoredConfig = {
   filter: "all",
   lineStyle: "ruled",
   mode: "recall",
-  perPage: 10,
+  perPage: 20,
   reportPage: false,
   selectedWordBookId: "",
   showMeta: true,
@@ -111,7 +113,7 @@ const defaultConfig: StoredConfig = {
   title: DEFAULT_BANK.title,
   variantCount: 1,
   wordBookName: "人物特点",
-  zoom: 0.85,
+  zoom: 1,
 };
 
 type OperationNotice = {
@@ -154,7 +156,9 @@ function normalizeConfig(value: unknown): Partial<StoredConfig> {
     filter: isEntryFilter(config.filter) ? config.filter : undefined,
     lineStyle: isLineStyle(config.lineStyle) ? config.lineStyle : undefined,
     mode: isPracticeMode(config.mode) ? config.mode : undefined,
-    perPage: [8, 10, 12].includes(Number(config.perPage)) ? Number(config.perPage) : undefined,
+    perPage: [12, 16, 20].includes(Number(config.perPage))
+      ? Number(config.perPage)
+      : undefined,
     reportPage: typeof config.reportPage === "boolean" ? config.reportPage : undefined,
     selectedWordBookId:
       typeof config.selectedWordBookId === "string" ? config.selectedWordBookId : undefined,
@@ -221,6 +225,11 @@ export function WorksheetApp() {
   const [notice, setNotice] = useState<OperationNotice>(null);
   const [hydrated, setHydrated] = useState(false);
   const [reviewNow, setReviewNow] = useState(() => new Date());
+  const [paginationResult, setPaginationResult] = useState<{
+    key: string;
+    pages: WordEntry[][][];
+  } | null>(null);
+  const paperStackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -287,14 +296,112 @@ export function WorksheetApp() {
       ) as Record<string, number>,
     [selectedEntries],
   );
-  const pagesByVariant = useMemo(
-    () =>
-      worksheetVariants.map((variant) => ({
-        ...variant,
-        pages: paginate(variant.entries, config.perPage),
-      })),
+  const initialVariantPages = useMemo(
+    () => worksheetVariants.map((variant) => paginate(variant.entries, config.perPage)),
     [config.perPage, worksheetVariants],
   );
+  const paginationKey = useMemo(
+    () =>
+      [
+        config.dateText,
+        config.lineStyle,
+        config.mode,
+        config.perPage,
+        config.showMeta ? "meta" : "no-meta",
+        config.title,
+        worksheetVariants
+          .map((variant) =>
+            [
+              variant.label,
+              ...variant.entries.map((entry) =>
+                [
+                  entry.id,
+                  entry.chinese,
+                  entry.english,
+                  entry.partOfSpeech ?? "",
+                  entry.example ?? "",
+                ].join("\u0001"),
+              ),
+            ].join("\u0002"),
+          )
+          .join("\u0003"),
+      ].join("\u0004"),
+    [
+      config.dateText,
+      config.lineStyle,
+      config.mode,
+      config.perPage,
+      config.showMeta,
+      config.title,
+      worksheetVariants,
+    ],
+  );
+  const variantPages =
+    paginationResult?.key === paginationKey ? paginationResult.pages : initialVariantPages;
+  const pagesByVariant = worksheetVariants.map((variant, index) => ({
+    ...variant,
+    pages: variantPages[index] ?? [[]],
+  }));
+
+  useEffect(() => {
+    const stack = paperStackRef.current;
+    if (!stack) return;
+
+    let frame = 0;
+    const measure = () => {
+      const papers = Array.from(
+        stack.querySelectorAll<HTMLElement>(":scope > .student-paper"),
+      );
+      const expectedPaperCount = variantPages.reduce((total, pages) => total + pages.length, 0);
+      if (papers.length !== expectedPaperCount) return;
+
+      let paperIndex = 0;
+      for (let variantIndex = 0; variantIndex < variantPages.length; variantIndex += 1) {
+        for (let pageIndex = 0; pageIndex < variantPages[variantIndex].length; pageIndex += 1) {
+          const list = papers[paperIndex]?.querySelector<HTMLElement>(".practice-list");
+          paperIndex += 1;
+          if (!list) continue;
+
+          const listBottom = list.getBoundingClientRect().bottom;
+          const rows = Array.from(
+            list.querySelectorAll<HTMLElement>(":scope > .practice-row"),
+          );
+          const overflowIndex = rows.findIndex(
+            (row) => row.getBoundingClientRect().bottom > listBottom + 0.75,
+          );
+          if (overflowIndex > 0) {
+            const nextPages = variantPages.map((pages) => pages.map((entries) => [...entries]));
+            nextPages[variantIndex] = movePageOverflow(
+              nextPages[variantIndex],
+              pageIndex,
+              overflowIndex,
+              config.perPage,
+            );
+            setPaginationResult({ key: paginationKey, pages: nextPages });
+            return;
+          }
+        }
+      }
+
+      if (paginationResult?.key !== paginationKey) {
+        setPaginationResult({ key: paginationKey, pages: variantPages });
+      }
+    };
+    const scheduleMeasure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(measure);
+    };
+    const observer = new ResizeObserver(scheduleMeasure);
+    observer.observe(stack);
+    stack
+      .querySelectorAll(":scope > .student-paper, .practice-list, .practice-row")
+      .forEach((element) => observer.observe(element));
+    scheduleMeasure();
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [config.perPage, paginationKey, paginationResult?.key, variantPages]);
   const studyReport = useMemo(
     () => buildStudyReport(parsed.entries, progress, sessions, reviewNow),
     [parsed.entries, progress, reviewNow, sessions],
@@ -727,9 +834,9 @@ export function WorksheetApp() {
                 onChange={(event) => updateConfig("perPage", Number(event.target.value))}
                 value={config.perPage}
               >
-                <option value={8}>8</option>
-                <option value={10}>10</option>
                 <option value={12}>12</option>
+                <option value={16}>16</option>
+                <option value={20}>20</option>
               </select>
             </div>
             <div className="field">
@@ -961,7 +1068,7 @@ export function WorksheetApp() {
         </div>
 
         <div className="paper-viewport">
-          <div className="paper-stack" style={{ zoom: config.zoom }}>
+          <div className="paper-stack" ref={paperStackRef} style={{ zoom: config.zoom }}>
             {pagesByVariant.map((variant, variantIndex) =>
               variant.pages.map((pageEntries, index) => (
                 <StudentPaper
@@ -974,9 +1081,10 @@ export function WorksheetApp() {
                   mode={config.mode}
                   pageNumber={index + 1}
                   pageTotal={variant.pages.length}
-                  perPage={config.perPage}
                   showMeta={config.showMeta}
-                  startIndex={index * config.perPage}
+                  startIndex={variant.pages
+                    .slice(0, index)
+                    .reduce((total, page) => total + page.length, 0)}
                   title={config.title}
                   variantLabel={variant.label}
                 />
@@ -994,9 +1102,10 @@ export function WorksheetApp() {
                       mode={config.mode}
                       pageNumber={index + 1}
                       pageTotal={variant.pages.length}
-                      perPage={config.perPage}
                       showMeta={config.showMeta}
-                      startIndex={index * config.perPage}
+                      startIndex={variant.pages
+                        .slice(0, index)
+                        .reduce((total, page) => total + page.length, 0)}
                       title={config.title}
                       variantLabel={variant.label}
                     />
