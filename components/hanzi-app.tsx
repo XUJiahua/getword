@@ -31,6 +31,7 @@ const CONFIG_KEY = "getword.hanzi.config.v1";
 const PINYIN_KEY = "getword.hanzi.pinyin.v1";
 const RECORDS_KEY = "getword.hanzi.records.v1";
 const STROKES_CDN = "https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0.1";
+const HANZI_MEASUREMENT_BATCH_SIZE = 96;
 
 const strokeCache = new Map<string, Promise<HanziStrokeData | null>>();
 
@@ -41,7 +42,6 @@ type HanziConfig = {
   filter: HanziPrintFilter;
   gridType: HanziGridType;
   mode: HanziMode;
-  perPage: number;
   showMeta: boolean;
   source: string;
   title: string;
@@ -56,7 +56,6 @@ const defaultConfig: HanziConfig = {
   filter: "all",
   gridType: "tian",
   mode: "write",
-  perPage: 32,
   showMeta: false,
   source: "春天\n学校\n认真\n一心一意\n长大\n音乐",
   title: "看拼音写汉字",
@@ -112,9 +111,6 @@ function restoreConfig(value: unknown): Partial<HanziConfig> {
       String(saved.mode),
     )
       ? saved.mode
-      : undefined,
-    perPage: [16, 24, 32, 40, 48].includes(Number(saved.perPage))
-      ? Number(saved.perPage)
       : undefined,
     showMeta: typeof saved.showMeta === "boolean" ? saved.showMeta : undefined,
     source: typeof saved.source === "string" ? saved.source : undefined,
@@ -250,7 +246,6 @@ export function HanziApp() {
         config.dateText,
         config.gridType,
         config.mode,
-        config.perPage,
         config.showMeta ? "meta" : "no-meta",
         config.title,
         neededStrokeKey && !strokesLoading ? `strokes:${neededStrokeKey}` : "strokes:loading",
@@ -261,7 +256,6 @@ export function HanziApp() {
       config.dateText,
       config.gridType,
       config.mode,
-      config.perPage,
       config.showMeta,
       config.title,
       items,
@@ -270,8 +264,8 @@ export function HanziApp() {
     ],
   );
   const initialPages = useMemo(
-    () => paginateHanziItems(items, config.perPage),
-    [config.perPage, items],
+    () => paginateHanziItems(items, HANZI_MEASUREMENT_BATCH_SIZE),
+    [items],
   );
   const pages = paginationResult?.key === paginationKey ? paginationResult.pages : initialPages;
 
@@ -301,7 +295,7 @@ export function HanziApp() {
               pages,
               pageIndex,
               overflowIndex,
-              config.perPage,
+              HANZI_MEASUREMENT_BATCH_SIZE,
             ),
           });
           return;
@@ -324,7 +318,7 @@ export function HanziApp() {
       window.cancelAnimationFrame(frame);
       observer.disconnect();
     };
-  }, [config.perPage, pages, paginationKey, paginationResult?.key]);
+  }, [pages, paginationKey, paginationResult?.key]);
 
   const updateConfig = <Key extends keyof HanziConfig>(
     key: Key,
@@ -508,7 +502,7 @@ export function HanziApp() {
             </div>
           </fieldset>
 
-          <div className="form-grid three-columns compact-grid">
+          <div className="form-grid two-columns compact-grid">
             <div className="field">
               <label className="control-label" htmlFor="hanzi-grid-type">
                 格子样式
@@ -536,23 +530,6 @@ export function HanziApp() {
                 value={config.copies}
               >
                 {[1, 2, 3, 4].map((count) => (
-                  <option key={count} value={count}>
-                    {count}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="field">
-              <label className="control-label" htmlFor="hanzi-per-page">
-                每页上限
-              </label>
-              <select
-                disabled={config.mode === "strokes"}
-                id="hanzi-per-page"
-                onChange={(event) => updateConfig("perPage", Number(event.target.value))}
-                value={config.perPage}
-              >
-                {[16, 24, 32, 40, 48].map((count) => (
                   <option key={count} value={count}>
                     {count}
                   </option>
