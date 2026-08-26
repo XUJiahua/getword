@@ -1,0 +1,623 @@
+{
+  "name": "一年级上册",
+  "short": "一上",
+  "grade": 1,
+  "semester": "上",
+  "source": {
+    "type": "pep-textbook",
+    "edition": "人民教育出版社",
+    "extractedAt": "2026-05-05",
+    "pdfFilename": "义务教育教科书·语文一年级上册.pdf",
+    "label": "部编版 · 词语表"
+  },
+  "units": [
+    {
+      "key": "u1",
+      "name": "识字（一）",
+      "words": [
+        "今天",
+        "地区",
+        "主人",
+        "你好",
+        "我们",
+        "他们",
+        "一切",
+        "二月",
+        "半夜三更",
+        "四周",
+        "五角星",
+        "上升",
+        "下降",
+        "井口",
+        "耳朵",
+        "夺目",
+        "动手",
+        "满足",
+        "站立",
+        "坐井观天",
+        "值日",
+        "月亮",
+        "喝水",
+        "火星",
+        "山坡",
+        "化石",
+        "田地",
+        "禾苗",
+        "对岸",
+        "乌云",
+        "阵雨",
+        "微风",
+        "杏花",
+        "翠鸟",
+        "昆虫"
+      ],
+      "lessons": [
+        {
+          "kind": "识字",
+          "no": 1,
+          "title": "天地人",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 6
+        },
+        {
+          "kind": "识字",
+          "no": 2,
+          "title": "金木水火土",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
+        },
+        {
+          "kind": "识字",
+          "no": 3,
+          "title": "口耳目",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
+        },
+        {
+          "kind": "识字",
+          "no": 4,
+          "title": "日月水火",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 8
+        },
+        {
+          "kind": "识字",
+          "no": 5,
+          "title": "对韵歌",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 7
+        }
+      ]
+    },
+    {
+      "key": "u2",
+      "name": "汉语拼音（一）",
+      "words": [
+        "爸爸",
+        "妈妈",
+        "马蹄",
+        "尘土",
+        "不久"
+      ],
+      "lessons": [
+        {
+          "kind": "拼音",
+          "no": 3,
+          "title": "b p m f",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        },
+        {
+          "kind": "拼音",
+          "no": 4,
+          "title": "d t n l",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 3
+        }
+      ]
+    },
+    {
+      "key": "u3",
+      "name": "汉语拼音（二）",
+      "words": [
+        "图画",
+        "扑打",
+        "棋子",
+        "母鸡",
+        "写字",
+        "念念有词",
+        "语调",
+        "句子",
+        "仙子",
+        "桌子",
+        "报纸"
+      ],
+      "lessons": [
+        {
+          "kind": "拼音",
+          "no": 5,
+          "title": "g k h",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        },
+        {
+          "kind": "拼音",
+          "no": 6,
+          "title": "j q x",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        },
+        {
+          "kind": "拼音",
+          "no": 7,
+          "title": "z c s",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 5
+        },
+        {
+          "kind": "拼音",
+          "no": 8,
+          "title": "zh ch sh r",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        }
+      ]
+    },
+    {
+      "key": "u4",
+      "name": "汉语拼音（三）",
+      "words": [
+        "妹妹",
+        "牛奶",
+        "小心",
+        "石桥",
+        "台灯",
+        "积雪",
+        "婴儿",
+        "平白",
+        "枯草",
+        "专家",
+        "于是",
+        "风车",
+        "路费",
+        "走廊"
+      ],
+      "lessons": [
+        {
+          "kind": "拼音",
+          "no": 9,
+          "title": "ai ei ui",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        },
+        {
+          "kind": "拼音",
+          "no": 10,
+          "title": "ao ou iu",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 3
+        },
+        {
+          "kind": "拼音",
+          "no": 11,
+          "title": "ie üe er",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 2
+        },
+        {
+          "kind": "拼音",
+          "no": 12,
+          "title": "an en in un ün",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 4
+        },
+        {
+          "kind": "拼音",
+          "no": 13,
+          "title": "ang eng ing ong",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 4
+        }
+      ]
+    },
+    {
+      "key": "u5",
+      "name": "课文（一）",
+      "words": [
+        "中秋",
+        "力气",
+        "罢了",
+        "建树",
+        "叶子",
+        "一片",
+        "伟大",
+        "飞快",
+        "会师",
+        "一个",
+        "目的地",
+        "渔船",
+        "两边",
+        "埋头",
+        "存在",
+        "哪里",
+        "看见",
+        "听见",
+        "闪烁",
+        "星期",
+        "江河",
+        "南瓜",
+        "可以",
+        "没精打采",
+        "睡莲",
+        "捕鱼",
+        "东北",
+        "西边",
+        "尖利",
+        "传说",
+        "春光",
+        "青蛙",
+        "初夏",
+        "弯曲",
+        "橡皮",
+        "地区",
+        "冬天"
+      ],
+      "lessons": [
+        {
+          "kind": "课文",
+          "no": 1,
+          "title": "秋天",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
+        },
+        {
+          "kind": "课文",
+          "no": 2,
+          "title": "小小的船",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
+        },
+        {
+          "kind": "课文",
+          "no": 3,
+          "title": "江南",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 9
+        },
+        {
+          "kind": "课文",
+          "no": 4,
+          "title": "四季",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
+        }
+      ]
+    },
+    {
+      "key": "u6",
+      "name": "识字（二）",
+      "words": [
+        "永远",
+        "所有",
+        "出色",
+        "将近",
+        "倾听",
+        "无尽",
+        "作声",
+        "去往",
+        "还有",
+        "从来",
+        "多么",
+        "少年",
+        "金黄",
+        "牛奶",
+        "只是",
+        "熊猫",
+        "一边",
+        "烤鸭",
+        "苹果",
+        "如果",
+        "杏花",
+        "桃花",
+        "书刊",
+        "包括",
+        "尺子",
+        "事业",
+        "日本",
+        "笔直",
+        "刀剑",
+        "功课",
+        "早晨",
+        "学校",
+        "光明",
+        "力气",
+        "尘土",
+        "从前",
+        "众星拱月",
+        "双倍",
+        "木棉",
+        "丛林",
+        "森林",
+        "枝条",
+        "会心",
+        "上升",
+        "出国",
+        "国旗",
+        "中午",
+        "嫩红",
+        "唱歌",
+        "起来",
+        "优美",
+        "华丽",
+        "屹立"
+      ],
+      "lessons": [
+        {
+          "kind": "识字",
+          "no": 6,
+          "title": "画",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 10
+        },
+        {
+          "kind": "识字",
+          "no": 7,
+          "title": "大小多少",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
+        },
+        {
+          "kind": "识字",
+          "no": 8,
+          "title": "小书包",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "识字",
+          "no": 9,
+          "title": "日月明",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "识字",
+          "no": 10,
+          "title": "升国旗",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        }
+      ]
+    },
+    {
+      "key": "u7",
+      "name": "课文（二）",
+      "words": [
+        "倒影",
+        "从前",
+        "后悔",
+        "乌黑",
+        "小狗",
+        "左顾右盼",
+        "它们",
+        "和好",
+        "朋友",
+        "比如",
+        "尾巴",
+        "眼巴巴",
+        "谁的",
+        "漫长",
+        "短小",
+        "把手",
+        "雨伞",
+        "兔子",
+        "最后",
+        "公主",
+        "写字",
+        "诗情画意",
+        "指点",
+        "主要",
+        "经过",
+        "送给",
+        "当作",
+        "一串",
+        "人们",
+        "以前",
+        "变成",
+        "数落",
+        "云彩",
+        "半岛",
+        "凌空",
+        "慰问",
+        "到底",
+        "前方",
+        "吞没",
+        "万象更新",
+        "墨绿",
+        "出产"
+      ],
+      "lessons": [
+        {
+          "kind": "课文",
+          "no": 5,
+          "title": "影子",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 6,
+          "title": "比尾巴",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 7,
+          "title": "青蛙写诗",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 8,
+          "title": "雨点儿",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
+        }
+      ]
+    },
+    {
+      "key": "u8",
+      "name": "课文（三）",
+      "words": [
+        "沉睡",
+        "刹那",
+        "云海",
+        "果真",
+        "老乡",
+        "会师",
+        "干吗",
+        "一同",
+        "为什么",
+        "才干",
+        "亮光",
+        "临时",
+        "侍候",
+        "感觉",
+        "得罪",
+        "各自",
+        "自己",
+        "很多",
+        "穿戴",
+        "军衣",
+        "制服",
+        "门板",
+        "快乐",
+        "瓦蓝",
+        "又是",
+        "冷笑",
+        "接着",
+        "向导",
+        "和好",
+        "贝壳",
+        "娃娃",
+        "挂念",
+        "复活",
+        "金桂",
+        "人群",
+        "竹子",
+        "牙齿",
+        "使用",
+        "几乎",
+        "散步",
+        "为难",
+        "参差",
+        "加入",
+        "洞穴",
+        "乌云",
+        "乌鸦",
+        "别处",
+        "寻找",
+        "办法",
+        "旁边",
+        "也许",
+        "乘法",
+        "放假",
+        "行进",
+        "高傲",
+        "不住",
+        "孩子",
+        "玩耍",
+        "好吧",
+        "发展",
+        "发芽",
+        "爬山虎",
+        "哎呀",
+        "不久",
+        "回味",
+        "全神贯注",
+        "变化"
+      ],
+      "lessons": [
+        {
+          "kind": "课文",
+          "no": 9,
+          "title": "明天要去远足",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 10,
+          "title": "大还是小",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
+        },
+        {
+          "kind": "课文",
+          "no": 11,
+          "title": "项链",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 12,
+          "title": "雪地里的小画家",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 13,
+          "title": "乌鸦喝水",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 11
+        },
+        {
+          "kind": "课文",
+          "no": 14,
+          "title": "小蜗牛",
+          "wordCount": 0,
+          "writeCharCount": 0,
+          "recognizeCharCount": 12
+        }
+      ]
+    }
+  ]
+}

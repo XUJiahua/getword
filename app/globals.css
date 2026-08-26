@@ -120,6 +120,26 @@ select:disabled {
   white-space: nowrap;
 }
 
+.tool-switch {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tool-switch:hover {
+  color: var(--surface);
+  background: var(--accent);
+}
+
 .control-section {
   padding: 16px 0;
   border-top: 1px solid var(--line-soft);
@@ -1184,6 +1204,327 @@ textarea {
   text-align: center;
 }
 
+/* Hanzi worksheet */
+.hanzi-bank-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.hanzi-bank-source {
+  display: inline-flex;
+  margin: 8px 0 0;
+  padding: 2px 7px;
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.hanzi-mode-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hanzi-meta-toggle {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  align-self: end;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.hanzi-meta-toggle input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--accent);
+}
+
+.hanzi-pinyin-list {
+  display: grid;
+  max-height: 360px;
+  overflow-y: auto;
+  gap: 8px;
+  padding-right: 3px;
+}
+
+.hanzi-pinyin-row {
+  display: grid;
+  grid-template-columns: minmax(72px, 0.75fr) minmax(120px, 1.25fr) auto;
+  align-items: center;
+  gap: 7px;
+}
+
+.hanzi-word-chip {
+  display: block;
+  overflow: hidden;
+  padding: 7px 9px;
+  background: var(--surface-recessed);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hanzi-pinyin-row input {
+  height: 36px;
+}
+
+.hanzi-status-toggle {
+  display: flex;
+  gap: 3px;
+}
+
+.hanzi-status-toggle button {
+  min-height: 32px;
+  padding: 0 7px;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.hanzi-status-toggle button.active {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border-color: var(--accent);
+  font-weight: 650;
+}
+
+.hanzi-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.hanzi-paper .paper-head h2 {
+  font-family: "Kaiti SC", STKaiti, KaiTi, serif;
+}
+
+.hanzi-word-list {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--hanzi-row-count), minmax(0, 1fr));
+  align-items: stretch;
+  column-gap: 7mm;
+  padding: 4mm 0 2mm;
+}
+
+.hanzi-item {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  align-items: center;
+  grid-template-columns: 6mm minmax(0, 1fr);
+  gap: 2mm;
+  border-bottom: 1px solid var(--paper-rule-soft);
+  break-inside: avoid;
+}
+
+.hanzi-index {
+  align-self: start;
+  padding-top: 5.6mm;
+  color: var(--paper-meta-ink);
+  font-size: 8.5pt;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.hanzi-practice-grid {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.2mm;
+}
+
+.hanzi-char-unit {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 1mm;
+}
+
+.hanzi-char-pinyin {
+  min-width: 10mm;
+  min-height: 4.5mm;
+  overflow: hidden;
+  font-size: 9.5pt;
+  line-height: 1.15;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hanzi-unit-cells {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2mm;
+}
+
+.hanzi-cell,
+.hanzi-line-cell {
+  position: relative;
+  display: inline-flex;
+  width: 10.5mm;
+  height: 10.5mm;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--paper-trace);
+  background: var(--paper-cell);
+  font-family: "Kaiti SC", STKaiti, KaiTi, serif;
+  font-size: 19pt;
+  line-height: 1;
+}
+
+.hanzi-cell {
+  border: 1px solid var(--paper-rule);
+}
+
+.hanzi-cell::before,
+.hanzi-cell::after,
+.hanzi-cell-diagonal {
+  position: absolute;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.hanzi-cell::before {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px dashed var(--paper-rule-soft);
+}
+
+.hanzi-cell::after {
+  top: 50%;
+  right: 0;
+  left: 0;
+  border-top: 1px dashed var(--paper-rule-soft);
+}
+
+.hanzi-cell-diagonal {
+  top: 50%;
+  left: -19%;
+  width: 138%;
+  border-top: 1px dashed var(--paper-rule-soft);
+  transform-origin: center;
+}
+
+.hanzi-cell-diagonal.forward {
+  transform: rotate(45deg);
+}
+
+.hanzi-cell-diagonal.back {
+  transform: rotate(-45deg);
+}
+
+.hanzi-cell-text,
+.hanzi-glyph {
+  position: relative;
+  z-index: 1;
+}
+
+.hanzi-line-cell {
+  width: 13mm;
+  border-bottom: 1.2px solid var(--paper-rule);
+}
+
+.hanzi-cell.source,
+.hanzi-line-cell.source {
+  color: var(--paper-ink);
+}
+
+.hanzi-cell.blank,
+.hanzi-line-cell.blank {
+  color: transparent;
+}
+
+.hanzi-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--paper-trace);
+}
+
+.hanzi-glyph .hanzi-new-stroke {
+  fill: var(--paper-ink);
+}
+
+.hanzi-glyph .hanzi-stroke-start {
+  fill: var(--danger);
+  stroke: var(--paper-cell);
+  stroke-width: 8;
+}
+
+.hanzi-practice-grid.strokes {
+  display: grid;
+  width: 100%;
+  gap: 1mm;
+}
+
+.hanzi-char-unit.stroke-unit {
+  display: grid;
+  grid-template-columns: 11mm minmax(0, 1fr);
+  align-items: center;
+  justify-items: start;
+  gap: 1.5mm;
+}
+
+.hanzi-char-unit.stroke-unit .hanzi-char-pinyin {
+  text-align: right;
+}
+
+.hanzi-paper.dense .hanzi-cell,
+.hanzi-paper.dense .hanzi-line-cell {
+  width: 8.2mm;
+  height: 8.2mm;
+  font-size: 15pt;
+}
+
+.hanzi-paper.dense .hanzi-line-cell {
+  width: 10mm;
+}
+
+.hanzi-paper.dense .hanzi-char-pinyin {
+  min-height: 3.8mm;
+  font-size: 8pt;
+}
+
+.hanzi-paper.dense .hanzi-index {
+  padding-top: 4.7mm;
+}
+
+.hanzi-paper.roomy .hanzi-cell,
+.hanzi-paper.roomy .hanzi-line-cell {
+  width: 12.5mm;
+  height: 12.5mm;
+  font-size: 22pt;
+}
+
+.hanzi-paper.roomy .hanzi-line-cell {
+  width: 15mm;
+}
+
+.hanzi-paper.roomy .hanzi-char-pinyin {
+  min-height: 5.2mm;
+  font-size: 11pt;
+}
+
+.hanzi-paper.roomy .hanzi-index {
+  padding-top: 6.6mm;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1237,8 +1578,18 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .mode-grid {
+  .mode-grid,
+  .hanzi-mode-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hanzi-bank-grid,
+  .hanzi-pinyin-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hanzi-status-toggle {
+    justify-content: flex-end;
   }
 
   .choice-option {

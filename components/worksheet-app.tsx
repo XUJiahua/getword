@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { DEFAULT_BANK, DEFAULT_SOURCE, WORD_BANKS } from "@/lib/banks";
@@ -574,7 +575,9 @@ export function WorksheetApp() {
             <p className="app-kicker">GETWORD · ENGLISH</p>
             <h1>英语词汇练习纸</h1>
           </div>
-          <span className="version-mark">第十批</span>
+          <Link className="tool-switch" href="/hanzi">
+            汉字练习
+          </Link>
         </header>
 
         <section className="control-section first-section">
