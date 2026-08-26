@@ -1300,65 +1300,70 @@ textarea {
   gap: 8px;
 }
 
+.hanzi-paper {
+  padding: 14mm 14mm 13mm;
+}
+
+.hanzi-paper .paper-head {
+  padding-bottom: 6mm;
+}
+
 .hanzi-paper .paper-head h2 {
   font-family: "Kaiti SC", STKaiti, KaiTi, serif;
+  font-size: 21pt;
+  font-weight: 700;
 }
 
 .hanzi-word-list {
-  display: grid;
+  display: flex;
   min-height: 0;
   flex: 1;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(var(--hanzi-row-count), minmax(0, 1fr));
-  align-items: stretch;
-  column-gap: 7mm;
-  padding: 4mm 0 2mm;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+  column-gap: 8mm;
+  row-gap: 5.4mm;
+  padding-top: 7mm;
 }
 
 .hanzi-item {
-  display: grid;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  align-items: center;
-  grid-template-columns: 6mm minmax(0, 1fr);
-  gap: 2mm;
-  border-bottom: 1px solid var(--paper-rule-soft);
+  display: inline-grid;
+  width: max-content;
+  max-width: 100%;
+  grid-template-columns: auto auto;
+  gap: 2.2mm;
   break-inside: avoid;
 }
 
 .hanzi-index {
-  align-self: start;
-  padding-top: 5.6mm;
+  padding-top: 6.2mm;
   color: var(--paper-meta-ink);
-  font-size: 8.5pt;
+  font-size: 10pt;
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .hanzi-practice-grid {
   display: flex;
-  min-width: 0;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 2.2mm;
+  align-items: flex-start;
+  gap: 2.6mm;
 }
 
 .hanzi-char-unit {
   display: grid;
-  min-width: 0;
   justify-items: center;
-  gap: 1mm;
+  gap: 1.8mm;
+  break-inside: avoid;
 }
 
 .hanzi-char-pinyin {
-  min-width: 10mm;
-  min-height: 4.5mm;
-  overflow: hidden;
-  font-size: 9.5pt;
-  line-height: 1.15;
+  min-width: 13.2mm;
+  min-height: 6mm;
+  font-size: 13pt;
+  line-height: 1.2;
   text-align: center;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -1366,15 +1371,16 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.2mm;
+  justify-content: center;
+  gap: 2.3mm;
 }
 
 .hanzi-cell,
 .hanzi-line-cell {
   position: relative;
   display: inline-flex;
-  width: 10.5mm;
-  height: 10.5mm;
+  width: 13.2mm;
+  height: 13.2mm;
   overflow: hidden;
   align-items: center;
   justify-content: center;
@@ -1382,7 +1388,7 @@ textarea {
   color: var(--paper-trace);
   background: var(--paper-cell);
   font-family: "Kaiti SC", STKaiti, KaiTi, serif;
-  font-size: 19pt;
+  font-size: 24pt;
   line-height: 1;
 }
 
@@ -1436,8 +1442,9 @@ textarea {
 }
 
 .hanzi-line-cell {
-  width: 13mm;
-  border-bottom: 1.2px solid var(--paper-rule);
+  width: 16mm;
+  align-items: flex-end;
+  border-bottom: 1.4px solid var(--paper-rule);
 }
 
 .hanzi-cell.source,
@@ -1468,61 +1475,27 @@ textarea {
 }
 
 .hanzi-practice-grid.strokes {
-  display: grid;
+  flex-direction: column;
+  align-items: stretch;
   width: 100%;
-  gap: 1mm;
+  gap: 1.4mm;
 }
 
 .hanzi-char-unit.stroke-unit {
   display: grid;
-  grid-template-columns: 11mm minmax(0, 1fr);
+  grid-template-columns: minmax(13.2mm, auto) 1fr;
   align-items: center;
   justify-items: start;
-  gap: 1.5mm;
+  gap: 2.4mm;
 }
 
 .hanzi-char-unit.stroke-unit .hanzi-char-pinyin {
   text-align: right;
 }
 
-.hanzi-paper.dense .hanzi-cell,
-.hanzi-paper.dense .hanzi-line-cell {
-  width: 8.2mm;
-  height: 8.2mm;
-  font-size: 15pt;
-}
-
-.hanzi-paper.dense .hanzi-line-cell {
-  width: 10mm;
-}
-
-.hanzi-paper.dense .hanzi-char-pinyin {
-  min-height: 3.8mm;
-  font-size: 8pt;
-}
-
-.hanzi-paper.dense .hanzi-index {
-  padding-top: 4.7mm;
-}
-
-.hanzi-paper.roomy .hanzi-cell,
-.hanzi-paper.roomy .hanzi-line-cell {
-  width: 12.5mm;
-  height: 12.5mm;
-  font-size: 22pt;
-}
-
-.hanzi-paper.roomy .hanzi-line-cell {
-  width: 15mm;
-}
-
-.hanzi-paper.roomy .hanzi-char-pinyin {
-  min-height: 5.2mm;
-  font-size: 11pt;
-}
-
-.hanzi-paper.roomy .hanzi-index {
-  padding-top: 6.6mm;
+.hanzi-char-unit.stroke-unit .hanzi-unit-cells {
+  justify-content: flex-start;
+  gap: 1.6mm;
 }
 
 @media (prefers-reduced-motion: reduce) {

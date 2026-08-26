@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { HanziPaper, type HanziStrokeData } from "./hanzi-paper";
 import {
   autoPinyin,
   chineseChars,
   filterHanziWords,
+  moveHanziPageOverflow,
   paginateHanziItems,
   splitWords,
   wordsForBank,
   type HanziBank,
   type HanziGridType,
+  type HanziItem,
   type HanziMode,
   type HanziPrintFilter,
   type HanziWordRecords,
@@ -59,7 +61,7 @@ const defaultConfig: HanziConfig = {
   source: "春天\n学校\n认真\n一心一意\n长大\n音乐",
   title: "看拼音写汉字",
   unitKey: "",
-  zoom: 0.85,
+  zoom: 1,
 };
 
 function readStoredJson(key: string): unknown {
@@ -148,8 +150,13 @@ export function HanziApp() {
     data: Map<string, HanziStrokeData | null>;
     key: string;
   } | null>(null);
+  const [paginationResult, setPaginationResult] = useState<{
+    key: string;
+    pages: HanziItem[][];
+  } | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [notice, setNotice] = useState("");
+  const paperStackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -210,20 +217,6 @@ export function HanziApp() {
       })),
     [pinyinOverrides, selectedWords],
   );
-  const effectivePerPage = useMemo(() => {
-    if (config.mode === "strokes") return 4;
-    const longestWord = Math.max(1, ...items.map((item) => chineseChars(item.word).length));
-    const cellsPerWord =
-      longestWord * (config.copies + (config.mode === "copy" ? 1 : 0));
-    if (cellsPerWord > 12) return Math.min(config.perPage, 8);
-    if (cellsPerWord > 8) return Math.min(config.perPage, 12);
-    if (cellsPerWord > 5) return Math.min(config.perPage, 16);
-    return config.perPage;
-  }, [config.copies, config.mode, config.perPage, items]);
-  const pages = useMemo(
-    () => paginateHanziItems(items, effectivePerPage),
-    [effectivePerPage, items],
-  );
   const neededStrokeChars = useMemo(() => {
     if (config.mode !== "trace" && config.mode !== "strokes") return [];
     return Array.from(new Set(selectedWords.flatMap((word) => chineseChars(word))));
@@ -250,6 +243,88 @@ export function HanziApp() {
   const strokeData =
     neededStrokeKey && strokeResult?.key === neededStrokeKey ? strokeResult.data : new Map();
   const strokesLoading = Boolean(neededStrokeKey && strokeResult?.key !== neededStrokeKey);
+  const paginationKey = useMemo(
+    () =>
+      [
+        config.copies,
+        config.dateText,
+        config.gridType,
+        config.mode,
+        config.perPage,
+        config.showMeta ? "meta" : "no-meta",
+        config.title,
+        neededStrokeKey && !strokesLoading ? `strokes:${neededStrokeKey}` : "strokes:loading",
+        items.map((item) => `${item.word}:${item.pinyin}`).join("\u0001"),
+      ].join("\u0002"),
+    [
+      config.copies,
+      config.dateText,
+      config.gridType,
+      config.mode,
+      config.perPage,
+      config.showMeta,
+      config.title,
+      items,
+      neededStrokeKey,
+      strokesLoading,
+    ],
+  );
+  const initialPages = useMemo(
+    () => paginateHanziItems(items, config.perPage),
+    [config.perPage, items],
+  );
+  const pages = paginationResult?.key === paginationKey ? paginationResult.pages : initialPages;
+
+  useEffect(() => {
+    const stack = paperStackRef.current;
+    if (!stack) return;
+
+    let frame = 0;
+    const measure = () => {
+      const paperElements = Array.from(
+        stack.querySelectorAll<HTMLElement>(":scope > .hanzi-paper"),
+      );
+      if (paperElements.length !== pages.length) return;
+
+      for (let pageIndex = 0; pageIndex < paperElements.length; pageIndex += 1) {
+        const list = paperElements[pageIndex].querySelector<HTMLElement>(".hanzi-word-list");
+        if (!list) continue;
+        const listBottom = list.getBoundingClientRect().bottom;
+        const itemElements = Array.from(list.querySelectorAll<HTMLElement>(":scope > .hanzi-item"));
+        const overflowIndex = itemElements.findIndex(
+          (element) => element.getBoundingClientRect().bottom > listBottom + 0.75,
+        );
+        if (overflowIndex > 0) {
+          setPaginationResult({
+            key: paginationKey,
+            pages: moveHanziPageOverflow(
+              pages,
+              pageIndex,
+              overflowIndex,
+              config.perPage,
+            ),
+          });
+          return;
+        }
+      }
+
+      if (paginationResult?.key !== paginationKey) {
+        setPaginationResult({ key: paginationKey, pages });
+      }
+    };
+    const scheduleMeasure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(measure);
+    };
+    const observer = new ResizeObserver(scheduleMeasure);
+    observer.observe(stack);
+    Array.from(stack.children).forEach((element) => observer.observe(element));
+    scheduleMeasure();
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [config.perPage, pages, paginationKey, paginationResult?.key]);
 
   const updateConfig = <Key extends keyof HanziConfig>(
     key: Key,
@@ -606,7 +681,7 @@ export function HanziApp() {
         </div>
 
         <div className="paper-viewport">
-          <div className="paper-stack" style={{ zoom: config.zoom }}>
+          <div className="paper-stack" ref={paperStackRef} style={{ zoom: config.zoom }}>
             {pages.map((pageItems, pageIndex) => (
               <HanziPaper
                 copies={config.copies}
@@ -615,11 +690,10 @@ export function HanziApp() {
                 items={pageItems}
                 key={pageIndex}
                 mode={config.mode}
-                pageNumber={pageIndex + 1}
-                pageTotal={pages.length}
-                perPage={effectivePerPage}
                 showMeta={config.showMeta}
-                startIndex={pageIndex * effectivePerPage}
+                startIndex={pages
+                  .slice(0, pageIndex)
+                  .reduce((total, page) => total + page.length, 0)}
                 strokeData={strokeData}
                 title={config.title}
               />

@@ -4,6 +4,7 @@ import {
   autoPinyin,
   chineseChars,
   filterHanziWords,
+  moveHanziPageOverflow,
   paginateHanziItems,
   splitItemPinyin,
   splitWords,
@@ -39,6 +40,15 @@ describe("hanzi worksheet helpers", () => {
     expect(filterHanziWords(words, "hideMastered", records)).toEqual(["春天", "认真"]);
     expect(filterHanziWords(words, "onlyLearning", records)).toEqual(["认真"]);
     expect(paginateHanziItems(words, 2)).toEqual([["春天", "学校"], ["认真"]]);
+  });
+
+  it("moves measured overflow forward without changing word order", () => {
+    const pages = [["一", "二", "三", "四"], ["五", "六", "七", "八"]];
+    expect(moveHanziPageOverflow(pages, 0, 3, 4)).toEqual([
+      ["一", "二", "三"],
+      ["四", "五", "六", "七"],
+      ["八"],
+    ]);
   });
 
   it("loads a unit or the whole textbook without duplicates", () => {

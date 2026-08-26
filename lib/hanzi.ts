@@ -107,6 +107,31 @@ export function paginateHanziItems<T>(items: T[], perPage: number): T[][] {
   return pages;
 }
 
+export function moveHanziPageOverflow<T>(
+  pages: T[][],
+  pageIndex: number,
+  overflowIndex: number,
+  perPage: number,
+): T[][] {
+  const page = pages[pageIndex];
+  if (!page || overflowIndex <= 0 || overflowIndex >= page.length) return pages;
+
+  const next = pages.map((items) => [...items]);
+  const overflow = next[pageIndex].splice(overflowIndex);
+  if (next[pageIndex + 1]) next[pageIndex + 1].unshift(...overflow);
+  else next.push(overflow);
+
+  const limit = Math.max(1, Math.floor(perPage));
+  for (let index = pageIndex + 1; index < next.length; index += 1) {
+    if (next[index].length <= limit) continue;
+    const excess = next[index].splice(limit);
+    if (next[index + 1]) next[index + 1].unshift(...excess);
+    else next.push(excess);
+  }
+
+  return next.filter((items) => items.length > 0);
+}
+
 export function wordsForBank(bank: HanziBank, unitKey: string): string[] {
   const units = unitKey ? bank.units.filter((unit) => unit.key === unitKey) : bank.units;
   return Array.from(new Set(units.flatMap((unit) => unit.words)));

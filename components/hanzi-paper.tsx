@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import {
   chineseChars,
   splitItemPinyin,
@@ -19,21 +17,10 @@ type HanziPaperProps = {
   gridType: HanziGridType;
   items: HanziItem[];
   mode: HanziMode;
-  pageNumber: number;
-  pageTotal: number;
-  perPage: number;
   showMeta: boolean;
   startIndex: number;
   strokeData: ReadonlyMap<string, HanziStrokeData | null>;
   title: string;
-};
-
-const modeLabels: Record<HanziMode, string> = {
-  copy: "左范字右抄写",
-  dictation: "听写练习",
-  strokes: "汉字笔顺图",
-  trace: "描红练习",
-  write: "看拼音写汉字",
 };
 
 function StrokeGlyph({
@@ -194,27 +181,15 @@ export function HanziPaper({
   gridType,
   items,
   mode,
-  pageNumber,
-  pageTotal,
-  perPage,
   showMeta,
   startIndex,
   strokeData,
   title,
 }: HanziPaperProps) {
-  const compactness = perPage >= 40 ? "dense" : perPage >= 24 ? "compact" : "roomy";
-  const columnCount = perPage >= 24 ? 2 : 1;
-  const pageStyle = {
-    "--hanzi-row-count": Math.max(Math.ceil(items.length / columnCount), 1),
-  } as CSSProperties;
-
   return (
-    <article className={`paper hanzi-paper ${compactness}`} style={pageStyle}>
+    <article className="paper hanzi-paper">
       <header className="paper-head">
-        <div>
-          <div className="paper-kicker">{modeLabels[mode]}</div>
-          <h2>{title || "看拼音写汉字"}</h2>
-        </div>
+        <h2>{title || "看拼音写汉字"}</h2>
         {showMeta ? (
           <div className="paper-meta">
             <span>
@@ -245,13 +220,6 @@ export function HanziPaper({
           <p className="paper-empty">请输入中文字词，或从教材词库加载一个单元。</p>
         )}
       </div>
-
-      <footer className="paper-footer">
-        <span>{modeLabels[mode]}</span>
-        <span>
-          第 {pageNumber} / {pageTotal} 页
-        </span>
-      </footer>
     </article>
   );
 }
