@@ -28,6 +28,13 @@ export type ParseResult = {
   invalidLines: number[];
 };
 
+export type LooseParseResult = ParseResult & {
+  duplicateLines: number[];
+};
+
+const HAN_CHARACTER = /[\u3400-\u9fff\uf900-\ufaff]/;
+const LATIN_CHARACTER = /[a-z]/i;
+
 export function makeEntryId(parts: string[]): string {
   const source = parts.join("\u241f").toLowerCase();
   let hash = 5381;
@@ -42,6 +49,70 @@ function detectSeparator(line: string): string | null {
   if (line.includes("|")) return "|";
   if (line.includes("=")) return "=";
   return null;
+}
+
+function stripListMarker(line: string): string {
+  return line.replace(/^(?:\d{1,4}\s*[.、)）:：-]\s*|[-*•]\s+)/, "").trim();
+}
+
+function looseLineParts(line: string): string[] | null {
+  const separator = detectSeparator(line);
+  if (separator) return line.split(separator).map((part) => part.trim());
+
+  const dashParts = line.split(/\s+[-–—]\s+/).map((part) => part.trim());
+  if (dashParts.length >= 2) return dashParts;
+
+  const firstHan = line.search(HAN_CHARACTER);
+  const firstLatin = line.search(LATIN_CHARACTER);
+  if (firstHan < 0 || firstLatin < 0) return null;
+  if (firstHan < firstLatin) {
+    return [line.slice(0, firstLatin).trim(), line.slice(firstLatin).trim()];
+  }
+  return [line.slice(0, firstHan).trim(), line.slice(firstHan).trim()];
+}
+
+export function parseLooseWordEntries(source: string): LooseParseResult {
+  const duplicateLines: number[] = [];
+  const invalidLines: number[] = [];
+  const entries: WordEntry[] = [];
+  const seen = new Set<string>();
+
+  source.split(/\r?\n/).forEach((rawLine, index) => {
+    const line = stripListMarker(rawLine.trim());
+    if (!line || line.startsWith("#")) return;
+
+    const parts = looseLineParts(line);
+    if (!parts || parts.length < 2) {
+      invalidLines.push(index + 1);
+      return;
+    }
+
+    const [first = "", second = "", partOfSpeech = "", example = ""] = parts;
+    const firstHasHan = HAN_CHARACTER.test(first);
+    const secondHasHan = HAN_CHARACTER.test(second);
+    const chinese = firstHasHan && !secondHasHan ? first : secondHasHan ? second : "";
+    const english = firstHasHan && !secondHasHan ? second : secondHasHan ? first : "";
+    if (!chinese || !english || !LATIN_CHARACTER.test(english)) {
+      invalidLines.push(index + 1);
+      return;
+    }
+
+    const id = makeEntryId([chinese, english, partOfSpeech]);
+    if (seen.has(id)) {
+      duplicateLines.push(index + 1);
+      return;
+    }
+    seen.add(id);
+    entries.push({
+      id,
+      chinese,
+      english,
+      partOfSpeech: partOfSpeech || undefined,
+      example: example || undefined,
+    });
+  });
+
+  return { duplicateLines, entries, invalidLines };
 }
 
 export function parseWordEntries(source: string): ParseResult {

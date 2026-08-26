@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { DEFAULT_BANK, DEFAULT_SOURCE, WORD_BANKS } from "@/lib/banks";
+import { DEFAULT_BANK, DEFAULT_SOURCE, WORD_BANKS, type WordBank } from "@/lib/banks";
 import {
   filterEntriesByProgress,
   getMasteryStatus,
@@ -48,6 +48,7 @@ import {
   type WordEntry,
 } from "@/lib/worksheet";
 import { AnswerPaper, StudentPaper, StudyReportPaper } from "./worksheet-paper";
+import { MaterialWorkbench } from "./material-workbench";
 import {
   DataTransferSection,
   SessionReviewSection,
@@ -419,13 +420,13 @@ export function WorksheetApp() {
     setConfig((current) => ({ ...current, [key]: value }));
   };
 
-  const loadSelectedBank = () => {
-    const bank = WORD_BANKS.find((item) => item.key === config.bankKey) ?? DEFAULT_BANK;
+  const loadSelectedBank = (bank: WordBank, entries: WordEntry[]) => {
     setConfig((current) => ({
       ...current,
       activeWordBookId: "",
       selectedWordBookId: "",
-      source: serializeEntries(bank.entries),
+      bankKey: bank.key,
+      source: serializeEntries(entries),
       title: bank.title,
       wordBookName: bank.name.replace(/^示例：/, ""),
     }));
@@ -687,30 +688,16 @@ export function WorksheetApp() {
           </Link>
         </header>
 
-        <section className="control-section first-section">
-          <label className="control-label" htmlFor="bank">
-            示例词库
-          </label>
-          <div className="bank-row">
-            <select
-              id="bank"
-              onChange={(event) => updateConfig("bankKey", event.target.value)}
-              value={config.bankKey}
-            >
-              {WORD_BANKS.map((bank) => (
-                <option key={bank.key} value={bank.key}>
-                  {bank.name}
-                </option>
-              ))}
-            </select>
-            <button className="button secondary" onClick={loadSelectedBank} type="button">
-              载入
-            </button>
-          </div>
-          <p className="control-hint">
-            {WORD_BANKS.find((bank) => bank.key === config.bankKey)?.description}
-          </p>
-        </section>
+        <MaterialWorkbench
+          bankKey={config.bankKey}
+          banks={WORD_BANKS}
+          entries={parsed.entries}
+          invalidLines={parsed.invalidLines}
+          onBankKeyChange={(key) => updateConfig("bankKey", key)}
+          onLoadBank={loadSelectedBank}
+          onSourceChange={(source) => updateConfig("source", source)}
+          source={config.source}
+        />
 
         <WordBookSection
           activeId={config.activeWordBookId}
@@ -725,28 +712,6 @@ export function WorksheetApp() {
           onSelect={selectWordBook}
           selectedId={config.selectedWordBookId}
         />
-
-        <section className="control-section">
-          <div className="section-heading-row">
-            <label className="control-label" htmlFor="word-source">
-              中英词条
-            </label>
-            <span className="entry-count">有效 {parsed.entries.length} 条</span>
-          </div>
-          <textarea
-            id="word-source"
-            onChange={(event) => updateConfig("source", event.target.value)}
-            placeholder="苹果 | apple | n. | I eat an ____."
-            spellCheck={false}
-            value={config.source}
-          />
-          <p className={parsed.invalidLines.length ? "control-hint error-text" : "control-hint"}>
-            每行格式：中文 | 英文 | 词性 | 例句。也支持 Tab 或等号分隔。
-            {parsed.invalidLines.length
-              ? ` 第 ${parsed.invalidLines.join("、")} 行未识别，已跳过。`
-              : ""}
-          </p>
-        </section>
 
         <section className="control-section">
           <div className="form-grid two-columns">

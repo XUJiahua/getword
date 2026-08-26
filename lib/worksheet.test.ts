@@ -4,6 +4,7 @@ import {
   maskEnglishWord,
   movePageOverflow,
   paginate,
+  parseLooseWordEntries,
   parseWordEntries,
   resolvePracticeMode,
   revealExampleAnswer,
@@ -38,6 +39,36 @@ describe("parseWordEntries", () => {
         { id: "two", chinese: "梨", english: "pear" },
       ]),
     ).toBe("苹果 | apple | n.\n梨 | pear");
+  });
+});
+
+describe("parseLooseWordEntries", () => {
+  it("recognizes common pasted Chinese-English formats in either order", () => {
+    const result = parseLooseWordEntries(
+      [
+        "1. apple 苹果",
+        "香蕉 | banana | n. | I eat a ____.",
+        "watch TV - 看电视",
+        "友好的 kind",
+        "星期一\tMonday\tn.",
+      ].join("\n"),
+    );
+
+    expect(result.entries).toMatchObject([
+      { chinese: "苹果", english: "apple" },
+      { chinese: "香蕉", english: "banana", partOfSpeech: "n.", example: "I eat a ____." },
+      { chinese: "看电视", english: "watch TV" },
+      { chinese: "友好的", english: "kind" },
+      { chinese: "星期一", english: "Monday", partOfSpeech: "n." },
+    ]);
+    expect(result.invalidLines).toEqual([]);
+  });
+
+  it("reports invalid and duplicate pasted lines for import preview", () => {
+    const result = parseLooseWordEntries("苹果 | apple\n无法识别\napple = 苹果");
+    expect(result.entries).toHaveLength(1);
+    expect(result.invalidLines).toEqual([2]);
+    expect(result.duplicateLines).toEqual([3]);
   });
 });
 

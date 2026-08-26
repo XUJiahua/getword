@@ -219,6 +219,241 @@ select:disabled {
   line-height: 21px;
 }
 
+.material-tabs {
+  display: grid;
+  margin-top: 13px;
+  padding: 3px;
+  gap: 3px;
+  background: var(--surface-recessed);
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.material-tabs button {
+  min-width: 0;
+  min-height: 34px;
+  overflow: hidden;
+  padding: 0 5px;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.material-tabs button:hover,
+.material-tabs button.active {
+  color: var(--accent-deep);
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.material-tabs button:focus-visible,
+.entry-delete-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.material-panel {
+  margin-top: 12px;
+}
+
+.bank-selection-toolbar,
+.entry-editor-toolbar,
+.material-actions,
+.paste-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bank-selection-toolbar {
+  min-height: 34px;
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.bank-selection-toolbar > div {
+  display: flex;
+}
+
+.bank-selection-toolbar .text-button {
+  min-height: 32px;
+}
+
+.bank-entry-picker {
+  max-height: 224px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.bank-entry-picker label {
+  display: grid;
+  min-height: 40px;
+  align-items: center;
+  padding: 4px 9px;
+  gap: 8px;
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  grid-template-columns: 17px minmax(82px, 1fr) minmax(82px, 1fr);
+}
+
+.bank-entry-picker label:last-child {
+  border-bottom: 0;
+}
+
+.bank-entry-picker input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--accent);
+}
+
+.bank-entry-picker span,
+.bank-entry-picker small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bank-entry-picker small {
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.paste-summary {
+  min-height: 34px;
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.paste-preview {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.paste-preview > div {
+  display: grid;
+  min-height: 34px;
+  align-items: center;
+  padding: 3px 9px;
+  gap: 8px;
+  border-bottom: 1px solid var(--line-soft);
+  grid-template-columns: minmax(80px, 1fr) minmax(90px, 1fr) 42px;
+}
+
+.paste-preview span,
+.paste-preview b,
+.paste-preview small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paste-preview b {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.paste-preview small {
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+.paste-preview p {
+  margin: 0;
+  padding: 7px 9px;
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+.material-actions {
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.entry-editor-toolbar {
+  align-items: flex-start;
+}
+
+.entry-editor-toolbar .control-hint {
+  flex: 1;
+}
+
+.entry-editor-toolbar .button {
+  flex: 0 0 auto;
+}
+
+.entry-editor-list {
+  max-height: 440px;
+  margin-top: 10px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.entry-editor-row {
+  display: grid;
+  align-items: center;
+  padding: 7px;
+  gap: 6px;
+  border-bottom: 1px solid var(--line-soft);
+  grid-template-columns: 18px minmax(0, 0.9fr) minmax(0, 1.1fr) 28px;
+}
+
+.entry-editor-row:last-child {
+  border-bottom: 0;
+}
+
+.entry-editor-row.incomplete {
+  background: color-mix(in oklch, var(--danger) 5%, var(--surface));
+}
+
+.entry-editor-row input {
+  height: 36px;
+  min-width: 0;
+  padding: 0 7px;
+  font-size: 13px;
+}
+
+.entry-editor-index {
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.entry-delete-button {
+  width: 28px;
+  height: 36px;
+  padding: 0;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.entry-delete-button:hover {
+  color: var(--danger);
+  background: var(--surface-recessed);
+  border-color: var(--line);
+}
+
+.entry-editor-pos {
+  grid-column: 2;
+}
+
+.entry-editor-example {
+  grid-column: 3 / 5;
+}
+
 input,
 select,
 textarea {
